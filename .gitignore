@@ -1,0 +1,8 @@
+.project
+.cproject
+*.~
+*.swp
+build.properties
+build.xml
+.settings
+Debug
