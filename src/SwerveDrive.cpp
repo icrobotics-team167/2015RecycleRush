@@ -10,6 +10,8 @@
 class SwerveDrive
 {
 public:
+	const int encoderLines = 497;
+
 	SwerveDrive()
 	{
 
@@ -29,6 +31,32 @@ public:
 	 */
 	void Drive(int angle, double speed)
 	{
+
+		int c = Encoder->GetRaw();
+		int a = (angle + (c * encoderLines / 360)) % 360;
+		bool clockwise;
+		if (a - angle < 180)
+			clockwise = false;
+		else
+			clockwise = true;
+		int d = angle * 497 / 360;
+
+		if (clockwise)
+			speed = speed * -1;
+
+		while(Encoder.GetRaw != d % encoderLines)
+		{
+			Victor1::Set(speed, 0);
+			Victor2::Set(speed, 0);
+		}
+
+	}
+	int GetWheelAngle()
+	{
+		float gyroangle = gyro->GetAngle();
+		int anglewheel = Encoder->GetRaw() * 360 / encoderLines;
+		double wheelangle = (gyroangle + anglewheel) % 360;
+		return wheelangle;
 
 	}
 };
