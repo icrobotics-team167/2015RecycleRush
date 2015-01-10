@@ -17,10 +17,10 @@ private:
 	Encoder *rotateEncoder1;
 	Encoder *rotateEncoder2;
 	Gyro *gyro;
-	TalonSRX *talon1;
-	TalonSRX *talon2;
-	TalonSRX *talon3;
-	TalonSRX *talon4;
+	CANTalon *talon1;
+	CANTalon *talon2;
+	CANTalon *talon3;
+	CANTalon *talon4;
 
 public:
 	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
@@ -41,10 +41,10 @@ public:
 		rotateEncoder1 = new Encoder(rotateEnc1ChannelA, rotateEnc1ChannelB);
 		rotateEncoder2 = new Encoder(rotateEnc2ChannelA, rotateEnc2ChannelB);
 		gyro = new Gyro(gyroChannel);
-		talon1 = TalonSRX(talonNumber1);
-		talon2 = TalonSRX(talonNumber2);
-		talon3 = TalonSRX(talonNumber3);
-		talon4 = TalonSRX(talonNumber4);
+		talon1 = new CANTalon(talonNumber1);
+		talon2 = new CANTalon(talonNumber2);
+		talon3 = new CANTalon(talonNumber3);
+		talon4 = new CANTalon(talonNumber4);
 	}
 
 	~SwerveDrive()
@@ -92,6 +92,7 @@ public:
 			//and tells the drive motors to spin
 
 	}
+
 	int GetWheelAngle()
 	{
 		float gyroangle = gyro->GetAngle();
