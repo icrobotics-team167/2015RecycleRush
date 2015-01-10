@@ -9,12 +9,30 @@
 
 class SwerveDrive
 {
+private:
+	unsigned rotateEncoderLines;
+	unsigned driveEncoderLines;
+	Victor *rotateVictor1;
+	Victor *rotateVictor2;
+	Encoder *rotateEncoder1;
+	Encoder *rotateEncoder2;
+	Gyro *gyro;
+
 public:
-	const int encoderLines = 497;
-
-	SwerveDrive()
+	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
+				unsigned short rotateVictor1Channel,
+				unsigned short rotateVictor2Channel,
+				unsigned short rotateEnc1ChannelA, unsigned short rotateEnc1ChannelB,
+				unsigned short rotateEnc2ChannelA, unsigned short rotateEnc2ChannelB,
+				unsigned short gyroChannel)
 	{
-
+		rotateEncoderLines = rotateEncLines;
+		driveEncoderLines = driveEncLines;
+		rotateVictor1 = new Victor(rotateVictor1Channel);
+		rotateVictor2 = new Victor(rotateVictor2Channel);
+		rotateEncoder1 = new Encoder(rotateEnc1ChannelA, rotateEnc1ChannelB);
+		rotateEncoder2 = new Encoder(rotateEnc2ChannelA, rotateEnc2ChannelB);
+		gyro = new Gyro(gyroChannel);
 	}
 
 	~SwerveDrive()
