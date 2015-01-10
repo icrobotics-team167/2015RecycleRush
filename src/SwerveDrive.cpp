@@ -33,6 +33,7 @@ public:
 		rotateEncoder1 = new Encoder(rotateEnc1ChannelA, rotateEnc1ChannelB);
 		rotateEncoder2 = new Encoder(rotateEnc2ChannelA, rotateEnc2ChannelB);
 		gyro = new Gyro(gyroChannel);
+		talon1 = TalonSRX(talonNumber1);
 	}
 
 	~SwerveDrive()
@@ -49,32 +50,29 @@ public:
 	 */
 	void Drive(int angle, double speed)
 	{
+		int angleToBeTurned = (angle + GetWheelAngle()) % 360;
+		if ((angleToBeTurned - angle) > 180 || (angleToBeTurned - angle) < -180)
+			speed = speed * -1;	//means the wheels don't have to spin over 180 degrees
 
-		int c = Encoder->GetRaw();
-		int a = (angle + (c * encoderLines / 360)) % 360;
-		bool clockwise;
-		if (a - angle < 180)
-			clockwise = false;
-		else
-			clockwise = true;
-		int d = angle * 497 / 360;
+		int distance = angle * rotateEncoderLines / 360;
 
-		if (clockwise)
-			speed = speed * -1;
-
-		while(Encoder.GetRaw != d % encoderLines)
+		if(rotateEncoder1->GetRaw != distance % rotateEncoderLines)
 		{
-			Victor1::Set(speed, 0);
-			Victor2::Set(speed, 0);
-		}
+			rotateVictor1->Set(speed);
+			rotateVictor2->Set(speed);
+		}	//spins the motors until the wheels point in the right direction
+		else
+		{
+			rotateVictor1->Set(0);
+			rotateVictor2->Set(0);
+		}	//stops the motors when the wheels are pointing the right way
 
 	}
 	int GetWheelAngle()
 	{
 		float gyroangle = gyro->GetAngle();
-		int anglewheel = Encoder->GetRaw() * 360 / encoderLines;
-		double wheelangle = (gyroangle + anglewheel) % 360;
-		return wheelangle;
-
-	}
+		int robotRelativeWheelAngle = rotateEncoder1->GetRaw() * 360 / rotateEncoderLines;
+		double fieldRelativeWheelAngle = (gyroangle + robotRelativeWheelAngle) % 360;
+		return fieldRelativeWheelAngle;
+	}	//finds the angle the wheels are facing relative to the field
 };
