@@ -33,7 +33,6 @@ public:
 		rotateEncoder1 = new Encoder(rotateEnc1ChannelA, rotateEnc1ChannelB);
 		rotateEncoder2 = new Encoder(rotateEnc2ChannelA, rotateEnc2ChannelB);
 		gyro = new Gyro(gyroChannel);
-		talon1 = TalonSRX(talonNumber1);
 	}
 
 	~SwerveDrive()
@@ -50,16 +49,20 @@ public:
 	 */
 	void Drive(int angle, double speed)
 	{
+		// always rotate the wheels at maximum speed
+		double rotateWheelSpeed = 1.0;
+
 		int angleToBeTurned = (angle + GetWheelAngle()) % 360;
+
 		if ((angleToBeTurned - angle) > 180 || (angleToBeTurned - angle) < -180)
 			speed = speed * -1;	//means the wheels don't have to spin over 180 degrees
 
 		int distance = angle * rotateEncoderLines / 360;
 
-		if(rotateEncoder1->GetRaw != distance % rotateEncoderLines)
+		if (rotateEncoder1->GetRaw() != distance % rotateEncoderLines)
 		{
-			rotateVictor1->Set(speed);
-			rotateVictor2->Set(speed);
+			rotateVictor1->Set(rotateWheelSpeed);
+			rotateVictor2->Set(rotateWheelSpeed);
 		}	//spins the motors until the wheels point in the right direction
 		else
 		{
