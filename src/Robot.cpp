@@ -1,5 +1,6 @@
 #include "WPILib.h"
 #include "Team167Lib.h"
+#include "math.h"
 
 class Robot: public IterativeRobot
 {
@@ -79,7 +80,7 @@ private:
 		{
 				// if we are not turning get the larger of the x and y values of the joystick posistion,
 				// and multiply that by the throttle to get final voltage
-				speed *= max(abs_x, abs_y);
+				speed *= std::max(abs_x, abs_y);
 		}
 		else
 		{

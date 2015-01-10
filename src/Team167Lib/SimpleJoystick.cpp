@@ -50,12 +50,12 @@ void SimpleJoystick::Update()
 	_currentButtonState = 0;
 	
 	// update the current button state
-	for(UINT16 i = 1; i <= NumButtons; i++)
+	for(uint16_t i = 1; i <= NumButtons; i++)
 	{
-		UINT16 tmp = 1;
+		uint16_t tmp = 1;
 		
 		// shift the number by i places (each button has its own bit)
-		UINT16 btn_num = tmp << i;
+		uint16_t btn_num = tmp << i;
 		
 		bool pressed = _joystick->GetRawButton(i);
 		
@@ -65,7 +65,7 @@ void SimpleJoystick::Update()
 			// add the button to the current list
 			_currentButtonState = _currentButtonState | btn_num;
 
-			UINT16 dif = _lastButtonState ^ _currentButtonState;
+			uint16_t dif = _lastButtonState ^ _currentButtonState;
 						
 			if((dif & btn_num) != 0)
 			{
@@ -80,7 +80,7 @@ void SimpleJoystick::Update()
 // Pressed
 //    Returns true is a button was pressed
 //-------------------------------------------------------------------------
-bool SimpleJoystick::Pressed(UINT32 button)
+bool SimpleJoystick::Pressed(uint32_t button)
 {
 	if((_currentButtonState & button) > 0)
 	{
@@ -96,7 +96,7 @@ bool SimpleJoystick::Pressed(UINT32 button)
 // Toggled
 //    Returns true is a button was toggled
 //-------------------------------------------------------------------------
-bool SimpleJoystick::Toggled(UINT32 button)
+bool SimpleJoystick::Toggled(uint32_t button)
 {
 	if((_toggledButtons & button) > 0)
 	{
@@ -113,7 +113,7 @@ bool SimpleJoystick::Toggled(UINT32 button)
  * returns true if the button was just released
  */
 
-bool SimpleJoystick::Released(UINT32 button)
+bool SimpleJoystick::Released(uint32_t button)
 {
 	// first, ensure the button was previously pressed
 	// then, check that it is now released
@@ -121,13 +121,13 @@ bool SimpleJoystick::Released(UINT32 button)
 }
 
 // toggle a button
-void SimpleJoystick::EnableToggle(UINT32 button)
+void SimpleJoystick::EnableToggle(uint32_t button)
 {
 	_toggledButtons = _toggledButtons | button;
 }
 
 // untoggle a button
-void SimpleJoystick::DisableToggle(UINT32 button)
+void SimpleJoystick::DisableToggle(uint32_t button)
 {
 	_toggledButtons = _toggledButtons & ~button;
 }

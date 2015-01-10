@@ -1,21 +1,6 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define NUMBER_OF_JAGS_TO_DRIVE 4
-
-#define FL_JAG 0	// Front Left Jaguar
-#define FR_JAG 1	// Front Right Jaguar
-#define BL_JAG 2	// Back Left Jaguar
-#define BR_JAG 3	// Back Right Jaguar
-
-#define SCALE_FACTOR 1.0f
-
-#define FL_JAG_MASK 0x01
-#define FR_JAG_MASK 0x02
-#define BL_JAG_MASK 0x04
-#define BR_JAG_MASK 0x08
-
-
 #define BUTTON_1 0x02
 #define BUTTON_2 0x04
 #define BUTTON_3 0x08
