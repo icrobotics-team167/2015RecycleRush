@@ -12,8 +12,8 @@ class SwerveDrive
 private:
 	unsigned rotateEncoderLines;
 	unsigned driveEncoderLines;
-	Victor *rotateVictor1;
-	Victor *rotateVictor2;
+	CANTalon *rotateTalon1;
+	CANTalon *rotateTalon2;
 	Encoder *rotateEncoder1;
 	Encoder *rotateEncoder2;
 	Gyro *gyro;
@@ -24,8 +24,8 @@ private:
 
 public:
 	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
-				unsigned short rotateVictor1Channel,
-				unsigned short rotateVictor2Channel,
+				unsigned short rotateTalon1Channel,
+				unsigned short rotateTalon2Channel,
 				unsigned short rotateEnc1ChannelA, unsigned short rotateEnc1ChannelB,
 				unsigned short rotateEnc2ChannelA, unsigned short rotateEnc2ChannelB,
 				unsigned short gyroChannel,
@@ -36,8 +36,8 @@ public:
 	{
 		rotateEncoderLines = rotateEncLines;
 		driveEncoderLines = driveEncLines;
-		rotateVictor1 = new Victor(rotateVictor1Channel);
-		rotateVictor2 = new Victor(rotateVictor2Channel);
+		rotateTalon1 = new CANTalon(rotateTalon1Channel);
+		rotateTalon2 = new CANTalon(rotateTalon2Channel);
 		rotateEncoder1 = new Encoder(rotateEnc1ChannelA, rotateEnc1ChannelB);
 		rotateEncoder2 = new Encoder(rotateEnc2ChannelA, rotateEnc2ChannelB);
 		gyro = new Gyro(gyroChannel);
@@ -73,8 +73,8 @@ public:
 
 		if (rotateEncoder1->GetRaw() != distance % rotateEncoderLines)
 		{
-			rotateVictor1->Set(rotateWheelSpeed);
-			rotateVictor2->Set(rotateWheelSpeed);
+			rotateTalon1->Set(rotateWheelSpeed);
+			rotateTalon2->Set(rotateWheelSpeed);
 			talon1->Set(0);
 			talon2->Set(0);
 			talon3->Set(0);
@@ -82,8 +82,8 @@ public:
 		}	//spins the motors until the wheels point in the right direction and stops drive motors
 		else
 		{
-			rotateVictor1->Set(0);
-			rotateVictor2->Set(0);
+			rotateTalon1->Set(0);
+			rotateTalon2->Set(0);
 			talon1->Set(speed);
 			talon2->Set(speed);
 			talon3->Set(speed);
