@@ -60,8 +60,17 @@ public:
 
 		int angleToBeTurned = (angle + GetWheelAngle()) % 360;
 
-		if (abs(angleToBeTurned - angle) > 180)
-			speed = speed * -1;	//means the wheels don't have to spin over 180 degrees
+		if (abs(angleToBeTurned - angle) % 360 > 90)
+		{
+			if ((abs(angleToBeTurned - angle) % 360) > 270)
+				//makes wheels rotate towards the original angle if they're closer to that
+				rotateWheelSpeed *= -1;
+			else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
+			{
+				angleToBeTurned = (angleToBeTurned + 180) % 360;
+				speed *= -1;
+			}
+		}	//the if statement means the wheels won't have to turn over 90 degrees
 
 		int distance = angle * rotateEncoderLines / 360;
 
