@@ -14,37 +14,31 @@ private:
 	unsigned driveEncoderLines;
 	CANTalon *rotateTalon1;
 	CANTalon *rotateTalon2;
-	Encoder *rotateEncoder1;
-	Encoder *rotateEncoder2;
-	Gyro *gyro;
 	CANTalon *talon1;
 	CANTalon *talon2;
 	CANTalon *talon3;
 	CANTalon *talon4;
+	Gyro *gyro;
 
 public:
 	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
-				unsigned short rotateTalon1Channel,
-				unsigned short rotateTalon2Channel,
-				unsigned short rotateEnc1ChannelA, unsigned short rotateEnc1ChannelB,
-				unsigned short rotateEnc2ChannelA, unsigned short rotateEnc2ChannelB,
+				unsigned short rotateTalon1Number,
+				unsigned short rotateTalon2Number,
 				unsigned short gyroChannel,
-				int talonNumber1,
-				int talonNumber2,
-				int talonNumber3,
-				int talonNumber4)
+				int talon1Number,
+				int talon2Number,
+				int talon3Number,
+				int talon4Number)
 	{
 		rotateEncoderLines = rotateEncLines;
 		driveEncoderLines = driveEncLines;
-		rotateTalon1 = new CANTalon(rotateTalon1Channel);
-		rotateTalon2 = new CANTalon(rotateTalon2Channel);
-		rotateEncoder1 = new Encoder(rotateEnc1ChannelA, rotateEnc1ChannelB);
-		rotateEncoder2 = new Encoder(rotateEnc2ChannelA, rotateEnc2ChannelB);
+		rotateTalon1 = new CANTalon(rotateTalon1Number);
+		rotateTalon2 = new CANTalon(rotateTalon2Number);
+		talon1 = new CANTalon(talon1Number);
+		talon2 = new CANTalon(talon2Number);
+		talon3 = new CANTalon(talon3Number);
+		talon4 = new CANTalon(talon4Number);
 		gyro = new Gyro(gyroChannel);
-		talon1 = new CANTalon(talonNumber1);
-		talon2 = new CANTalon(talonNumber2);
-		talon3 = new CANTalon(talonNumber3);
-		talon4 = new CANTalon(talonNumber4);
 	}
 
 	~SwerveDrive()
@@ -71,7 +65,7 @@ public:
 
 		int distance = angle * rotateEncoderLines / 360;
 
-		if (rotateEncoder1->GetRaw() != distance % rotateEncoderLines)
+		if (rotateTalon1->GetEncPosition() != distance % rotateEncoderLines)
 		{
 			rotateTalon1->Set(rotateWheelSpeed);
 			rotateTalon2->Set(rotateWheelSpeed);
@@ -96,8 +90,8 @@ public:
 	int GetWheelAngle()
 	{
 		float gyroangle = gyro->GetAngle();
-		int robotRelativeWheelAngle = rotateEncoder1->GetRaw() * 360 / rotateEncoderLines;
-		double fieldRelativeWheelAngle = (gyroangle + robotRelativeWheelAngle) % 360;
+		int robotRelativeWheelAngle = rotateTalon1->GetEncPosition() * 360 / rotateEncoderLines;
+		int fieldRelativeWheelAngle = (gyroangle + robotRelativeWheelAngle) % 360;
 		return fieldRelativeWheelAngle;
 	}	//finds the angle the wheels are facing relative to the field
 };
