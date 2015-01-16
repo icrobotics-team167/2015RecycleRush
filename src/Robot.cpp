@@ -24,6 +24,15 @@ private:
 		swerveWheels = new SwerveDrive(400, 400, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4);
 	}
 
+	~Robot() {
+		delete lw;
+		delete RealJoy1;
+		delete RealJoy2;
+		delete Joystick1;
+		delete Joystick2;
+		delete swerveWheels;
+	}
+
 	void RobotInit()
 	{
 		lw = LiveWindow::GetInstance();
