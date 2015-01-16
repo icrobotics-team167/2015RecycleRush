@@ -31,6 +31,7 @@ public:
 		piston2 = new PneumaticPiston(compressorIndex, solenoidIndex2_1, solenoidIndex2_2);
 		piston3 = new PneumaticPiston(compressorIndex, solenoidIndex3_1, solenoidIndex3_2);
 		talon = new Talon(talonPWMchannel);
+
 	}
 
 	~ElevatorArms()
@@ -41,14 +42,14 @@ public:
 		delete talon;
 	}
 
-	void Raise()
+	void Raise(float speed)
 	{
-		talon->Set(1);
+		talon->Set(abs(speed));
 	}
 
-	void Lower()
+	void Lower(float speed)
 	{
-		talon->Set(-1);
+		talon->Set(-(abs(speed)));
 	}
 
 	void StopElevator()

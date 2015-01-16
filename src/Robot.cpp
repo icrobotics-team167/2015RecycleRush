@@ -13,6 +13,7 @@ private:
 	SimpleJoystick *Joystick2;
 
 	SwerveDrive *swerveWheels;
+	ElevatorArms *elevatorArms;
 
 	Robot()
 	{
@@ -20,6 +21,7 @@ private:
 		RealJoy2 = new Joystick(2);
 		Joystick1 = new SimpleJoystick(RealJoy1);
 		Joystick2 = new SimpleJoystick(RealJoy2);
+		elevatorArms = new ElevatorArms(/*need arguments*/);
 
 		// current parameters are just placeholders for actual values
 		swerveWheels = new SwerveDrive(400, 400, 1, 2, 3, 4, 5, 6, 7);
@@ -32,6 +34,7 @@ private:
 		delete Joystick1;
 		delete Joystick2;
 		delete swerveWheels;
+		delete elevatorArms;
 	}
 
 	void RobotInit()
@@ -109,6 +112,28 @@ private:
 				speed = 1.0;
 
 		swerveWheels->Drive(z, speed);
+
+		//section for the arm begins here
+
+		float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
+		double throttle_mag2 = (this->RealJoy2->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
+		float abs_y2 = abs(y);
+		float armSpeed = throttle_mag;
+
+		if (speed < 0)
+			elevatorArms->Raise(armSpeed);
+		else
+			elevatorArms->Lower(armSpeed);
+
+		bool open = Joystick2->Toggled(BUTTON_3);
+		bool close = Joystick2->Toggled(BUTTON_1);
+
+		if (open)
+			elevatorArms->Open();
+		if (close)
+			elevatorArms->Close();
+		//we need to add something to make them stop
+
 	}
 
 	void TestPeriodic()
