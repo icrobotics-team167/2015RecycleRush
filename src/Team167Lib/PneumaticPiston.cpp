@@ -10,8 +10,7 @@
 class PneumaticPiston {
 private:
 	Compressor *comp;
-	Solenoid *solExtend;
-	Solenoid *solRetract;
+	DoubleSolenoid *sol;
 public:
 
 	/*
@@ -22,8 +21,7 @@ public:
 	 */
 	PneumaticPiston(int compressorIndex, int solenoidIndex1, int solenoidIndex2) {
 		comp = new Compressor(compressorIndex);
-		solExtend = new Solenoid(solenoidIndex1);
-		solRetract = new Solenoid(solenoidIndex2)
+		sol = new DoubleSolenoid(solenoidIndex1, solenoidIndex2);
 	}
 
 	/*
@@ -31,8 +29,7 @@ public:
 	 */
 	~PneumaticPiston() {
 		delete comp;
-		delete solExtend;
-		delete solRetract;
+		delete sol;
 	}
 
 	/*
