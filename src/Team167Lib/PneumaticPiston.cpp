@@ -55,14 +55,4 @@ public:
 		sol->Set(DoubleSolenoid::kOff);
 		comp->Stop();
 	}
-
-	/*
-	 * 	Make sure the compressor doesn't explode. Should be run periodically.
-	 * 	Currently just pseudocode.
-	 */ /*
-	void PreventNuclearExplosion(int limit) {
-		if (comp->GetAirPressure() >= limit) {
-			comp->Stop();
-		}
-	}*/
 };
