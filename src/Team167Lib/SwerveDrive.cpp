@@ -57,8 +57,13 @@ public:
 	{
 		// always rotate the wheels at maximum speed
 		double rotateWheelSpeed = 1.0;
-
-		int angleToBeTurned = (angle + GetWheelAngle()) % 360;
+		//we assume that when (rotateWheelSpeed == 1.0) the wheels will
+		//rotate in a counterclockwise direction
+		int angleToBeTurned = 0;
+		if (angle > GetWheelAngle())
+			angleToBeTurned = (angle - GetWheelAngle()) % 360;
+		else
+			angleToBeTurned = (GetWheelAngle() - angle) % 360;
 
 		if (abs(angleToBeTurned - angle) % 360 > 90)
 		{
@@ -67,12 +72,18 @@ public:
 				rotateWheelSpeed *= -1;
 			else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
 			{
-				angleToBeTurned = (angleToBeTurned + 180) % 360;
-				speed *= -1;
+				angleToBeTurned = -(180 - angleToBeTurned) % 360;
+				//finds the opposite of the angle needed to be turned relative to the robot
+				if (angleToBeTurned < 0)
+				{
+					angleToBeTurned *= -1;
+					speed *= -1;
+				}
+				//makes sure wheels rotate the shortest distance
 			}
 		}	//the if statement means the wheels won't have to turn over 90 degrees
 
-		int distance = angle * rotateEncoderLines / 360;
+		int distance = angleToBeTurned * rotateEncoderLines / 360;
 
 		if (rotateTalon1->GetEncPosition() != distance % rotateEncoderLines)
 		{
