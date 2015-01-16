@@ -13,22 +13,38 @@ private:
 	Solenoid *solExtend;
 	Solenoid *solRetract;
 public:
-	PneumaticPiston(int compressorIndex, int solenoidIndex1, int solenoidIndex2) {			// Constructor; initiate variables
+
+	/*
+	 *	Constructor - Initialize variables and stuff
+	 *	int compressorIndex - Index for the air compressor
+	 *	int solenoidIndex1 - Index for the extend solenoid
+	 *	int solenoidIndex2 - Index for the retract solenoid
+	 */
+	PneumaticPiston(int compressorIndex, int solenoidIndex1, int solenoidIndex2) {
 		comp = new Compressor(compressorIndex);
 		solExtend = new Solenoid(solenoidIndex1);
 		solRetract = new Solenoid(solenoidIndex2)
 	}
 
-	~PneumaticPiston() {												// Destructor; unload stuff
+	/*
+	 *	Destructor - Unload variables and stuff
+	 */
+	~PneumaticPiston() {
 		delete comp;
 		delete solExtend;
 		delete solRetract;
 	}
 
+	/*
+	 * 	Extend piston
+	 */
 	void Extend() {
 		// Lorem().ipsum().dolor().set().amet();
 	}
 
+	/*
+	 * 	Retract piston
+	 */
 	void Retract() {
 		// Lorem().ipsum().dolor().set().amet();
 	}
