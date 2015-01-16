@@ -5,5 +5,6 @@
 #include "Vector3.h"
 #include "SimpleJoystick.h"
 #include "SwerveDrive.cpp"
+#include "PneumaticPiston.cpp"
 
 #endif
