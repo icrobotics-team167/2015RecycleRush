@@ -51,8 +51,6 @@ public:
 	{
 		delete rotateTalon1;
 		delete rotateTalon2;
-		delete rotateEncoder1;
-		delete rotateEncoder2;
 		delete gyro;
 		delete talon1;
 		delete talon2;
