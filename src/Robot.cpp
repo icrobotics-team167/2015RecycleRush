@@ -21,7 +21,8 @@ private:
 		Joystick1 = new SimpleJoystick(RealJoy1);
 		Joystick2 = new SimpleJoystick(RealJoy2);
 
-		swerveWheels = new SwerveDrive(400, 400, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4);
+		// current parameters are just placeholders for actual values
+		swerveWheels = new SwerveDrive(400, 400, 1, 2, 3, 4, 5, 6, 7);
 	}
 
 	~Robot() {
