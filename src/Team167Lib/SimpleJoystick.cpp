@@ -19,7 +19,7 @@ SimpleJoystick::SimpleJoystick(Joystick * my_joy):
 //-------------------------------------------------------------------------
 SimpleJoystick::~SimpleJoystick()
 {
-	_joystick = NULL;
+	delete _joystick;
 }
 
 //-------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void SimpleJoystick::Update()
 		// shift the number by i places (each button has its own bit)
 		uint16_t btn_num = tmp << i;
 		
-		bool pressed = _joystick->GetRawButton(i);
+		bool pressed = _joystick->GetRawButton((uint32_t)i);
 		
 		// add it to our list
 		if(pressed)

@@ -36,13 +36,23 @@ public:
 	 * 	Extend piston
 	 */
 	void Extend() {
-		// Lorem().ipsum().dolor().set().amet();
+		sol->Set(DoubleSolenoid::kForward);
+		comp->Start();
 	}
 
 	/*
 	 * 	Retract piston
 	 */
 	void Retract() {
-		// Lorem().ipsum().dolor().set().amet();
+		sol->Set(DoubleSolenoid::kReverse);
+		comp->Start();
+	}
+
+	/*
+	 * 	Force the piston to stop whatever it's doing (e.g. extending or retracting)
+	 */
+	void ForceStop() {
+		sol->Set(DoubleSolenoid::kOff);
+		comp->Stop();
 	}
 };
