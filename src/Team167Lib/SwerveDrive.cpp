@@ -67,6 +67,10 @@ public:
 	 */
 	void Drive(int angle, double speed)
 	{
+		if (angle == -1) {
+			return;
+		} // If they joystick is in neutral position, do nothing.
+
 		// always rotate the wheels at maximum speed
 		double rotateWheelSpeed = 1.0;
 		//we assume that when (rotateWheelSpeed == 1.0) the wheels will
