@@ -82,14 +82,7 @@ void SimpleJoystick::Update()
 //-------------------------------------------------------------------------
 bool SimpleJoystick::Pressed(uint32_t button)
 {
-	if((_currentButtonState & button) > 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return _currentButtonState & button > 0;
 }
 
 //-------------------------------------------------------------------------
@@ -98,14 +91,7 @@ bool SimpleJoystick::Pressed(uint32_t button)
 //-------------------------------------------------------------------------
 bool SimpleJoystick::Toggled(uint32_t button)
 {
-	if((_toggledButtons & button) > 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return _toggledButtons & button > 0;
 }
 
 /*
