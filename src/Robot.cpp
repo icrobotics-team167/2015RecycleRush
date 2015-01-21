@@ -128,7 +128,8 @@ private:
 		else
 			elevatorArms->Lower(armSpeed);
 
-		bool open = Joystick2->Toggled(BUTTON_3);
+		// Deprecated code
+		/*bool open = Joystick2->Toggled(BUTTON_3);
 		bool close = Joystick2->Toggled(BUTTON_1);
 
 		if (open)
@@ -137,8 +138,26 @@ private:
 			elevatorArms->Close();
 
 		if ((!open && !close) || (open && close))
-			elevatorArms->Stop();
+			elevatorArms->Stop();*/
 
+		if (Joystick2->Toggled(BUTTON_1))					// Trigger - Open all
+			elevatorArms->Close();
+		else {
+			if (Joystick2->Toggled(BUTTON_8))
+				elevatorArms->ModifySpecific(1, false);		// Button 7/8 - Open/close piston 1
+			else if (Joystick2->Toggled(BUTTON_7))
+				elevatorArms->ModifySpecific(1, true);
+
+			if (Joystick2->Toggled(BUTTON_10))
+				elevatorArms->ModifySpecific(2, false);		// Button 9/10 - Open/close piston 2
+			else if (Joystick2->Toggled(BUTTON_9))
+				elevatorArms->ModifySpecific(2, true);
+
+			if (Joystick2->Toggled(BUTTON_12))
+				elevatorArms->ModifySpecific(3, false);		// Button 11/12 - Open/close piston 3
+			else if (Joystick2->Toggled(BUTTON_11))
+				elevatorArms->ModifySpecific(3, true);
+		}
 	}
 
 	void TestPeriodic()
