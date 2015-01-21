@@ -62,10 +62,12 @@ private:
 
 	void TeleopPeriodic()
 	{
-		//-------------------------
-		// drive logic (input side)
-		//-------------------------
+		JoystickOne();
+		JoystickTwo();
+	}
 
+	void JoystickOne() {
+		// Joy1 Control Code
 		// get joystick position
 		float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
 		float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
@@ -115,15 +117,17 @@ private:
 				speed = 1.0;
 
 		swerveWheels->Drive(z, speed);
+	}
 
-		//section for the arm begins here
+	void JoystickTwo() {
+		// Joy2 Control Code
 
 		float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
 		double throttle_mag2 = (this->RealJoy2->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
-		float abs_y2 = abs(y);
-		float armSpeed = throttle_mag;
+		float abs_y2 = abs(y2);
+		float armSpeed = throttle_mag2;
 
-		if (speed < 0)
+		if (armSpeed < 0)
 			elevatorArms->Raise(armSpeed);
 		else
 			elevatorArms->Lower(armSpeed);
