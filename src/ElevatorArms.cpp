@@ -77,26 +77,31 @@ public:
 		piston3->ForceStop();
 	}
 
-	void ModifySpecific(int i, bool open) {
-		PneumaticPiston piston;
+	void Open(int i) {
 		switch (i) {
 		case 1:
-			piston = piston1;
+			piston1->Extend();
 			break;
 		case 2:
-			piston = piston2;
+			piston2->Extend();
 			break;
 		case 3:
-			piston = piston3;
-			break;
-		default:
-			piston = piston1;
+			piston3->Extend();
 			break;
 		}
+	}
 
-		if (open)
-			piston.Extend();
-		else
-			piston.Retract();
+	void Close(int i) {
+		switch (i) {
+		case 1:
+			piston1->Retract();
+			break;
+		case 2:
+			piston2->Retract();
+			break;
+		case 3:
+			piston3->Retract();
+			break;
+		}
 	}
 };

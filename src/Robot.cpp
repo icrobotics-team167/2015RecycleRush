@@ -144,19 +144,19 @@ private:
 			elevatorArms->Close();
 		else {
 			if (Joystick2->Toggled(BUTTON_8))
-				elevatorArms->ModifySpecific(1, false);		// Button 7/8 - Open/close piston 1
+				elevatorArms->Close(1);						// Button 7/8 - Open/close piston 1
 			else if (Joystick2->Toggled(BUTTON_7))
-				elevatorArms->ModifySpecific(1, true);
+				elevatorArms->Open(1);
 
 			if (Joystick2->Toggled(BUTTON_10))
-				elevatorArms->ModifySpecific(2, false);		// Button 9/10 - Open/close piston 2
+				elevatorArms->Close(2);						// Button 9/10 - Open/close piston 2
 			else if (Joystick2->Toggled(BUTTON_9))
-				elevatorArms->ModifySpecific(2, true);
+				elevatorArms->Open(2);
 
 			if (Joystick2->Toggled(BUTTON_12))
-				elevatorArms->ModifySpecific(3, false);		// Button 11/12 - Open/close piston 3
+				elevatorArms->Close(3);						// Button 11/12 - Open/close piston 3
 			else if (Joystick2->Toggled(BUTTON_11))
-				elevatorArms->ModifySpecific(3, true);
+				elevatorArms->Open(3);
 		}
 	}
 
