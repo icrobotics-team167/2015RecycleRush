@@ -70,4 +70,10 @@ public:
 		piston2->Retract();
 		piston3->Retract();
 	}
+
+	void Stop() {
+		piston1->ForceStop();
+		piston2->ForceStop();
+		piston3->ForceStop();
+	}
 };

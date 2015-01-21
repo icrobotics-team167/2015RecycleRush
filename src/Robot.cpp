@@ -135,7 +135,9 @@ private:
 			elevatorArms->Open();
 		if (close)
 			elevatorArms->Close();
-		//we need to add something to make them stop
+
+		if ((!open && !close) || (open && close))
+			elevatorArms->Stop();
 
 	}
 
