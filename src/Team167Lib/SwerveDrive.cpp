@@ -12,6 +12,9 @@ class SwerveDrive
 private:
 	unsigned rotateEncoderLines;
 	unsigned driveEncoderLines;
+	unsigned feetToEncoderLinesRatio;
+	unsigned driveDistance;
+	bool finished;
 	CANTalon *rotateTalon1;
 	CANTalon *rotateTalon2;
 	CANTalon *talon1;
@@ -22,6 +25,7 @@ private:
 
 public:
 	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
+				unsigned feetToEncLinesR,
 				unsigned short rotateTalon1Number,
 				unsigned short rotateTalon2Number,
 				unsigned short gyroChannel,
@@ -32,6 +36,7 @@ public:
 	{
 		rotateEncoderLines = rotateEncLines;
 		driveEncoderLines = driveEncLines;
+		feetToEncoderLinesRatio = feetToEncLinesR;
 		rotateTalon1 = new CANTalon(rotateTalon1Number);
 		rotateTalon2 = new CANTalon(rotateTalon2Number);
 		talon1 = new CANTalon(talon1Number);
@@ -39,6 +44,8 @@ public:
 		talon3 = new CANTalon(talon3Number);
 		talon4 = new CANTalon(talon4Number);
 		gyro = new Gyro(gyroChannel);
+		driveDistance = 0;
+		finished = true;
 	}
 
 	/*
@@ -70,6 +77,22 @@ public:
 		if (angle == -1 || speed == 0) {
 			return;
 		} // If they joystick is in neutral position or the speed is zero, do nothing.
+
+		if (TurnRobot(angle, speed))
+		{
+			rotateTalon1->Set(0);
+			rotateTalon2->Set(0);
+			talon1->Set(speed);
+			talon2->Set(speed);
+			talon3->Set(speed);
+			talon4->Set(speed);
+		}	//stops the motors when the wheels are pointing the right way
+			//and tells the drive motors to spin
+
+	}
+
+	bool TurnRobot(int angle, double speed)
+	{
 
 		// always rotate the wheels at maximum speed
 		double rotateWheelSpeed = 1.0;
@@ -111,18 +134,27 @@ public:
 			talon2->Set(0);
 			talon3->Set(0);
 			talon4->Set(0);
+			return false;
 		}	//spins the motors until the wheels point in the right direction and stops drive motors
-		else
-		{
-			rotateTalon1->Set(0);
-			rotateTalon2->Set(0);
-			talon1->Set(speed);
-			talon2->Set(speed);
-			talon3->Set(speed);
-			talon4->Set(speed);
-		}	//stops the motors when the wheels are pointing the right way
-			//and tells the drive motors to spin
 
+		else
+			return true;
+	}
+
+	void DriveACertainDistance(double feet, double speed)
+	{
+		if (driveDistance = 0 && finished)
+				driveDistance = feet / feetToEncoderLinesRatio;
+		finished = false;
+		int startPosition = talon1->GetEncPosition();
+		talon1->Set(speed);
+		talon2->Set(speed);
+		talon3->Set(speed);
+		talon4->Set(speed);
+		int endPosition = talon1->GetEncPosition();
+		driveDistance = driveDistance - abs(endPosition - startPosition);
+		if (driveDistance <= 0)
+			finished = true;
 	}
 
 	void RotateRobot(bool clockwise, double speed) { // Rotate the robot in a given direction by speed 'speed'
