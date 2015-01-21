@@ -67,9 +67,9 @@ public:
 	 */
 	void Drive(int angle, double speed)
 	{
-		if (angle == -1) {
+		if (angle == -1 || speed == 0) {
 			return;
-		} // If they joystick is in neutral position, do nothing.
+		} // If they joystick is in neutral position or the speed is zero, do nothing.
 
 		// always rotate the wheels at maximum speed
 		double rotateWheelSpeed = 1.0;
