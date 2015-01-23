@@ -52,6 +52,21 @@ private:
 
 	void AutonomousPeriodic()
 	{
+		AutonomousState autoState;
+		autoState = PICK_UP_TOTE;
+
+		switch(autoState)
+		{
+			case PICK_UP_TOTE:
+				//do something;
+				break;
+			case PUT_DOWN_TOTE:
+				//do something;
+				break;
+			case DRIVE_FORWARD:
+				//do something;
+				break;
+		}
 
 	}
 
@@ -168,4 +183,9 @@ private:
 	{
 		lw->Run();
 	}
+
+	enum AutonomousState
+	{
+		PICK_UP_TOTE, PUT_DOWN_TOTE, DRIVE_FORWARD
+	};
 };
