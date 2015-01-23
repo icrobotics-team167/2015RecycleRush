@@ -82,7 +82,7 @@ void SimpleJoystick::Update()
 //-------------------------------------------------------------------------
 bool SimpleJoystick::Pressed(uint32_t button)
 {
-	return _currentButtonState & button > 0;
+	return (_currentButtonState & button) > 0;
 }
 
 //-------------------------------------------------------------------------
@@ -91,7 +91,7 @@ bool SimpleJoystick::Pressed(uint32_t button)
 //-------------------------------------------------------------------------
 bool SimpleJoystick::Toggled(uint32_t button)
 {
-	return _toggledButtons & button > 0;
+	return (_toggledButtons & button) > 0;
 }
 
 /*
@@ -109,13 +109,13 @@ bool SimpleJoystick::Released(uint32_t button)
 // toggle a button
 void SimpleJoystick::EnableToggle(uint32_t button)
 {
-	_toggledButtons = _toggledButtons | button;
+	_toggledButtons |= button;
 }
 
 // untoggle a button
 void SimpleJoystick::DisableToggle(uint32_t button)
 {
-	_toggledButtons = _toggledButtons & ~button;
+	_toggledButtons &= ~button;
 }
 
 void SimpleJoystick::DisableToggleAll()
