@@ -6,20 +6,7 @@
  */
 
 #include "WPILib.h"
-
-class PneumaticPiston {
-private:
-	Compressor *comp;
-	DoubleSolenoid *sol;
-public:
-
-	/*
-	 *	Constructor - Initialize variables and stuff
-	 *	int compressorIndex - Index for the air compressor
-	 *	int solenoidIndex1 - Index for the extend solenoid
-	 *	int solenoidIndex2 - Index for the retract solenoid
-	 */
-	PneumaticPiston(int compressorIndex, int solenoidIndex1, int solenoidIndex2) {
+	PneumaticPiston::PneumaticPiston(int compressorIndex, int solenoidIndex1, int solenoidIndex2) {
 		comp = new Compressor(compressorIndex);
 		sol = new DoubleSolenoid(solenoidIndex1, solenoidIndex2);
 	}
@@ -27,7 +14,7 @@ public:
 	/*
 	 *	Destructor - Unload variables and stuff
 	 */
-	~PneumaticPiston() {
+	PneumaticPiston::~PneumaticPiston() {
 		delete comp;
 		delete sol;
 	}
@@ -35,7 +22,7 @@ public:
 	/*
 	 * 	Extend piston
 	 */
-	void Extend() {
+	void PneumaticPiston::Extend() {
 		sol->Set(DoubleSolenoid::kForward);
 		comp->Start();
 	}
@@ -43,7 +30,7 @@ public:
 	/*
 	 * 	Retract piston
 	 */
-	void Retract() {
+	void PneumaticPiston::Retract() {
 		sol->Set(DoubleSolenoid::kReverse);
 		comp->Start();
 	}
@@ -51,7 +38,7 @@ public:
 	/*
 	 * 	Force the piston to stop whatever it's doing (e.g. extending or retracting)
 	 */
-	void ForceStop() {
+	void PneumaticPiston::ForceStop() {
 		sol->Set(DoubleSolenoid::kOff);
 		comp->Stop();
 	}
