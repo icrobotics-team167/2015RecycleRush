@@ -5,103 +5,89 @@
  *      Author: Katie Chace
  */
 
-#include "WPILib.h"
 #include "Team167Lib.h"
 
+ElevatorArms::ElevatorArms(int compressorIndex,
+                int solenoidIndex1_1, int solenoidIndex1_2,
+                int solenoidIndex2_1, int solenoidIndex2_2,
+                int solenoidIndex3_1, int solenoidIndex3_2,
+                int talonPWMchannel)
 
-class ElevatorArms
 {
-private:
-	PneumaticPiston *piston1;
-	PneumaticPiston *piston2;
-	PneumaticPiston *piston3;
-	Talon *talon;
+        piston1 = new PneumaticPiston(compressorIndex, solenoidIndex1_1, solenoidIndex1_2);
+        piston2 = new PneumaticPiston(compressorIndex, solenoidIndex2_1, solenoidIndex2_2);
+        piston3 = new PneumaticPiston(compressorIndex, solenoidIndex3_1, solenoidIndex3_2);
+        talon = new Talon(talonPWMchannel);
 
+}
 
-public:
-	ElevatorArms(
-				int compressorIndex,
-				int solenoidIndex1_1, int solenoidIndex1_2,
-				int solenoidIndex2_1, int solenoidIndex2_2,
-				int solenoidIndex3_1, int solenoidIndex3_2,
-				int talonPWMchannel)
+ElevatorArms::~ElevatorArms()
+{
+        delete piston1;
+        delete piston2;
+        delete piston3;
+        delete talon;
+}
 
-	{
-		piston1 = new PneumaticPiston(compressorIndex, solenoidIndex1_1, solenoidIndex1_2);
-		piston2 = new PneumaticPiston(compressorIndex, solenoidIndex2_1, solenoidIndex2_2);
-		piston3 = new PneumaticPiston(compressorIndex, solenoidIndex3_1, solenoidIndex3_2);
-		talon = new Talon(talonPWMchannel);
+void ElevatorArms::Raise(float speed)
+{
+        talon->Set(abs(speed));
+}
 
-	}
+void ElevatorArms::Lower(float speed)
+{
+        talon->Set(-(abs(speed)));
+}
 
-	~ElevatorArms()
-	{
-		delete piston1;
-		delete piston2;
-		delete piston3;
-		delete talon;
-	}
+void ElevatorArms::StopElevator()
+{
+        talon->Set(0);
+}
 
-	void Raise(float speed)
-	{
-		talon->Set(abs(speed));
-	}
+void ElevatorArms::Open()
+{
+        piston1->Extend();
+        piston2->Extend();
+        piston3->Extend();
+}
 
-	void Lower(float speed)
-	{
-		talon->Set(-(abs(speed)));
-	}
+void ElevatorArms::Close()
+{
+        piston1->Retract();
+        piston2->Retract();
+        piston3->Retract();
+}
 
-	void StopElevator()
-	{
-		talon->Set(0);
-	}
+void ElevatorArms::Stop() {
+        piston1->ForceStop();
+        piston2->ForceStop();
+        piston3->ForceStop();
+}
 
-	void Open()
-	{
-		piston1->Extend();
-		piston2->Extend();
-		piston3->Extend();
-	}
+void ElevatorArms::Open(int i) {
+        switch (i) {
+        case 1:
+                piston1->Extend();
+                break;
+        case 2:
+                piston2->Extend();
+                break;
+        case 3:
+                piston3->Extend();
+                break;
+        }
+}
 
-	void Close()
-	{
-		piston1->Retract();
-		piston2->Retract();
-		piston3->Retract();
-	}
-
-	void Stop() {
-		piston1->ForceStop();
-		piston2->ForceStop();
-		piston3->ForceStop();
-	}
-
-	void Open(int i) {
-		switch (i) {
-		case 1:
-			piston1->Extend();
-			break;
-		case 2:
-			piston2->Extend();
-			break;
-		case 3:
-			piston3->Extend();
-			break;
-		}
-	}
-
-	void Close(int i) {
-		switch (i) {
-		case 1:
-			piston1->Retract();
-			break;
-		case 2:
-			piston2->Retract();
-			break;
-		case 3:
-			piston3->Retract();
-			break;
-		}
-	}
-};
+void ElevatorArms::Close(int i) {
+        switch (i) {
+        case 1:
+                piston1->Retract();
+                break;
+        case 2:
+                piston2->Retract();
+                break;
+        case 3:
+                piston3->Retract();
+                break;
+        }
+}
