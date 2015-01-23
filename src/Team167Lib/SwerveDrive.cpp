@@ -75,7 +75,12 @@ public:
 	void Drive(int angle, double speed)
 	{
 		if (angle == -1 || speed == 0) {
-			return;
+			talon1->Set(0);
+			talon2->Set(0);
+			talon3->Set(0);
+			talon4->Set(0);
+			rotateTalon1->Set(0);
+			rotateTalon2->Set(0);
 		} // If they joystick is in neutral position or the speed is zero, do nothing.
 
 		if (TurnRobot(angle, speed))
@@ -89,6 +94,10 @@ public:
 		}	//stops the motors when the wheels are pointing the right way
 			//and tells the drive motors to spin
 
+	}
+
+	void Stop() {
+		Drive(-1, 0);
 	}
 
 	bool TurnRobot(int angle, double speed)
