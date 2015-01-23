@@ -6,7 +6,7 @@
 class Robot: public IterativeRobot
 {
 private:
-	enum AutonomousState { PICK_UP_TOTE, PUT_DOWN_TOTE, DRIVE_FORWARD };
+	enum AutonomousState { PICK_UP_TOTE, STOP, DRIVE_FORWARD };
 	LiveWindow *lw;
 	Joystick *RealJoy1;
 	Joystick *RealJoy2;
@@ -61,13 +61,20 @@ private:
 		switch(autoState)
 		{
 			case PICK_UP_TOTE:
-				//do something;
+				elevatorArms->Open();
+				bool done = swerveWheels->DriveACertainDistance(2.0, 1.0);
+				if (done)
+				{
+					elevatorArms->Close();
+					autoState = DRIVE_FORWARD;
+				}
 				break;
-			case PUT_DOWN_TOTE:
-				//do something;
+			case STOP:
+				swerveWheels->Stop();
 				break;
 			case DRIVE_FORWARD:
-				//do something;
+				bool check = swerveWheels->DriveACertainDistance(8.92, 1.0); //drive 8.92 feet and at speed 1.0 (full speed)
+				if (check) { autoState = STOP; }
 				break;
 		}
 
