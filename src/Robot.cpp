@@ -30,7 +30,7 @@ private:
 		elevatorArms = new ElevatorArms(3, 1, 4, 1, 5, 9, 2, 6);
 
 		// current parameters are just placeholders for actual values
-		swerveWheels = new SwerveDrive(400, 400, 1, 2, 3, 4, 5, 6, 7);
+		swerveWheels = new SwerveDrive(400, 400, 1337, 1, 2, 3, 4, 5, 6, 7);
 
 		autoState = PICK_UP_TOTE;
 	}
