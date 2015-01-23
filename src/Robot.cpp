@@ -3,196 +3,172 @@
 #include "math.h"
 #include "ElevatorArms.cpp"
 
-class Robot: public IterativeRobot
+Robot::Robot()
 {
-private:
-	enum AutonomousState { PICK_UP_TOTE, STOP, DRIVE_FORWARD };
-	LiveWindow *lw;
-	Joystick *RealJoy1;
-	Joystick *RealJoy2;
-	SimpleJoystick *Joystick1;
-	SimpleJoystick *Joystick2;
+        RealJoy1 = new Joystick(1);
+        RealJoy2 = new Joystick(2);
+        Joystick1 = new SimpleJoystick(RealJoy1);
+        Joystick2 = new SimpleJoystick(RealJoy2);
 
-	SwerveDrive *swerveWheels;
-	ElevatorArms *elevatorArms;
-	AutonomousState autoState;
+        // current parameters are just placeholders for actual values
+        elevatorArms = new ElevatorArms(3, 1, 4, 1, 5, 9, 2, 6);
 
+        // current parameters are just placeholders for actual values
+        swerveWheels = new SwerveDrive(400, 400, 1337, 1, 2, 3, 4, 5, 6, 7);
 
+        autoState = PICK_UP_TOTE;
+}
 
-	Robot()
-	{
-		RealJoy1 = new Joystick(1);
-		RealJoy2 = new Joystick(2);
-		Joystick1 = new SimpleJoystick(RealJoy1);
-		Joystick2 = new SimpleJoystick(RealJoy2);
+Robot::~Robot()
+{
+        delete RealJoy1;
+        delete RealJoy2;
+        delete Joystick1;
+        delete Joystick2;
+        delete swerveWheels;
+        delete elevatorArms;
+}
 
-		// current parameters are just placeholders for actual values
-		elevatorArms = new ElevatorArms(3, 1, 4, 1, 5, 9, 2, 6);
+void Robot::RobotInit()
+{
 
-		// current parameters are just placeholders for actual values
-		swerveWheels = new SwerveDrive(400, 400, 1337, 1, 2, 3, 4, 5, 6, 7);
+}
 
-		autoState = PICK_UP_TOTE;
-	}
+void Robot::AutonomousInit()
+{
 
-	~Robot() {
-		delete lw;
-		delete RealJoy1;
-		delete RealJoy2;
-		delete Joystick1;
-		delete Joystick2;
-		delete swerveWheels;
-		delete elevatorArms;
-	}
+}
 
-	void RobotInit()
-	{
-		lw = LiveWindow::GetInstance();
-	}
+void Robot::AutonomousPeriodic()
+{
 
-	void AutonomousInit()
-	{
+        switch(autoState)
+        {
+                case PICK_UP_TOTE:
+                        elevatorArms->Open();
+                        bool done = swerveWheels->DriveACertainDistance(2.0, 1.0);
+                        if (done)
+                        {
+                                elevatorArms->Close();
+                                autoState = DRIVE_FORWARD;
+                        }
+                        break;
+                case STOP:
+                        swerveWheels->Stop();
+                        break;
+                case DRIVE_FORWARD:
+                        bool check = swerveWheels->DriveACertainDistance(8.92, 1.0); //drive 8.92 feet and at speed 1.0 (full speed)
+                        if (check) { autoState = STOP; }
+                        break;
+        }
 
-	}
+}
 
-	void AutonomousPeriodic()
-	{
+void Robot::TeleopInit()
+{
 
-		switch(autoState)
-		{
-			case PICK_UP_TOTE:
-				elevatorArms->Open();
-				bool done = swerveWheels->DriveACertainDistance(2.0, 1.0);
-				if (done)
-				{
-					elevatorArms->Close();
-					autoState = DRIVE_FORWARD;
-				}
-				break;
-			case STOP:
-				swerveWheels->Stop();
-				break;
-			case DRIVE_FORWARD:
-				bool check = swerveWheels->DriveACertainDistance(8.92, 1.0); //drive 8.92 feet and at speed 1.0 (full speed)
-				if (check) { autoState = STOP; }
-				break;
-		}
+}
 
-	}
+void Robot::TeleopPeriodic()
+{
+        JoystickOne();
+        JoystickTwo();
+}
 
-	void TeleopInit()
-	{
+void Robot::JoystickOne() {
+        // Joy1 Control Code
+        // get joystick position
+        float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
+        float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
+        float z = Vector3::GetRotation(x, y);
 
-	}
+        // raw axis 3 is the twist axis on the Logitech Extreme 3D Pro joystick
+        // we use the raw axis because the default mappings are incorrect
+        //float twist = this->RealJoy1->GetRawAxis(3);
 
-	void TeleopPeriodic()
-	{
-		JoystickOne();
-		JoystickTwo();
-	}
+        // Set the Throttle
+        bool turbo = Joystick1->Toggled(BUTTON_8);
 
-	void JoystickOne() {
-		// Joy1 Control Code
-		// get joystick position
-		float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
-		float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
-		float z = Vector3::GetRotation(x, y);
+        /*
+         * raw axis 4 is the throttle axis on the Logitech Extreme 3D Pro joystick
+         * we use the raw axis because the default mappings are incorrect
+         * the throttle, by default, returns values from -1.0 at the plus position to 1.0 at the minus position
+         * we first multiply by -1.0 to get values from -1.0 at the minus position to 1.0 at the plus position
+         * we then add 1.0 and divide by 2 to get final voltage percentages from 0.0 (off) at minus position
+         * to 1.0 (full throttle) at the plus position
+         */
+        double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
 
-		// raw axis 3 is the twist axis on the Logitech Extreme 3D Pro joystick
-		// we use the raw axis because the default mappings are incorrect
-		//float twist = this->RealJoy1->GetRawAxis(3);
+        float abs_x = abs(x), abs_y = abs(y);
 
-		// Set the Throttle
-		bool turbo = Joystick1->Toggled(BUTTON_8);
+        double speed = throttle_mag;
 
-		/*
-		 * raw axis 4 is the throttle axis on the Logitech Extreme 3D Pro joystick
-		 * we use the raw axis because the default mappings are incorrect
-		 * the throttle, by default, returns values from -1.0 at the plus position to 1.0 at the minus position
-		 * we first multiply by -1.0 to get values from -1.0 at the minus position to 1.0 at the plus position
-		 * we then add 1.0 and divide by 2 to get final voltage percentages from 0.0 (off) at minus position
-		 * to 1.0 (full throttle) at the plus position
-		 */
-		double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
+        if (!Joystick1->Pressed(BUTTON_5) && !Joystick1->Pressed(BUTTON_6))
+        {
+                        // if we are not turning get the larger of the x and y values of the joystick posistion,
+                        // and multiply that by the throttle to get final voltage
+                        speed *= std::max(abs_x, abs_y);
+        }
+        else
+        {
+                        // if we are turning, the rate of turning depends only on the throttle setting,
+                        // and the rate of turning is limited to 80% voltage maximum
+                        speed *= 0.8;
+        }
 
-		float abs_x = abs(x), abs_y = abs(y);
+        if (speed < 0.1)
+                speed = 0.1;
 
-		double speed = throttle_mag;
+        if (turbo)
+                speed *= 1.5;
 
-		if (!Joystick1->Pressed(BUTTON_5) && !Joystick1->Pressed(BUTTON_6))
-		{
-				// if we are not turning get the larger of the x and y values of the joystick posistion,
-				// and multiply that by the throttle to get final voltage
-				speed *= std::max(abs_x, abs_y);
-		}
-		else
-		{
-				// if we are turning, the rate of turning depends only on the throttle setting,
-				// and the rate of turning is limited to 80% voltage maximum
-				speed *= 0.8;
-		}
+        if (speed > 1.0)
+                        speed = 1.0;
 
-		if (speed < 0.1)
-			speed = 0.1;
+        swerveWheels->Drive(z, speed);
+}
 
-		if (turbo)
-			speed *= 1.5;
+void Robot::JoystickTwo() {
+        // Joy2 Control Code
 
-		if (speed > 1.0)
-				speed = 1.0;
+        float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
+        double throttle_mag2 = (this->RealJoy2->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
+        float abs_y2 = abs(y2);
+        float armSpeed = throttle_mag2;
 
-		swerveWheels->Drive(z, speed);
-	}
+        if (armSpeed < 0)
+                elevatorArms->Raise(armSpeed);
+        else
+                elevatorArms->Lower(armSpeed);
 
-	void JoystickTwo() {
-		// Joy2 Control Code
+        // Deprecated code
+        /*bool open = Joystick2->Toggled(BUTTON_3);
+        bool close = Joystick2->Toggled(BUTTON_1);
 
-		float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
-		double throttle_mag2 = (this->RealJoy2->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
-		float abs_y2 = abs(y2);
-		float armSpeed = throttle_mag2;
+        if (open)
+                elevatorArms->Open();
+        if (close)
+                elevatorArms->Close();
 
-		if (armSpeed < 0)
-			elevatorArms->Raise(armSpeed);
-		else
-			elevatorArms->Lower(armSpeed);
+        if ((!open && !close) || (open && close))
+                elevatorArms->Stop();*/
 
-		// Deprecated code
-		/*bool open = Joystick2->Toggled(BUTTON_3);
-		bool close = Joystick2->Toggled(BUTTON_1);
+        if (Joystick2->Toggled(BUTTON_1))					// Trigger - Open all
+                elevatorArms->Close();
+        else {
+                if (Joystick2->Toggled(BUTTON_8))
+                        elevatorArms->Close(1);						// Button 7/8 - Open/close piston 1
+                else if (Joystick2->Toggled(BUTTON_7))
+                        elevatorArms->Open(1);
 
-		if (open)
-			elevatorArms->Open();
-		if (close)
-			elevatorArms->Close();
+                if (Joystick2->Toggled(BUTTON_10))
+                        elevatorArms->Close(2);						// Button 9/10 - Open/close piston 2
+                else if (Joystick2->Toggled(BUTTON_9))
+                        elevatorArms->Open(2);
 
-		if ((!open && !close) || (open && close))
-			elevatorArms->Stop();*/
-
-		if (Joystick2->Toggled(BUTTON_1))					// Trigger - Open all
-			elevatorArms->Close();
-		else {
-			if (Joystick2->Toggled(BUTTON_8))
-				elevatorArms->Close(1);						// Button 7/8 - Open/close piston 1
-			else if (Joystick2->Toggled(BUTTON_7))
-				elevatorArms->Open(1);
-
-			if (Joystick2->Toggled(BUTTON_10))
-				elevatorArms->Close(2);						// Button 9/10 - Open/close piston 2
-			else if (Joystick2->Toggled(BUTTON_9))
-				elevatorArms->Open(2);
-
-			if (Joystick2->Toggled(BUTTON_12))
-				elevatorArms->Close(3);						// Button 11/12 - Open/close piston 3
-			else if (Joystick2->Toggled(BUTTON_11))
-				elevatorArms->Open(3);
-		}
-	}
-
-	void TestPeriodic()
-	{
-		lw->Run();
-	}
-};
-
-
+                if (Joystick2->Toggled(BUTTON_12))
+                        elevatorArms->Close(3);						// Button 11/12 - Open/close piston 3
+                else if (Joystick2->Toggled(BUTTON_11))
+                        elevatorArms->Open(3);
+        }
+}
