@@ -5,7 +5,7 @@
  *      Author: Katie Chace
  */
 
-#include "Team167Lib.h"
+#include "ElevatorArms.h"
 
 ElevatorArms::ElevatorArms(int compressorIndex,
                 int solenoidIndex1_1, int solenoidIndex1_2,

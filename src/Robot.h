@@ -9,10 +9,8 @@
 #define SRC_ROBOT_H_
 
 
-#include "WPILib.h"
 #include "Team167Lib.h"
-#include "math.h"
-#include "ElevatorArms.cpp"
+#include "ElevatorArms.h"
 
 class Robot: public IterativeRobot
 {
