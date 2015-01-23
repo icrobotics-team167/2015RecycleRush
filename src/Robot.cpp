@@ -2,6 +2,7 @@
 #include "Team167Lib.h"
 #include "math.h"
 #include "ElevatorArms.cpp"
+#include "Robot.h"
 
 Robot::Robot()
 {
