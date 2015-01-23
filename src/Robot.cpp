@@ -6,8 +6,8 @@
 class Robot: public IterativeRobot
 {
 private:
+	enum AutonomousState { PICK_UP_TOTE, PUT_DOWN_TOTE, DRIVE_FORWARD };
 	LiveWindow *lw;
-
 	Joystick *RealJoy1;
 	Joystick *RealJoy2;
 	SimpleJoystick *Joystick1;
@@ -15,6 +15,9 @@ private:
 
 	SwerveDrive *swerveWheels;
 	ElevatorArms *elevatorArms;
+	AutonomousState *autoState;
+
+
 
 	Robot()
 	{
@@ -28,6 +31,8 @@ private:
 
 		// current parameters are just placeholders for actual values
 		swerveWheels = new SwerveDrive(400, 400, 1, 2, 3, 4, 5, 6, 7);
+
+		autoState = PICK_UP_TOTE;
 	}
 
 	~Robot() {
@@ -52,8 +57,6 @@ private:
 
 	void AutonomousPeriodic()
 	{
-		AutonomousState autoState;
-		autoState = PICK_UP_TOTE;
 
 		switch(autoState)
 		{
@@ -183,9 +186,6 @@ private:
 	{
 		lw->Run();
 	}
-
-	enum AutonomousState
-	{
-		PICK_UP_TOTE, PUT_DOWN_TOTE, DRIVE_FORWARD
-	};
 };
+
+
