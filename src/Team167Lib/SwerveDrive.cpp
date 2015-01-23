@@ -141,20 +141,30 @@ public:
 			return true;
 	}
 
-	void DriveACertainDistance(double feet, double speed)
+	bool DriveACertainDistance(double feet, double speed)
 	{
-		if (driveDistance = 0 && finished)
+		if (driveDistance == 0 && finished)
 				driveDistance = feet / feetToEncoderLinesRatio;
+
 		finished = false;
+
 		int startPosition = talon1->GetEncPosition();
+
 		talon1->Set(speed);
 		talon2->Set(speed);
 		talon3->Set(speed);
 		talon4->Set(speed);
+
 		int endPosition = talon1->GetEncPosition();
+
 		driveDistance = driveDistance - abs(endPosition - startPosition);
 		if (driveDistance <= 0)
+		{
 			finished = true;
+			return true;
+		}
+
+		return false;
 	}
 
 	void RotateRobot(bool clockwise, double speed) { // Rotate the robot in a given direction by speed 'speed'
