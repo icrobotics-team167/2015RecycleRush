@@ -15,7 +15,7 @@ private:
 
 	SwerveDrive *swerveWheels;
 	ElevatorArms *elevatorArms;
-	AutonomousState *autoState;
+	AutonomousState autoState;
 
 
 
