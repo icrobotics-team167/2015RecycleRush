@@ -36,10 +36,11 @@ public:
 	void TeleopPeriodic();
 	void JoystickOne();
 	void JoystickTwo();
-	void PickUpTote();
+	bool PickUpTote();
 	void Stop();
-	void DriveForward();
+	bool DriveForward(double distance);
 	void StackBin();
+	bool Turn(int angle);
 };
 
 

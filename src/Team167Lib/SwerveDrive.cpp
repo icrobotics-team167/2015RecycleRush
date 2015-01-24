@@ -66,7 +66,7 @@ void SwerveDrive::Drive(int angle, double speed)
                 rotateTalon2->Set(0);
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
-        if (TurnRobot(angle, speed))
+        if (TurnRobot(angle))
         {
                 rotateTalon1->Set(0);
                 rotateTalon2->Set(0);
@@ -84,7 +84,7 @@ void SwerveDrive::Stop()
         Drive(-1, 0);
 }
 
-bool SwerveDrive::TurnRobot(int angle, double speed)
+bool SwerveDrive::TurnRobot(int angle)
 {
 
         // always rotate the wheels at maximum speed

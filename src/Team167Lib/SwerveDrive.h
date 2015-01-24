@@ -40,7 +40,7 @@ public:
 
 	void Drive(int angle, double speed);
 	void Stop();
-	bool TurnRobot(int angle, double speed);
+	bool TurnRobot(int angle);
 	bool DriveACertainDistance(double feet, double speed);
 	void RotateRobot(bool clockwise, double speed);
 	int GetWheelAngle();
