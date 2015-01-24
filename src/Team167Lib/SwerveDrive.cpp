@@ -154,10 +154,10 @@ bool SwerveDrive::DriveACertainDistance(double feet, double speed)
         if (driveDistance <= 0)
         {
                 finished = true;
-                return true;
+                driveDistance = 0;
         }
 
-        return false;
+        return finished;
 }
 
 void SwerveDrive::RotateRobot(bool clockwise, double speed)
