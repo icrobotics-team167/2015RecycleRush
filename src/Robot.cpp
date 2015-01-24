@@ -1,4 +1,4 @@
-#include "Team167Lib.h"
+#include "Team167Lib/Team167Lib.h"
 #include "Robot.h"
 
 Robot::Robot()
@@ -43,6 +43,7 @@ void Robot::AutonomousPeriodic()
         switch(autoState)
         {
                 case PICK_UP_TOTE:
+                {
                         elevatorArms->Open();
                         bool done = swerveWheels->DriveACertainDistance(2.0, 1.0);
                         if (done)
@@ -51,13 +52,18 @@ void Robot::AutonomousPeriodic()
                                 autoState = DRIVE_FORWARD;
                         }
                         break;
+                }
                 case STOP:
+                {
                         swerveWheels->Stop();
                         break;
+                }
                 case DRIVE_FORWARD:
+                {
                         bool check = swerveWheels->DriveACertainDistance(8.92, 1.0); //drive 8.92 feet and at speed 1.0 (full speed)
                         if (check) { autoState = STOP; }
                         break;
+                }
         }
 
 }
