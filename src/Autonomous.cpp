@@ -42,3 +42,12 @@ bool Robot::Turn(int angle)
 	return finished;
 }
 
+bool Robot::Rotate(int gyroAngle, bool clockwise)
+{
+	swerveWheels->RotateRobot(clockwise, 1.0);
+	if (gyroAngle == gyro->GetAngle())
+		return true;
+	return false;
+
+}
+

@@ -41,6 +41,7 @@ public:
 	bool DriveForward(double distance);
 	void StackBin();
 	bool Turn(int angle);
+	bool Rotate(int angle, bool clockwise);
 };
 
 
