@@ -5,7 +5,11 @@
  *      Author: Kazimier
  */
 
+#include <iostream>
 #include "SwerveDrive.h"
+
+using std::cout;
+using std::endl;
 
 SwerveDrive::SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
                         unsigned feetToEncLinesR,
@@ -87,6 +91,9 @@ void SwerveDrive::Stop()
 
 bool SwerveDrive::TurnRobot(int angle, double speed)
 {
+		cout << "GetWheelAngle() = " << GetWheelAngle() << endl;
+		cout << "rotateTalon1 encoder position = " + rotateTalon1->GetEncPosition() << endl;
+		cout << "rotateTalon1 encoder position % 360 = " + rotateTalon1->GetEncPosition() % 360 << endl;
 
         // always rotate the wheels at maximum speed
         double rotateWheelSpeed = 1.0;
@@ -120,7 +127,7 @@ bool SwerveDrive::TurnRobot(int angle, double speed)
 
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
-        if (rotateTalon1->GetEncPosition() != distance % rotateEncoderLines)
+        if ((rotateTalon1->GetEncPosition()) % rotateEncoderLines != distance % rotateEncoderLines)
         {
                 rotateTalon1->Set(rotateWheelSpeed);
                 rotateTalon2->Set(rotateWheelSpeed);
@@ -179,6 +186,8 @@ void SwerveDrive::RotateRobot(bool clockwise, double speed)
 
 int SwerveDrive::GetWheelAngle()
 {
+		cout << "gyro angle = " << gyro->GetAngle() << endl;
+
         float gyroangle = gyro->GetAngle();
         int robotRelativeWheelAngle = rotateTalon1->GetEncPosition() * 360 / rotateEncoderLines;
         int fieldRelativeWheelAngle = ((int)gyroangle + robotRelativeWheelAngle) % 360;
