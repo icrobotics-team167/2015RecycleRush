@@ -64,6 +64,7 @@ void SwerveDrive::Drive(int angle, double speed)
                 talon4->Set(0);
                 rotateTalon1->Set(0);
                 rotateTalon2->Set(0);
+                return;
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
         if (TurnRobot(angle, speed))
