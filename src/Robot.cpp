@@ -7,8 +7,7 @@ Robot::Robot()
         Joystick1 = new SimpleJoystick(RealJoy1);
         Joystick2 = new SimpleJoystick(RealJoy2);
 
-        // current parameters are just placeholders for actual values
-        swerveWheels = new SwerveDrive(400, 400, 1337, 1, 2, 3, 4, 5, 6, 7);
+        swerveWheels = new SwerveDrive(497, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
 
         autoState = PICK_UP_TOTE;
 }
