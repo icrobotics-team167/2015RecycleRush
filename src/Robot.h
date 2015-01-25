@@ -10,7 +10,6 @@
 
 
 #include "Team167Lib/Team167Lib.h"
-#include "ElevatorArms.h"
 
 class Robot: public IterativeRobot
 {
@@ -22,7 +21,6 @@ private:
 	SimpleJoystick *Joystick2;
 
 	SwerveDrive *swerveWheels;
-	ElevatorArms *elevatorArms;
 	AutonomousState autoState;
 
 public:
@@ -36,10 +34,6 @@ public:
 	void TeleopPeriodic();
 	void JoystickOne();
 	void JoystickTwo();
-	void PickUpTote();
-	void Stop();
-	void DriveForward();
-	void StackBin();
 };
 
 
