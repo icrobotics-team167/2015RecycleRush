@@ -137,7 +137,7 @@ void Robot::JoystickTwo() {
         float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
         double throttle_mag2 = (this->RealJoy2->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
         float abs_y2 = abs(y2);
-        float armSpeed = throttle_mag2;
+        float armSpeed = throttle_mag2 * abs_y2;
 
         if (armSpeed < 0)
                 elevatorArms->Raise(armSpeed);
