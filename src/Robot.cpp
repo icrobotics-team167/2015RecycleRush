@@ -175,3 +175,5 @@ void Robot::JoystickTwo() {
                         elevatorArms->Open(3);
         }
 }
+
+START_ROBOT_CLASS(Robot);
