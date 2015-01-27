@@ -1,4 +1,8 @@
+#include <iostream>
 #include "Robot.h"
+
+using std::cout;
+using std::endl;
 
 Robot::Robot()
 {
@@ -7,7 +11,7 @@ Robot::Robot()
         Joystick1 = new SimpleJoystick(RealJoy1);
         Joystick2 = new SimpleJoystick(RealJoy2);
 
-        swerveWheels = new SwerveDrive(497, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
+        swerveWheels = new SwerveDrive(4473, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
 
         autoState = PICK_UP_TOTE;
 }
@@ -52,6 +56,11 @@ void Robot::JoystickOne() {
         float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
         float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
         float z = Vector3::GetRotation(x, y);
+        float abs_x = abs(x);
+        float abs_y = abs(y);
+
+        if (abs_x < 0.1 && abs_y < 0.1)
+        	return;
 
         // raw axis 3 is the twist axis on the Logitech Extreme 3D Pro joystick
         // we use the raw axis because the default mappings are incorrect
@@ -69,8 +78,6 @@ void Robot::JoystickOne() {
          * to 1.0 (full throttle) at the plus position
          */
         double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
-
-        float abs_x = abs(x), abs_y = abs(y);
 
         double speed = throttle_mag;
 

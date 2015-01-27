@@ -24,13 +24,20 @@ SwerveDrive::SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
         rotateEncoderLines = rotateEncLines;
         driveEncoderLines = driveEncLines;
         feetToEncoderLinesRatio = feetToEncLinesR;
+
         rotateTalon1 = new CANTalon(rotateTalon1Number);
         rotateTalon2 = new CANTalon(rotateTalon2Number);
+
+		cout << "rotateTalon1 initial encoder position = " << rotateTalon1->GetEncPosition() << endl;
+
         talon1 = new CANTalon(talon1Number);
         talon2 = new CANTalon(talon2Number);
         talon3 = new CANTalon(talon3Number);
         talon4 = new CANTalon(talon4Number);
+
         gyro = new Gyro(gyroChannel);
+        gyro->InitGyro();
+
         driveDistance = 0;
         finished = true;
 }
@@ -61,6 +68,9 @@ SwerveDrive::~SwerveDrive()
  */
 void SwerveDrive::Drive(int angle, double speed)
 {
+		cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
+		return;
+
         if (angle == -1 || speed == 0) {
                 talon1->Set(0);
                 talon2->Set(0);
@@ -91,9 +101,9 @@ void SwerveDrive::Stop()
 
 bool SwerveDrive::TurnRobot(int angle, double speed)
 {
-		cout << "GetWheelAngle() = " << GetWheelAngle() << endl;
-		cout << "rotateTalon1 encoder position = " + rotateTalon1->GetEncPosition() << endl;
-		cout << "rotateTalon1 encoder position % 360 = " + rotateTalon1->GetEncPosition() % 360 << endl;
+		//cout << "GetWheelAngle() = " << GetWheelAngle() << endl;
+		//cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
+		//cout << "gyro angle = " << gyro->GetAngle() << endl;
 
         // always rotate the wheels at maximum speed
         double rotateWheelSpeed = 1.0;
@@ -186,9 +196,7 @@ void SwerveDrive::RotateRobot(bool clockwise, double speed)
 
 int SwerveDrive::GetWheelAngle()
 {
-		cout << "gyro angle = " << gyro->GetAngle() << endl;
-
-        float gyroangle = gyro->GetAngle();
+        int gyroangle = (int) gyro->GetAngle() % 360;
         int robotRelativeWheelAngle = rotateTalon1->GetEncPosition() * 360 / rotateEncoderLines;
         int fieldRelativeWheelAngle = ((int)gyroangle + robotRelativeWheelAngle) % 360;
         return fieldRelativeWheelAngle;
