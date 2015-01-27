@@ -13,7 +13,7 @@
 class SwerveDrive
 {
 private:
-	const int ERROR_AMOUNT = 5;
+	static const int ERROR_AMOUNT = 5;
 	unsigned rotateEncoderLines;
 	unsigned driveEncoderLines;
 	unsigned feetToEncoderLinesRatio;
