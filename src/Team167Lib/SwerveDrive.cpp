@@ -40,6 +40,7 @@ SwerveDrive::SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
 
         driveDistance = 0;
         finished = true;
+        int errorAmount = 5;
 }
 
 /*
@@ -137,8 +138,11 @@ bool SwerveDrive::TurnRobot(int angle, double speed)
 
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
-        if ((rotateTalon1->GetEncPosition()) % rotateEncoderLines != distance % rotateEncoderLines)
-        {
+        int currentPosition = rotateTalon1->GetEncPosition();
+        int targetPosition = distance % rotateEncoderLines;
+
+        if (currentPosition > (targetPosition + errorAmount) || currentPosition < (targetPosition - errorAmount))
+        {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
                 rotateTalon1->Set(rotateWheelSpeed);
                 rotateTalon2->Set(rotateWheelSpeed);
                 talon1->Set(0);

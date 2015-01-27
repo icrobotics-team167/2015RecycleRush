@@ -25,6 +25,7 @@ private:
 	CANTalon *talon3;
 	CANTalon *talon4;
 	Gyro *gyro;
+	int errorAmount;
 
 public:
 	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
