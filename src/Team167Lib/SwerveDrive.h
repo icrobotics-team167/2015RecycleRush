@@ -13,6 +13,7 @@
 class SwerveDrive
 {
 private:
+	const int ERROR_AMOUNT = 5;
 	unsigned rotateEncoderLines;
 	unsigned driveEncoderLines;
 	unsigned feetToEncoderLinesRatio;
@@ -25,7 +26,6 @@ private:
 	CANTalon *talon3;
 	CANTalon *talon4;
 	Gyro *gyro;
-	int errorAmount;
 
 public:
 	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
