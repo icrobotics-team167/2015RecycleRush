@@ -139,7 +139,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobot(int angle)
 
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
-        int currentPosition = rotateTalon1->GetEncPosition() % rotateEncoderLines;
+        int currentPosition = ConvertEncoderValue();
         int targetPosition = distance % rotateEncoderLines;
         cout << "currentPosition = " << currentPosition << endl;
         cout << "targetPosition = " << targetPosition << endl;
@@ -212,4 +212,12 @@ int SwerveDrive::GetWheelAngle()
 int SwerveDrive::GetGyroAngle()
 {
 	return (int) (gyro->GetAngle()) % 360;
+}
+
+int SwerveDrive::ConvertEncoderValue()
+{
+	int moddedValue = talon1->GetEncPosition() % rotateEncoderLines;
+	if (0 > moddedValue)
+		moddedValue = rotateEncoderLines + moddedValue;
+	return moddedValue;
 }
