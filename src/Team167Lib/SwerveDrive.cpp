@@ -66,8 +66,10 @@ void SwerveDrive::Drive(int angle, double speed)
                 rotateTalon2->Set(0);
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
-        if (TurnRobot(angle, speed))
+        SwerveState swerveState = TurnRobot(angle);
+        if (swerveState != DRIVE_NOT)
         {
+        		speed *= ((swerveState == DRIVE_FORWARDS) ? 1 : -1);
                 rotateTalon1->Set(0);
                 rotateTalon2->Set(0);
                 talon1->Set(speed);
@@ -84,8 +86,9 @@ void SwerveDrive::Stop()
         Drive(-1, 0);
 }
 
-bool SwerveDrive::TurnRobot(int angle, double speed)
+SwerveDrive::SwerveState SwerveDrive::TurnRobot(int angle)
 {
+		SwerveState returnValue = DRIVE_FORWARDS;
 
         // always rotate the wheels at maximum speed
         double rotateWheelSpeed = 1.0;
@@ -111,7 +114,7 @@ bool SwerveDrive::TurnRobot(int angle, double speed)
                         if (angleToBeTurned < 0)
                         {
                                 angleToBeTurned *= -1;
-                                speed *= -1;
+                                returnValue = DRIVE_BACKWARDS;
                         }//makes sure wheels rotate the shortest distance
                 }
         } //the if statement means the wheels won't have to turn over 90 degrees
@@ -127,11 +130,11 @@ bool SwerveDrive::TurnRobot(int angle, double speed)
                 talon2->Set(0);
                 talon3->Set(0);
                 talon4->Set(0);
-                return false;
+                return DRIVE_NOT;
         }	//spins the motors until the wheels point in the right direction and stops drive motors
 
         else
-                return true;
+                return returnValue;
 }
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)

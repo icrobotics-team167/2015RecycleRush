@@ -13,6 +13,7 @@
 class SwerveDrive
 {
 private:
+	enum SwerveState { DRIVE_NOT, DRIVE_FORWARDS, DRIVE_BACKWARDS };
 	unsigned rotateEncoderLines;
 	unsigned driveEncoderLines;
 	unsigned feetToEncoderLinesRatio;
@@ -40,7 +41,7 @@ public:
 
 	void Drive(int angle, double speed);
 	void Stop();
-	bool TurnRobot(int angle, double speed);
+	SwerveState TurnRobot(int angle);
 	bool DriveACertainDistance(double feet, double speed);
 	void RotateRobot(bool clockwise, double speed);
 	int GetWheelAngle();
