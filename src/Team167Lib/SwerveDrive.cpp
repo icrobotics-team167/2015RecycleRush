@@ -81,8 +81,10 @@ void SwerveDrive::Drive(int angle, double speed)
                 return;
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
-        if (TurnRobot(angle, speed))
+        SwerveState swerveState = TurnRobot(angle);
+        if (swerveState != DRIVE_NOT)
         {
+        		speed *= ((swerveState == DRIVE_FORWARDS) ? 1 : -1);
                 rotateTalon1->Set(0);
                 rotateTalon2->Set(0);
                 talon1->Set(speed);
@@ -99,11 +101,12 @@ void SwerveDrive::Stop()
         Drive(-1, 0);
 }
 
-bool SwerveDrive::TurnRobot(int angle, double speed)
+SwerveDrive::SwerveState SwerveDrive::TurnRobot(int angle)
 {
 		//cout << "GetWheelAngle() = " << GetWheelAngle() << endl;
 		//cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
 		//cout << "gyro angle = " << gyro->GetAngle() << endl;
+		SwerveState returnValue = DRIVE_FORWARDS;
 
         // always rotate the wheels at maximum speed
         double rotateWheelSpeed = 1.0;
@@ -129,7 +132,7 @@ bool SwerveDrive::TurnRobot(int angle, double speed)
                         if (angleToBeTurned < 0)
                         {
                                 angleToBeTurned *= -1;
-                                speed *= -1;
+                                returnValue = DRIVE_BACKWARDS;
                         }//makes sure wheels rotate the shortest distance
                 }
         } //the if statement means the wheels won't have to turn over 90 degrees
@@ -148,11 +151,11 @@ bool SwerveDrive::TurnRobot(int angle, double speed)
                 talon2->Set(0);
                 talon3->Set(0);
                 talon4->Set(0);
-                return false;
+                return DRIVE_NOT;
         }	//spins the motors until the wheels point in the right direction and stops drive motors
 
         else
-                return true;
+                return returnValue;
 }
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)
@@ -204,3 +207,8 @@ int SwerveDrive::GetWheelAngle()
         int fieldRelativeWheelAngle = ((int)gyroangle + robotRelativeWheelAngle) % 360;
         return fieldRelativeWheelAngle;
 }	//finds the angle the wheels are facing relative to the field
+
+int SwerveDrive::GetGyroAngle()
+{
+	return gyro->GetAngle() % 360;
+}
