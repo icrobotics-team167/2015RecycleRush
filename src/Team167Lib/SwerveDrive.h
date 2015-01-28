@@ -13,7 +13,7 @@
 class SwerveDrive
 {
 private:
-	static const int ENCODER_ERROR_AMOUNT = 5;
+	static const int ENCODER_ERROR_AMOUNT = 100;
 	enum SwerveState { DRIVE_NOT, DRIVE_FORWARDS, DRIVE_BACKWARDS };
 	unsigned rotateEncoderLines;
 	unsigned driveEncoderLines;
