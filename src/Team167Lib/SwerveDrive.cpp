@@ -180,6 +180,11 @@ int SwerveDrive::GetWheelAngle()
 {
         float gyroangle = gyro->GetAngle();
         int robotRelativeWheelAngle = rotateTalon1->GetEncPosition() * 360 / rotateEncoderLines;
-        int fieldRelativeWheelAngle = (gyroangle + robotRelativeWheelAngle) % 360;
+        int fieldRelativeWheelAngle = ((int)gyroangle + robotRelativeWheelAngle) % 360;
         return fieldRelativeWheelAngle;
 }	//finds the angle the wheels are facing relative to the field
+
+int SwerveDrive::GetGyroAngle()
+{
+	return gyro->GetAngle() % 360;
+}

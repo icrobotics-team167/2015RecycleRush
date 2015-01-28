@@ -9,7 +9,7 @@
 #define SRC_ROBOT_H_
 
 
-#include "Team167Lib.h"
+#include "Team167Lib/Team167Lib.h"
 #include "ElevatorArms.h"
 
 class Robot: public IterativeRobot

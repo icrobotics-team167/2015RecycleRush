@@ -8,7 +8,7 @@
 #ifndef SRC_ELEVATORARMS_H_
 #define SRC_ELEVATORARMS_H_
 
-#include "Team167Lib.h"
+#include "Team167Lib/Team167Lib.h"
 
 class ElevatorArms
 {
