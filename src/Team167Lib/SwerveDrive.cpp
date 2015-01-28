@@ -188,4 +188,3 @@ int SwerveDrive::GetGyroAngle()
 {
 	return gyro->GetAngle() % 360;
 }
-}
