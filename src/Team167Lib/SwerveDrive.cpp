@@ -210,5 +210,5 @@ int SwerveDrive::GetWheelAngle()
 
 int SwerveDrive::GetGyroAngle()
 {
-	return gyro->GetAngle() % 360;
+	return (int) (gyro->GetAngle()) % 360;
 }
