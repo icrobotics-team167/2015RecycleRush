@@ -70,6 +70,9 @@ void SwerveDrive::Drive(int angle, double speed)
 {
 		cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
 
+		RotateWheelsOnce();
+		return;
+
         if (angle == -1 || speed == 0) {
                 talon1->Set(0);
                 talon2->Set(0);
@@ -220,4 +223,18 @@ int SwerveDrive::ConvertEncoderValue()
 	if (0 > moddedValue)
 		moddedValue = rotateEncoderLines + moddedValue;
 	return moddedValue;
+}
+
+void SwerveDrive::RotateWheelsOnce()
+{
+	if (ConvertEncoderValue() > (rotateEncoderLines / 2 + ENCODER_ERROR_AMOUNT) || ConvertEncoderValue() < (rotateEncoderLines / 2 - ENCODER_ERROR_AMOUNT))
+	{
+		rotateTalon1->Set(1);
+		rotateTalon2->Set(1);
+	}
+	else
+	{
+		rotateTalon1->Set(0);
+		rotateTalon2->Set(0);
+	}
 }

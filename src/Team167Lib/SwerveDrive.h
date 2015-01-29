@@ -48,5 +48,6 @@ public:
 	int GetWheelAngle();
 	int GetGyroAngle();
 	int ConvertEncoderValue();
+	void RotateWheelsOnce();
 };
 #endif /* SRC_TEAM167LIB_SWERVEDRIVE_H_ */
