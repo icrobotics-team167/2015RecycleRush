@@ -43,14 +43,12 @@ void Robot::AutonomousPeriodic()
         {
                 case PICK_UP_TOTE:
                 		PickUpTote();
-
                         break;
                 case STOP:
                         Stop();
-
                         break;
                 case DRIVE_FORWARD:
-                        DriveForward(1);			// Placeholder
+                        DriveForward(1);			// Placeholder value
                         break;
         }
 
