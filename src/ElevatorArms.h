@@ -14,15 +14,11 @@ class ElevatorArms
 {
 private:
 	PneumaticPiston *piston1;
-	PneumaticPiston *piston2;
-	PneumaticPiston *piston3;
 	Talon *talon;
 
 public:
 	ElevatorArms(int compressorIndex,
 					int solenoidIndex1_1, int solenoidIndex1_2,
-					int solenoidIndex2_1, int solenoidIndex2_2,
-					int solenoidIndex3_1, int solenoidIndex3_2,
 					int talonPWMChannel);
 	~ElevatorArms();
 
@@ -31,9 +27,7 @@ public:
 	void StopElevator();
 	void Open();
 	void Close();
-	void Stop();
-	void Open(int i);
-	void Close(int i);
+	void Stop();;
 };
 
 

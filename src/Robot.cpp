@@ -8,7 +8,7 @@ Robot::Robot()
         Joystick2 = new SimpleJoystick(RealJoy2);
 
         // current parameters are just placeholders for actual values
-        elevatorArms = new ElevatorArms(3, 1, 4, 1, 5, 9, 2, 6);
+        elevatorArms = new ElevatorArms(3, 1, 4, 1);
 
         // current parameters are just placeholders for actual values
         swerveWheels = new SwerveDrive(400, 400, 1337, 1, 2, 3, 4, 5, 6, 7);
@@ -160,19 +160,9 @@ void Robot::JoystickTwo() {
                 elevatorArms->Close();
         else {
                 if (Joystick2->Toggled(BUTTON_8))
-                        elevatorArms->Close(1);						// Button 7/8 - Open/close piston 1
+                        elevatorArms->Close();						// Button 7/8 - Open/close piston 1
                 else if (Joystick2->Toggled(BUTTON_7))
-                        elevatorArms->Open(1);
-
-                if (Joystick2->Toggled(BUTTON_10))
-                        elevatorArms->Close(2);						// Button 9/10 - Open/close piston 2
-                else if (Joystick2->Toggled(BUTTON_9))
-                        elevatorArms->Open(2);
-
-                if (Joystick2->Toggled(BUTTON_12))
-                        elevatorArms->Close(3);						// Button 11/12 - Open/close piston 3
-                else if (Joystick2->Toggled(BUTTON_11))
-                        elevatorArms->Open(3);
+                        elevatorArms->Open();
         }
 }
 
