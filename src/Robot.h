@@ -19,6 +19,7 @@ private:
 	Joystick *RealJoy2;
 	SimpleJoystick *Joystick1;
 	SimpleJoystick *Joystick2;
+	PowerDistributionPanel *PowerPanel;
 
 	SwerveDrive *swerveWheels;
 	AutonomousState autoState;

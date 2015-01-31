@@ -10,6 +10,8 @@ Robot::Robot()
         RealJoy2 = new Joystick(2);
         Joystick1 = new SimpleJoystick(RealJoy1);
         Joystick2 = new SimpleJoystick(RealJoy2);
+        PowerPanel = new PowerDistributionPanel(0);
+
 
         swerveWheels = new SwerveDrive(4473, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
 
@@ -23,6 +25,7 @@ Robot::~Robot()
         delete Joystick1;
         delete Joystick2;
         delete swerveWheels;
+        delete PowerPanel;
 }
 
 void Robot::RobotInit()
@@ -48,6 +51,7 @@ void Robot::TeleopPeriodic()
 {
         JoystickOne();
         JoystickTwo();
+        cout << "Current: " << PowerPanel->GetCurrent(0) << endl;
 }
 
 void Robot::JoystickOne() {
