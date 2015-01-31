@@ -11,7 +11,7 @@ Robot::Robot()
         elevatorArms = new ElevatorArms(3, 1, 4, 1);
 
         // current parameters are just placeholders for actual values
-        swerveWheels = new SwerveDrive(400, 400, 1337, 1, 2, 3, 4, 5, 6, 7);
+        mechanumWheels = new MechanumDrive(3, 1, 4, 1);
 
         autoState = PICK_UP_TOTE;
 }
@@ -22,7 +22,7 @@ Robot::~Robot()
         delete RealJoy2;
         delete Joystick1;
         delete Joystick2;
-        delete swerveWheels;
+        delete mechanumWheels;
         delete elevatorArms;
 }
 
@@ -39,32 +39,6 @@ void Robot::AutonomousInit()
 void Robot::AutonomousPeriodic()
 {
 
-        switch(autoState)
-        {
-                case PICK_UP_TOTE:
-                {
-                        elevatorArms->Open();
-                        bool done = swerveWheels->DriveACertainDistance(2.0, 1.0);
-                        if (done)
-                        {
-                                elevatorArms->Close();
-                                autoState = DRIVE_FORWARD;
-                        }
-                        break;
-                }
-                case STOP:
-                {
-                        swerveWheels->Stop();
-                        break;
-                }
-                case DRIVE_FORWARD:
-                {
-                        bool check = swerveWheels->DriveACertainDistance(8.92, 1.0); //drive 8.92 feet and at speed 1.0 (full speed)
-                        if (check) { autoState = STOP; }
-                        break;
-                }
-        }
-
 }
 
 void Robot::TeleopInit()
@@ -79,56 +53,93 @@ void Robot::TeleopPeriodic()
 }
 
 void Robot::JoystickOne() {
-        // Joy1 Control Code
-        // get joystick position
-        float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
-        float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
-        float z = Vector3::GetRotation(x, y);
 
-        // raw axis 3 is the twist axis on the Logitech Extreme 3D Pro joystick
-        // we use the raw axis because the default mappings are incorrect
-        //float twist = this->RealJoy1->GetRawAxis(3);
+	this->Joystick1->Update();
 
-        // Set the Throttle
-        bool turbo = Joystick1->Toggled(BUTTON_8);
+	//-------------------------
+	// drive logic (input side)
+	//-------------------------
+	// get joystick position
+	float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
+	float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
+	float z = Vector3::GetRotation(x, y);
+	// raw axis 3 is the twist axis on the Logitech Extreme 3D Pro joystick
+	// we use the raw axis because the default mappings are incorrect
+	//float twist = this->RealJoy1->GetRawAxis(3);
+	// Set the throttle
+	bool turbo = Joystick1->Toggled(BUTTON_8);
+	/*
+	* raw axis 4 is the throttle axis on the Logitech Extreme 3D Pro joystick
+	* we use the raw axis because the default mappings are incorrect
+	* the throttle, by default, returns values from -1.0 at the plus position to 1.0 at the minus position
+	* we first multiply by -1.0 to get values from -1.0 at the minus position to 1.0 at the plus position
+	* we then add 1.0 and divide by 2 to get final voltage percentages from 0.0 (off) at minus position
+	* to 1.0 (full throttle) at the plus position
+	*/
+	double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
+	SmartDashboard::PutNumber("throttle", throttle_mag);
+	float abs_x = abs(x), abs_y = abs(y);
+	double voltagePercent = throttle_mag;
+	if (!Joystick1->Pressed(BUTTON_5) && !Joystick1->Pressed(BUTTON_6))
+	{
+	// if we are not turning get the larger of the x and y values of the joystick posistion,
+	// and multiply that by the throttle to get final voltage
+	voltagePercent *= max(abs_x, abs_y);
+	}
+	else
+	{
+	// if we are turning, the rate of turning depends only on the throttle setting,
+	// and the rate of turning is limited to 80% voltage maximum
+	voltagePercent *= 0.8;
+	}
+	if (voltagePercent < 0.1)
+	voltagePercent = 0.1;
+	if (turbo)
+	voltagePercent *= 1.5;
+	if (voltagePercent > 1.0)
+	voltagePercent = 1.0;
+	mechanumWheels->SetVoltagePercent(voltagePercent);
+	if (Joystick1->Pressed(BUTTON_6))
+	{
+	// rotate right
+	mechanumWheels->RotateLeft();
+	}
+	else if (Joystick1->Pressed(BUTTON_5))
+	{
+	// rotate left
+	mechanumWheels->RotateRight();
+	}
+	else if (Vector3::GetMagnitude(x, y) < 0.25)
+	{
+	// stop
+	mechanumWheels->Stop();
+	}
+	else if (z >= 225 && z < 315)
+	{
+	// forward
+	mechanumWheels->Reverse();
+	}
+	else if ((z >= 315 && z <= 360) || (z >= 0 && z < 45))
+	{
+	// right
+	mechanumWheels->Left();
+	}
+	else if(z >= 45 && z < 135)
+	{
+	// backwards
+	mechanumWheels->Forward();
+	}
+	else if (z >= 135 && z < 225)
+	{
+	// left
+	mechanumWheels->Right();
+	}
+	else
+	{
+	// stop
+	mechanumWheels->Stop();
+	}
 
-        /*
-         * raw axis 4 is the throttle axis on the Logitech Extreme 3D Pro joystick
-         * we use the raw axis because the default mappings are incorrect
-         * the throttle, by default, returns values from -1.0 at the plus position to 1.0 at the minus position
-         * we first multiply by -1.0 to get values from -1.0 at the minus position to 1.0 at the plus position
-         * we then add 1.0 and divide by 2 to get final voltage percentages from 0.0 (off) at minus position
-         * to 1.0 (full throttle) at the plus position
-         */
-        double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
-
-        float abs_x = abs(x), abs_y = abs(y);
-
-        double speed = throttle_mag;
-
-        if (!Joystick1->Pressed(BUTTON_5) && !Joystick1->Pressed(BUTTON_6))
-        {
-                        // if we are not turning get the larger of the x and y values of the joystick posistion,
-                        // and multiply that by the throttle to get final voltage
-                        speed *= std::max(abs_x, abs_y);
-        }
-        else
-        {
-                        // if we are turning, the rate of turning depends only on the throttle setting,
-                        // and the rate of turning is limited to 80% voltage maximum
-                        speed *= 0.8;
-        }
-
-        if (speed < 0.1)
-                speed = 0.1;
-
-        if (turbo)
-                speed *= 1.5;
-
-        if (speed > 1.0)
-                        speed = 1.0;
-
-        swerveWheels->Drive(z, speed);
 }
 
 void Robot::JoystickTwo() {

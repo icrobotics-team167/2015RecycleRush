@@ -21,7 +21,7 @@ private:
 	SimpleJoystick *Joystick1;
 	SimpleJoystick *Joystick2;
 
-	SwerveDrive *swerveWheels;
+	MechanumDrive *mechanumWheels;
 	ElevatorArms *elevatorArms;
 	AutonomousState autoState;
 
