@@ -4,18 +4,18 @@
  *  Created on: Jan 31, 2015
  *      Author: moon_gecko
  */
-#ifndef VICTORDRIVE_H
-#define VICTORDRIVE_H
-class VictorDrive
+#ifndef MECHANUMDRIVE_H
+#define MECHANUMDRIVE_H
+class MechanumDrive
 {
 public:
-VictorDrive(
+MechanumDrive(
 Victor* front_left,
 Victor* front_right,
 Victor* back_left,
 Victor* back_right,
 float voltagePercent = 0.0);
-~VictorDrive();
+~MechanumDrive();
 // disables the drive
 void Disable();
 // stop all motors
