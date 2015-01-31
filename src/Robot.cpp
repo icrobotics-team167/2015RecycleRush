@@ -11,7 +11,7 @@ Robot::Robot()
         elevatorArms = new ElevatorArms(3, 1, 4, 1);
 
         // current parameters are just placeholders for actual values
-        mechanumWheels = new MechanumDrive(3, 1, 4, 1);
+        mechanumWheels = new MechanumDrive(3, 1, 4, 1, 1.0);
 
         autoState = PICK_UP_TOTE;
 }

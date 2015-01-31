@@ -5,17 +5,19 @@
  *      Author: moon_gecko
  */
 #include "Team167Lib.h"
+#include "MechanumDrive.h"
+
 MechanumDrive::MechanumDrive(
-Victor* front_left,
-Victor* front_right,
-Victor* back_left,
-Victor* back_right,
-float voltagePercent)
+		int victor1number,
+		int victor2number,
+		int victor3number,
+		int victor4number,
+		float voltagePercent = 0.0)
 {
-Wheels[0] = front_left;
-Wheels[1] = front_right;
-Wheels[2] = back_left;
-Wheels[3] = back_right;
+Wheels[0] = new Victor(victor1number); //front_left
+Wheels[1] = new Victor(victor2number); //front_right;
+Wheels[2] = new Victor(victor3number); //back_left;
+Wheels[3] = new Victor(victor4number); //back_right;
 voltage_percent = voltagePercent;
 return;
 }

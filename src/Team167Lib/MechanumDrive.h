@@ -10,11 +10,11 @@ class MechanumDrive
 {
 public:
 MechanumDrive(
-Victor* front_left,
-Victor* front_right,
-Victor* back_left,
-Victor* back_right,
-float voltagePercent = 0.0);
+	int victor1number,
+	int victor2number,
+	int victor3number,
+	int victor4number,
+	float voltagePercent = 0.0);
 ~MechanumDrive();
 // disables the drive
 void Disable();
