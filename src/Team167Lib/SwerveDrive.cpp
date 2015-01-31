@@ -61,13 +61,7 @@ SwerveDrive::~SwerveDrive() {
  * speed: double ranging from -1.0 to 1.0 which represents the speed at
  * which the wheels should be driven; -1.0 is full reverse, 1.0 is full forward
  */
-void SwerveDrive::Drive(int angle, double speed) {
-	cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
-
-	RotateWheelsOnce();
-	return;
-
-	if (angle == -1 || speed == 0) {
+void SwerveDrive::Drive(int angle, double speed) {if (angle == -1 || speed == 0) {
 		talon1->Set(0);
 		talon2->Set(0);
 		talon3->Set(0);
