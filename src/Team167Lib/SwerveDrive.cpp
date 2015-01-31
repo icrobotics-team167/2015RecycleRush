@@ -62,8 +62,7 @@ SwerveDrive::~SwerveDrive() {
  * which the wheels should be driven; -1.0 is full reverse, 1.0 is full forward
  */
 void SwerveDrive::Drive(int angle, double speed) {
-	cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition()
-			<< endl;
+	cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
 
 	RotateWheelsOnce();
 	return;
@@ -107,13 +106,9 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobot(int i) {
 	}
 
 	if (abs(p - GetWheelAngle()) > abs(p - GetInvertedAngle(GetWheelAngle()))) {// Original wheel angle closer
-		SteerWheels(
-				(p - GetWheelAngle() < 0) ?
-						(DRIVE_BACKWARDS) : (DRIVE_FORWARDS));
+		SteerWheels((p - GetWheelAngle() < 0) ? (DRIVE_BACKWARDS) : (DRIVE_FORWARDS));
 	} else {									// Inverted wheel angle closer
-		SteerWheels(
-				(p - GetInvertedAngle(GetWheelAngle()) < 0) ?
-						(DRIVE_BACKWARDS) : (DRIVE_FORWARDS));
+		SteerWheels((p - GetInvertedAngle(GetWheelAngle()) < 0) ? (DRIVE_BACKWARDS) : (DRIVE_FORWARDS));
 	}
 	return DRIVE_NOT;
 }
@@ -193,11 +188,8 @@ void SwerveDrive::RotateRobot(bool clockwise, double speed) { // Rotate the robo
 
 int SwerveDrive::GetWheelAngle() {
 	int gyroangle = (int) gyro->GetAngle() % 360;
-	int robotRelativeWheelAngle = rotateTalon1->GetEncPosition() * 360
-			/ rotateEncoderLines;
-	int fieldRelativeWheelAngle = ((int) gyroangle + robotRelativeWheelAngle)
-			% 360;
-	return fieldRelativeWheelAngle;
+	int robotRelativeWheelAngle = rotateTalon1->GetEncPosition() * 360 / rotateEncoderLines;
+	return ((int) gyroangle + robotRelativeWheelAngle) % 360;
 }	//finds the angle the wheels are facing relative to the field
 
 int SwerveDrive::GetGyroAngle() {
@@ -212,9 +204,7 @@ int SwerveDrive::ConvertEncoderValue() {
 }
 
 void SwerveDrive::RotateWheelsOnce() {
-	if (ConvertEncoderValue() > (rotateEncoderLines / 2 + ENCODER_ERROR_AMOUNT)
-			|| ConvertEncoderValue()
-					< (rotateEncoderLines / 2 - ENCODER_ERROR_AMOUNT)) {
+	if (ConvertEncoderValue() > (rotateEncoderLines / 2 + ENCODER_ERROR_AMOUNT) || ConvertEncoderValue() < (rotateEncoderLines / 2 - ENCODER_ERROR_AMOUNT)) {
 		rotateTalon1->Set(1);
 		rotateTalon2->Set(1);
 	} else {
