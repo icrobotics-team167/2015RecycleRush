@@ -4,8 +4,8 @@
  *  Created on: Jan 31, 2015
  *      Author: moon_gecko
  */
-#include "_Team167Lib.h"
-VictorDrive::VictorDrive(
+#include "Team167Lib.h"
+MechanumDrive::MechanumDrive(
 Victor* front_left,
 Victor* front_right,
 Victor* back_left,
@@ -19,41 +19,41 @@ Wheels[3] = back_right;
 voltage_percent = voltagePercent;
 return;
 }
-VictorDrive::~VictorDrive()
+MechanumDrive::~MechanumDrive()
 {
 delete Wheels;
 return;
 }
-void VictorDrive::Disable()
+void MechanumDrive::Disable()
 {
 for (int i = 0; i < 4; i++)
 Wheels[i]->Disable();
 return;
 }
-void VictorDrive::Stop()
+void MechanumDrive::Stop()
 {
 for (int i = 0; i < 4; i++)
 Wheels[i]->Set(0.0);
 return;
 }
-void VictorDrive::SetVoltagePercent(float voltagePercent)
+void MechanumDrive::SetVoltagePercent(float voltagePercent)
 {
 voltage_percent = voltagePercent;
 return;
 }
-void VictorDrive::Forward()
+void MechanumDrive::Forward()
 {
 for (int i = 0; i < 4; i++)
 Wheels[i]->Set(voltage_percent);
 return;
 }
-void VictorDrive::Reverse()
+void MechanumDrive::Reverse()
 {
 for (int i = 0; i < 4; i++)
 Wheels[i]->Set(-voltage_percent);
 return;
 }
-void VictorDrive::Left()
+void MechanumDrive::Left()
 {
 Wheels[0]->Set(voltage_percent);
 Wheels[2]->Set(-voltage_percent);
@@ -61,7 +61,7 @@ Wheels[1]->Set(-voltage_percent);
 Wheels[3]->Set(voltage_percent);
 return;
 }
-void VictorDrive::Right()
+void MechanumDrive::Right()
 {
 Wheels[0]->Set(-voltage_percent);
 Wheels[2]->Set(voltage_percent);
@@ -69,42 +69,42 @@ Wheels[1]->Set(voltage_percent);
 Wheels[3]->Set(-voltage_percent);
 return;
 }
-void VictorDrive::RotateLeft()
+void MechanumDrive::RotateLeft()
 {
 Wheels[0]->Set(voltage_percent);
 Wheels[2]->Set(voltage_percent);
 Wheels[1]->Set(-voltage_percent);
 Wheels[3]->Set(-voltage_percent);
 }
-void VictorDrive::RotateRight()
+void MechanumDrive::RotateRight()
 {
 Wheels[0]->Set(-voltage_percent);
 Wheels[2]->Set(-voltage_percent);
 Wheels[1]->Set(voltage_percent);
 Wheels[3]->Set(voltage_percent);
 }
-void VictorDrive::ForwardLeft()
+void MechanumDrive::ForwardLeft()
 {
 Wheels[1]->Set(voltage_percent);
 Wheels[2]->Set(voltage_percent);
 Wheels[0]->Set(0.0);
 Wheels[3]->Set(0.0);
 }
-void VictorDrive::ForwardRight()
+void MechanumDrive::ForwardRight()
 {
 Wheels[0]->Set(voltage_percent);
 Wheels[3]->Set(voltage_percent);
 Wheels[1]->Set(0.0);
 Wheels[2]->Set(0.0);
 }
-void VictorDrive::BackLeft()
+voidMechanumDrive::BackLeft()
 {
 Wheels[0]->Set(-voltage_percent);
 Wheels[3]->Set(-voltage_percent);
 Wheels[1]->Set(0.0);
 Wheels[2]->Set(0.0);
 }
-void VictorDrive::BackRight()
+void MechanumDrive::BackRight()
 {
 Wheels[1]->Set(-voltage_percent);
 Wheels[2]->Set(-voltage_percent);
