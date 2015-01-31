@@ -219,7 +219,7 @@ int SwerveDrive::GetGyroAngle()
 
 int SwerveDrive::ConvertEncoderValue()
 {
-	int moddedValue = talon1->GetEncPosition() % rotateEncoderLines;
+	int moddedValue = rotateTalon1->GetEncPosition() % rotateEncoderLines;
 	if (0 > moddedValue)
 		moddedValue = rotateEncoderLines + moddedValue;
 	return moddedValue;
