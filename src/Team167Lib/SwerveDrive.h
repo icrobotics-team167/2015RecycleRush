@@ -43,6 +43,9 @@ public:
 	void Drive(int angle, double speed);
 	void Stop();
 	SwerveState TurnRobot(int angle);
+	int GetInvertedAngle(int angle);
+	int RoundToSix(int i);
+	void SteerWheels(SwerveState state);
 	bool DriveACertainDistance(double feet, double speed);
 	void RotateRobot(bool clockwise, double speed);
 	int GetWheelAngle();
