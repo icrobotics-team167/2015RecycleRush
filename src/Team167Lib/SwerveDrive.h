@@ -13,9 +13,9 @@
 class SwerveDrive
 {
 private:
-	static const int ENCODER_ERROR_AMOUNT = 100;
+	static const int ENCODER_ERROR_AMOUNT = 200;
 	enum SwerveState { DRIVE_NOT, DRIVE_FORWARDS, DRIVE_BACKWARDS };
-	unsigned rotateEncoderLines;
+	int rotateEncoderLines;
 	unsigned driveEncoderLines;
 	unsigned feetToEncoderLinesRatio;
 	unsigned driveDistance;
@@ -29,7 +29,7 @@ private:
 	Gyro *gyro;
 
 public:
-	SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
+	SwerveDrive(int rotateEncLines, unsigned driveEncLines,
 				unsigned feetToEncLinesR,
 				unsigned short rotateTalon1Number,
 				unsigned short rotateTalon2Number,
@@ -49,5 +49,6 @@ public:
 	int GetGyroAngle();
 	int ConvertEncoderValue();
 	void RotateWheelsOnce();
+	void ZeroRotateEncoders();
 };
 #endif /* SRC_TEAM167LIB_SWERVEDRIVE_H_ */

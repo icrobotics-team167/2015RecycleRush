@@ -11,7 +11,7 @@
 using std::cout;
 using std::endl;
 
-SwerveDrive::SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
+SwerveDrive::SwerveDrive(int rotateEncLines, unsigned driveEncLines,
                         unsigned feetToEncLinesR,
                         unsigned short rotateTalon1Number,
                         unsigned short rotateTalon2Number,
@@ -27,8 +27,6 @@ SwerveDrive::SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
 
         rotateTalon1 = new CANTalon(rotateTalon1Number);
         rotateTalon2 = new CANTalon(rotateTalon2Number);
-
-		cout << "rotateTalon1 initial encoder position = " << rotateTalon1->GetEncPosition() << endl;
 
         talon1 = new CANTalon(talon1Number);
         talon2 = new CANTalon(talon2Number);
@@ -68,10 +66,8 @@ SwerveDrive::~SwerveDrive()
  */
 void SwerveDrive::Drive(int angle, double speed)
 {
-		cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
-
-		RotateWheelsOnce();
-		return;
+		//cout << "rotateTalon1 raw encoder position = " << rotateTalon1->GetEncPosition() << endl;
+		//cout << "rotateTalon1 converted encoder position = " << ConvertEncoderValue() << endl;
 
         if (angle == -1 || speed == 0) {
                 talon1->Set(0);
@@ -82,6 +78,9 @@ void SwerveDrive::Drive(int angle, double speed)
                 rotateTalon2->Set(0);
                 return;
         } // If they joystick is in neutral position or the speed is zero, do nothing.
+
+		//RotateWheelsOnce();
+		//return;
 
         SwerveState swerveState = TurnRobot(angle);
         if (swerveState != DRIVE_NOT)
@@ -105,9 +104,6 @@ void SwerveDrive::Stop()
 
 SwerveDrive::SwerveState SwerveDrive::TurnRobot(int angle)
 {
-		//cout << "GetWheelAngle() = " << GetWheelAngle() << endl;
-		//cout << "rotateTalon1 encoder position = " << rotateTalon1->GetEncPosition() << endl;
-		//cout << "gyro angle = " << gyro->GetAngle() << endl;
 		SwerveState returnValue = DRIVE_FORWARDS;
 
         // always rotate the wheels at maximum speed
@@ -219,7 +215,8 @@ int SwerveDrive::GetGyroAngle()
 
 int SwerveDrive::ConvertEncoderValue()
 {
-	int moddedValue = rotateTalon1->GetEncPosition() % rotateEncoderLines;
+	int rawEncPos = rotateTalon1->GetEncPosition();
+	int moddedValue = rawEncPos % rotateEncoderLines;
 	if (0 > moddedValue)
 		moddedValue = rotateEncoderLines + moddedValue;
 	return moddedValue;
@@ -237,4 +234,10 @@ void SwerveDrive::RotateWheelsOnce()
 		rotateTalon1->Set(0);
 		rotateTalon2->Set(0);
 	}
+}
+
+void SwerveDrive::ZeroRotateEncoders()
+{
+	rotateTalon1->SetPosition(0);
+	rotateTalon2->SetPosition(0);
 }

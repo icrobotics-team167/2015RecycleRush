@@ -10,10 +10,10 @@ Robot::Robot()
         RealJoy2 = new Joystick(2);
         Joystick1 = new SimpleJoystick(RealJoy1);
         Joystick2 = new SimpleJoystick(RealJoy2);
-        PowerPanel = new PowerDistributionPanel(0);
+        PowerPanel = new PowerDistributionPanel();
 
 
-        swerveWheels = new SwerveDrive(4473, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
+        swerveWheels = new SwerveDrive(2000, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
 
         autoState = PICK_UP_TOTE;
 }
@@ -30,7 +30,13 @@ Robot::~Robot()
 
 void Robot::RobotInit()
 {
+	swerveWheels->ZeroRotateEncoders();
+}
 
+void Robot::DisabledInit()
+{
+	cout << "disabled init" << endl;
+	swerveWheels->ZeroRotateEncoders();
 }
 
 void Robot::AutonomousInit()
@@ -51,7 +57,7 @@ void Robot::TeleopPeriodic()
 {
         JoystickOne();
         JoystickTwo();
-        cout << "Current: " << PowerPanel->GetCurrent(0) << endl;
+        //cout << "Current: " << PowerPanel->GetCurrent(0) << endl;
 }
 
 void Robot::JoystickOne() {
@@ -64,7 +70,10 @@ void Robot::JoystickOne() {
         float abs_y = abs(y);
 
         if (abs_x < 0.1 && abs_y < 0.1)
+        {
+        	swerveWheels->Stop();
         	return;
+        }
 
         // raw axis 3 is the twist axis on the Logitech Extreme 3D Pro joystick
         // we use the raw axis because the default mappings are incorrect
