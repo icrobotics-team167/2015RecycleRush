@@ -31,6 +31,16 @@ void Robot::RobotInit()
 
 }
 
+void Robot::DisabledInit()
+{
+
+}
+
+void Robot::DisabledPeriodic()
+{
+
+}
+
 void Robot::AutonomousInit()
 {
 
