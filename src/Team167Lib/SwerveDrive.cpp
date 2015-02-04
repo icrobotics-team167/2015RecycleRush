@@ -7,11 +7,11 @@
 
 #include "SwerveDrive.h"
 
-SwerveDrive::SwerveDrive(unsigned rotateEncLines, unsigned driveEncLines,
-                        unsigned feetToEncLinesR,
-                        unsigned short rotateTalon1Number,
-                        unsigned short rotateTalon2Number,
-                        unsigned short gyroChannel,
+SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
+                        int feetToEncLinesR,
+                        short rotateTalon1Number,
+                        short rotateTalon2Number,
+                        short gyroChannel,
                         int talon1Number,
                         int talon2Number,
                         int talon3Number,

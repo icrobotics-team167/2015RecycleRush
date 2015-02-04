@@ -14,10 +14,10 @@ class SwerveDrive
 {
 private:
 	enum SwerveState { DRIVE_NOT, DRIVE_FORWARDS, DRIVE_BACKWARDS };
-	unsigned rotateEncoderLines;
-	unsigned driveEncoderLines;
-	unsigned feetToEncoderLinesRatio;
-	unsigned driveDistance;
+	int rotateEncoderLines;
+	int driveEncoderLines;
+	int feetToEncoderLinesRatio;
+	int driveDistance;
 	bool finished;
 	CANTalon *rotateTalon1;
 	CANTalon *rotateTalon2;
