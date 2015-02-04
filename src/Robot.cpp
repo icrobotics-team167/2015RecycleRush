@@ -28,11 +28,16 @@ Robot::~Robot()
 
 void Robot::RobotInit()
 {
-
+	swerveWheels->ResetGyro();
+	swerveWheels->ZeroRotateEncoders();
+	swerveWheels->ZeroDriveEncoders();
 }
 
 void Robot::DisabledInit()
 {
+	swerveWheels->ResetGyro();
+	swerveWheels->ZeroRotateEncoders();
+	swerveWheels->ZeroDriveEncoders();
 
 }
 

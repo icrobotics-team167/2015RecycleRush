@@ -46,5 +46,8 @@ public:
 	void RotateRobot(bool clockwise, double speed);
 	int GetWheelAngle();
 	int GetGyroAngle();
+	void ZeroRotateEncoders();
+	void ZeroDriveEncoders();
+	void ResetGyro();
 };
 #endif /* SRC_TEAM167LIB_SWERVEDRIVE_H_ */

@@ -20,14 +20,20 @@ SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
         rotateEncoderLines = rotateEncLines;
         driveEncoderLines = driveEncLines;
         feetToEncoderLinesRatio = feetToEncLinesR;
+
         rotateTalon1 = new CANTalon(rotateTalon1Number);
         rotateTalon2 = new CANTalon(rotateTalon2Number);
+
         talon1 = new CANTalon(talon1Number);
         talon2 = new CANTalon(talon2Number);
         talon3 = new CANTalon(talon3Number);
         talon4 = new CANTalon(talon4Number);
+
         gyro = new Gyro(gyroChannel);
+        ResetGyro();
+
         driveDistance = 0;
+
         finished = true;
 }
 
@@ -190,4 +196,23 @@ int SwerveDrive::GetWheelAngle()
 int SwerveDrive::GetGyroAngle()
 {
 	return (int) (gyro->GetAngle()) % 360;
+}
+
+void SwerveDrive::ZeroRotateEncoders()
+{
+	rotateTalon1->SetPosition(0);
+	rotateTalon2->SetPosition(0);
+}
+
+void SwerveDrive::ZeroDriveEncoders()
+{
+	talon1->SetPosition(0);
+	talon2->SetPosition(0);
+	talon3->SetPosition(0);
+	talon4->SetPosition(0);
+}
+
+void SwerveDrive::ResetGyro()
+{
+	gyro->InitGyro();
 }
