@@ -70,6 +70,7 @@ void SwerveDrive::Drive(int angle, double speed)
                 talon4->Set(0);
                 rotateTalon1->Set(0);
                 rotateTalon2->Set(0);
+                return;
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
         SwerveState swerveState = TurnRobot(angle);
@@ -128,19 +129,22 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobot(int angle)
 
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
-        if (rotateTalon1->GetEncPosition() != distance % rotateEncoderLines)
-        {
-                rotateTalon1->Set(rotateWheelSpeed);
-                rotateTalon2->Set(rotateWheelSpeed);
-                talon1->Set(0);
-                talon2->Set(0);
-                talon3->Set(0);
-                talon4->Set(0);
-                return DRIVE_NOT;
-        }	//spins the motors until the wheels point in the right direction and stops drive motors
+        int currentPosition = ConvertEncoderValue();
+        int targetPosition = distance % rotateEncoderLines;
 
-        else
-                return returnValue;
+        if (currentPosition > (targetPosition + ENCODER_ERROR_AMOUNT) || currentPosition < (targetPosition - ENCODER_ERROR_AMOUNT))
+        {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
+                 rotateTalon1->Set(rotateWheelSpeed);
+                 rotateTalon2->Set(rotateWheelSpeed);
+                 talon1->Set(0);
+                 talon2->Set(0);
+                 talon3->Set(0);
+                 talon4->Set(0);
+                 return DRIVE_NOT;
+         }	//spins the motors until the wheels point in the right direction and stops drive motors
+
+         else
+                 return returnValue;
 }
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)
@@ -187,7 +191,7 @@ void SwerveDrive::RotateRobot(bool clockwise, double speed)
 
 int SwerveDrive::GetWheelAngle()
 {
-        float gyroangle = gyro->GetAngle();
+        float gyroangle = GetGyroAngle();
         int robotRelativeWheelAngle = rotateTalon1->GetEncPosition() * 360 / rotateEncoderLines;
         int fieldRelativeWheelAngle = ((int)gyroangle + robotRelativeWheelAngle) % 360;
         return fieldRelativeWheelAngle;
@@ -196,6 +200,15 @@ int SwerveDrive::GetWheelAngle()
 int SwerveDrive::GetGyroAngle()
 {
 	return (int) (gyro->GetAngle()) % 360;
+}
+
+int SwerveDrive::ConvertEncoderValue()
+{
+	int rawEncPos = rotateTalon1->GetEncPosition();
+	int moddedValue = rawEncPos % rotateEncoderLines;
+	if (0 > moddedValue)
+		moddedValue = rotateEncoderLines + moddedValue;
+	return moddedValue;
 }
 
 void SwerveDrive::ZeroRotateEncoders()

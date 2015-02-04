@@ -141,7 +141,7 @@ void Robot::JoystickOne() {
                 speed *= 1.5;
 
         if (speed > 1.0)
-                        speed = 1.0;
+                speed = 1.0;
 
         swerveWheels->Drive(z, speed);
 }
