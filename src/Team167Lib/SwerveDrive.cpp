@@ -106,7 +106,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
 
         int angleToBeTurned = 0;
 
-        if (angle > GetWheelAngle())
+        if (angle > GetFrontWheelAngle())
                 angleToBeTurned = (angle - GetFrontWheelAngle()) % 360;
         else
                 angleToBeTurned = (GetFrontWheelAngle() - angle) % 360;
@@ -159,7 +159,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
 
         int angleToBeTurned = 0;
 
-        if (angle > GetWheelAngle())
+        if (angle > GetBackWheelAngle())
                 angleToBeTurned = (angle - GetBackWheelAngle()) % 360;
         else
                 angleToBeTurned = (GetBackWheelAngle() - angle) % 360;
