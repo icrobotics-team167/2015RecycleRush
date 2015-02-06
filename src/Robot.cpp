@@ -100,9 +100,13 @@ void Robot::JoystickOne() {
         float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
         float z = Vector3::GetRotation(x, y);
 
-        // raw axis 3 is the twist axis on the Logitech Extreme 3D Pro joystick
-        // we use the raw axis because the default mappings are incorrect
-        //float twist = this->RealJoy1->GetRawAxis(3);
+        float abs_x = abs(x), abs_y = abs(y);
+
+        if (abs_x < 0.1 && abs_y < 0.1)
+        {
+                swerveWheels->Stop();
+                return;
+        }
 
         // Set the Throttle
         bool turbo = Joystick1->Toggled(BUTTON_8);
@@ -117,7 +121,6 @@ void Robot::JoystickOne() {
          */
         double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
 
-        float abs_x = abs(x), abs_y = abs(y);
 
         double speed = throttle_mag;
 
