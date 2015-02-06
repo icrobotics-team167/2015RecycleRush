@@ -111,24 +111,6 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
         else
                 angleToBeTurned = (GetFrontWheelAngle() - angle) % 360;
 
-        if (abs(angleToBeTurned - angle) % 360 > 90)
-        {
-                if ((abs(angleToBeTurned - angle) % 360) > 270)
-                        //makes wheels rotate towards the original angle if they're closer to that
-                                rotateWheelSpeed1 *= -1;
-                else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
-                {
-                        angleToBeTurned = -(180 - angleToBeTurned) % 360;
-                        //finds the opposite of the angle needed to be turned relative to the robot
-                        if (angleToBeTurned < 0)
-                        {
-                                angleToBeTurned *= -1;
-                                returnValue = DRIVE_BACKWARDS;
-                        }//makes sure wheels rotate the shortest distance
-                }
-        } //the if statement means the wheels won't have to turn over 90 degrees
-
-
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
         int currentPosition = ConvertFrontEncoderValue();
@@ -163,24 +145,6 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
                 angleToBeTurned = (angle - GetBackWheelAngle()) % 360;
         else
                 angleToBeTurned = (GetBackWheelAngle() - angle) % 360;
-
-        if (abs(angleToBeTurned - angle) % 360 > 90)
-        {
-                if ((abs(angleToBeTurned - angle) % 360) > 270)
-                        //makes wheels rotate towards the original angle if they're closer to that
-                                rotateWheelSpeed2 *= -1;
-                else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
-                {
-                        angleToBeTurned = -(180 - angleToBeTurned) % 360;
-                        //finds the opposite of the angle needed to be turned relative to the robot
-                        if (angleToBeTurned < 0)
-                        {
-                                angleToBeTurned *= -1;
-                                returnValue = DRIVE_BACKWARDS;
-                        }//makes sure wheels rotate the shortest distance
-                }
-        } //the if statement means the wheels won't have to turn over 90 degrees
-
 
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
