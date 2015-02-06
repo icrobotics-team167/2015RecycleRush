@@ -145,7 +145,11 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
          }	//spins the motors until the wheels point in the right direction and stops drive motors
 
          else
-                 return returnValue;
+         {
+        	 rotateTalon1->Set(0);
+        	 return returnValue;
+         }
+
 }
 
 SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
@@ -198,7 +202,11 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
          }	//spins the motors until the wheels point in the right direction and stops drive motors
 
          else
-                 return returnValue;
+         {
+        	 rotateTalon2->Set(0);
+        	 return returnValue;
+         }
+
 }
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)
