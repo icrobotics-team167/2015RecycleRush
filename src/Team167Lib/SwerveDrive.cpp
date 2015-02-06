@@ -100,7 +100,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
 		SwerveState returnValue = DRIVE_FORWARDS;
 
         // always rotate the wheels at maximum speed
-        double rotateWheelSpeed = 1.0;
+        double rotateWheelSpeed1 = 0.5;
         //we assume that when (rotateWheelSpeed == 1.0) the wheels will
         //rotate in a counterclockwise direction
 
@@ -115,7 +115,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
         {
                 if ((abs(angleToBeTurned - angle) % 360) > 270)
                         //makes wheels rotate towards the original angle if they're closer to that
-                                rotateWheelSpeed *= -1;
+                                rotateWheelSpeed1 *= -1;
                 else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
                 {
                         angleToBeTurned = -(180 - angleToBeTurned) % 360;
@@ -136,7 +136,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
 
         if (currentPosition > (targetPosition + ENCODER_ERROR_AMOUNT) || currentPosition < (targetPosition - ENCODER_ERROR_AMOUNT))
         {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
-                 rotateTalon1->Set(rotateWheelSpeed);
+                 rotateTalon1->Set(rotateWheelSpeed1);
                  talon1->Set(0);
                  talon2->Set(0);
                  talon3->Set(0);
@@ -153,7 +153,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
 		SwerveState returnValue = DRIVE_FORWARDS;
 
         // always rotate the wheels at maximum speed
-        double rotateWheelSpeed = 1.0;
+        double rotateWheelSpeed2 = 0.5;
         //we assume that when (rotateWheelSpeed == 1.0) the wheels will
         //rotate in a counterclockwise direction
 
@@ -168,7 +168,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
         {
                 if ((abs(angleToBeTurned - angle) % 360) > 270)
                         //makes wheels rotate towards the original angle if they're closer to that
-                                rotateWheelSpeed *= -1;
+                                rotateWheelSpeed2 *= -1;
                 else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
                 {
                         angleToBeTurned = -(180 - angleToBeTurned) % 360;
@@ -189,7 +189,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
 
         if (currentPosition > (targetPosition + ENCODER_ERROR_AMOUNT) || currentPosition < (targetPosition - ENCODER_ERROR_AMOUNT))
         {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
-                 rotateTalon2->Set(rotateWheelSpeed);
+                 rotateTalon2->Set(rotateWheelSpeed2);
                  talon1->Set(0);
                  talon2->Set(0);
                  talon3->Set(0);
