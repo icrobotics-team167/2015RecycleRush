@@ -98,7 +98,7 @@ void Robot::JoystickOne() {
         // get joystick position
         float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
         float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
-        float z = Vector3::GetRotation(x, y);
+        float z = abs(Vector3::GetRotation(x, y) - 90);
 
         float abs_x = abs(x), abs_y = abs(y);
 
