@@ -73,18 +73,16 @@ void SwerveDrive::Drive(int angle, double speed)
                 return;
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
-        SwerveState swerveState1 = TurnRobotFront(angle);
-        SwerveState swerveState2 = TurnRobotBack(angle);
+        SwerveState swerveState1 = TurnRobotFront(angle, speed);
+        SwerveState swerveState2 = TurnRobotBack(angle, speed);
         if (swerveState1 != DRIVE_NOT && swerveState2 != DRIVE_NOT)
         {
-        		double speed1 = speed * ((swerveState1 == DRIVE_FORWARDS) ? 1 : -1);
-        		double speed2 = speed *  ((swerveState2 == DRIVE_FORWARDS) ? 1 : -1);
                 rotateTalon1->Set(0);
                 rotateTalon2->Set(0);
-                talon1->Set(speed1);
-                talon2->Set(speed2);
-                talon3->Set(speed1);
-                talon4->Set(speed2);
+                talon1->Set(speed);
+                talon2->Set(speed);
+                talon3->Set(speed);
+                talon4->Set(speed);
         }	//stops the motors when the wheels are pointing the right way
                 //and tells the drive motors to spin
 
@@ -95,7 +93,7 @@ void SwerveDrive::Stop()
         Drive(-1, 0);
 }
 
-SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
+SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle, double speed)
 {
 		SwerveState returnValue = DRIVE_FORWARDS;
 
@@ -111,22 +109,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
         else
                 angleToBeTurned = (GetFrontWheelAngle() - angle) % 360;
 
-        if (abs(angleToBeTurned - angle) % 360 > 90)
+        if (abs(angleToBeTurned - angle) % 360 > 180)
         {
-                if ((abs(angleToBeTurned - angle) % 360) > 270)
-                        //makes wheels rotate towards the original angle if they're closer to that
                                 rotateWheelSpeed1 *= -1;
-                else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
-                {
-                        angleToBeTurned = -(180 - angleToBeTurned) % 360;
-                        //finds the opposite of the angle needed to be turned relative to the robot
-                        if (angleToBeTurned < 0)
-                        {
-                                angleToBeTurned *= -1;
-                                returnValue = DRIVE_BACKWARDS;
-                        }//makes sure wheels rotate the shortest distance
-                }
-        } //the if statement means the wheels won't have to turn over 90 degrees
+        } //the if statement means the wheels won't have to turn over 180 degrees
 
 
         int distance = angleToBeTurned * rotateEncoderLines / 360;
@@ -137,10 +123,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
         if (currentPosition > (targetPosition + ENCODER_ERROR_AMOUNT) || currentPosition < (targetPosition - ENCODER_ERROR_AMOUNT))
         {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
                  rotateTalon1->Set(rotateWheelSpeed1);
-                 talon1->Set(0);
-                 talon2->Set(0);
-                 talon3->Set(0);
-                 talon4->Set(0);
+                 talon1->Set(speed);
+                 talon2->Set(speed);
+                 talon3->Set(speed);
+                 talon4->Set(speed);
                  return DRIVE_NOT;
          }	//spins the motors until the wheels point in the right direction and stops drive motors
 
@@ -152,7 +138,7 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
 
 }
 
-SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
+SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle, double speed)
 {
 		SwerveState returnValue = DRIVE_FORWARDS;
 
@@ -168,23 +154,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
         else
                 angleToBeTurned = (GetBackWheelAngle() - angle) % 360;
 
-        if (abs(angleToBeTurned - angle) % 360 > 90)
+        if (abs(angleToBeTurned - angle) % 360 > 180)
         {
-                if ((abs(angleToBeTurned - angle) % 360) > 270)
-                        //makes wheels rotate towards the original angle if they're closer to that
-                                rotateWheelSpeed2 *= -1;
-                else	//if the wheels are closer to (180 + angle) than (angle), they turn to (180 + angle)
-                {
-                        angleToBeTurned = -(180 - angleToBeTurned) % 360;
-                        //finds the opposite of the angle needed to be turned relative to the robot
-                        if (angleToBeTurned < 0)
-                        {
-                                angleToBeTurned *= -1;
-                                returnValue = DRIVE_BACKWARDS;
-                        }//makes sure wheels rotate the shortest distance
-                }
-        } //the if statement means the wheels won't have to turn over 90 degrees
-
+        	rotateWheelSpeed2 *= -1;
+        } //the if statement means the wheels won't have to turn over 180 degrees
 
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
@@ -194,10 +167,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
         if (currentPosition > (targetPosition + ENCODER_ERROR_AMOUNT) || currentPosition < (targetPosition - ENCODER_ERROR_AMOUNT))
         {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
                  rotateTalon2->Set(rotateWheelSpeed2);
-                 talon1->Set(0);
-                 talon2->Set(0);
-                 talon3->Set(0);
-                 talon4->Set(0);
+                 talon1->Set(speed);
+                 talon2->Set(speed);
+                 talon3->Set(speed);
+                 talon4->Set(speed);
                  return DRIVE_NOT;
          }	//spins the motors until the wheels point in the right direction and stops drive motors
 
@@ -269,7 +242,8 @@ int SwerveDrive::GetBackWheelAngle()
 
 int SwerveDrive::GetGyroAngle()
 {
-	return (int) (gyro->GetAngle()) % 360;
+	//return (int) (gyro->GetAngle()) % 360;
+	return 0;
 }
 
 int SwerveDrive::ConvertFrontEncoderValue()
