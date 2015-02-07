@@ -6,6 +6,10 @@
  */
 
 #include "SwerveDrive.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
                         int feetToEncLinesR,
@@ -114,7 +118,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
         int currentPosition = ConvertFrontEncoderValue();
-        int targetPosition = distance % rotateEncoderLines;
+        int targetPosition = angle / 360.0 * rotateEncoderLines;
+
+        cout << "front currentPosition = " << currentPosition << endl;
+        cout << "front targetPosition = " << targetPosition << endl;
 
         if (currentPosition > (targetPosition + ENCODER_ERROR_AMOUNT) || currentPosition < (targetPosition - ENCODER_ERROR_AMOUNT))
         {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
@@ -127,7 +134,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotFront(int angle)
          }	//spins the motors until the wheels point in the right direction and stops drive motors
 
          else
-                 return returnValue;
+         {
+        	 rotateTalon1->Set(0);
+        	 return returnValue;
+         }
 }
 
 SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
@@ -149,7 +159,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
         int distance = angleToBeTurned * rotateEncoderLines / 360;
 
         int currentPosition = ConvertBackEncoderValue();
-        int targetPosition = distance % rotateEncoderLines;
+        int targetPosition = angle / 360.0 * rotateEncoderLines;
+
+        cout << "back currentPosition = " << currentPosition << endl;
+        cout << "back targetPosition = " << targetPosition << endl;
 
         if (currentPosition > (targetPosition + ENCODER_ERROR_AMOUNT) || currentPosition < (targetPosition - ENCODER_ERROR_AMOUNT))
         {//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
@@ -162,7 +175,10 @@ SwerveDrive::SwerveState SwerveDrive::TurnRobotBack(int angle)
          }	//spins the motors until the wheels point in the right direction and stops drive motors
 
          else
-                 return returnValue;
+         {
+        	 rotateTalon2->Set(0);
+        	 return returnValue;
+         }
 }
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)
@@ -225,7 +241,8 @@ int SwerveDrive::GetBackWheelAngle()
 
 int SwerveDrive::GetGyroAngle()
 {
-	return (int) (gyro->GetAngle()) % 360;
+	return 0;
+	//return (int) (gyro->GetAngle()) % 360;
 }
 
 int SwerveDrive::ConvertFrontEncoderValue()

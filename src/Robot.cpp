@@ -1,4 +1,8 @@
 #include "Robot.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 Robot::Robot()
 {
@@ -99,6 +103,14 @@ void Robot::JoystickOne() {
         float x = this->RealJoy1->GetAxis(Joystick::kXAxis);
         float y = -this->RealJoy1->GetAxis(Joystick::kYAxis);
         float z = Vector3::GetRotation(x, y);
+        //cout << "z original = " << z << endl;
+        z = abs(z - 90);
+
+        /*
+        cout << "x = " << x << endl;
+        cout << "y = " << y << endl;
+        cout << "z = " << z << endl;
+        */
 
         float abs_x = abs(x), abs_y = abs(y);
 
