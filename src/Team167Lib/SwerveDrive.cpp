@@ -94,7 +94,7 @@ void SwerveDrive::Drive(int angle, double speed)
                  */
 
         RotateRobotFront(angle);
-        RotateRobotBack(angle);
+        //RotateRobotBack(angle);
         talon1->Set(speed);
         talon2->Set(speed);
         talon3->Set(speed);
@@ -108,8 +108,6 @@ void SwerveDrive::Stop()
 
 void SwerveDrive::RotateRobotFront(int angle)
 {
-		SwerveState returnValue = DRIVE_FORWARDS;
-
         // always rotate the wheels at maximum speed
         double rotateWheelSpeed1 = 0.5;
         //we assume that when (rotateWheelSpeed == 1.0) the wheels will
@@ -133,22 +131,33 @@ void SwerveDrive::RotateRobotFront(int angle)
         else
                 desiredAngleRobotRelative = 360 - abs(angle - GetGyroAngle());
 
+        /*
         cout << "currentAngleRobotRelative front = " << currentAngleRobotRelative << endl;
         cout << "desiredAngleRobotRelative front = " << desiredAngleRobotRelative << endl;
-
-        if (desiredAngleRobotRelative >= (currentAngleRobotRelative + 180) % 360)
-        {
-                rotateWheelSpeed1 *= -1;
-        } //the if statement means the wheels won't have to turn over 180 degrees
+        */
 
         int targetPosition = desiredAngleRobotRelative / 360.0 * rotateEncoderLines;
 
+        //make sure wheels won't have to turn over 180 degrees
+        int currentPositionRotated180 = (currentPosition + rotateEncoderLines / 2) % rotateEncoderLines;
+        if (targetPosition <= currentPosition && targetPosition >= currentPositionRotated180)
+        	rotateWheelSpeed1 *= -1;
+
+        /*
+        cout << "rotateWheelSpeed1 = " <<  rotateWheelSpeed1 << endl;
         cout << "currentPosition front = " << currentPosition << endl;
         cout << "targetPosition front = " << targetPosition << endl;
+        */
 
-        if (abs(currentPosition - targetPosition) > ENCODER_ERROR_AMOUNT)
-        	//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
+       	//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
+        int difference = abs(currentPosition - targetPosition);
+        if (difference > ENCODER_ERROR_AMOUNT && rotateEncoderLines - difference > ENCODER_ERROR_AMOUNT)
+        {
+        	cout << "currentPosition = " << currentPosition << endl;
+        	cout << "targetPosition = " << targetPosition << endl;
+        	cout << "so rotate front wheels " << rotateWheelSpeed1 << endl;
         	rotateTalon1->Set(rotateWheelSpeed1);
+        }
         else
         	rotateTalon1->Set(0);
 }
@@ -190,22 +199,35 @@ void SwerveDrive::RotateRobotBack(int angle)
         else
         	desiredAngleRobotRelative = 360 - abs(angle - GetGyroAngle());
 
+        /*
+        cout << "rotateWheelSpeed2 = " <<  rotateWheelSpeed2 << endl;
         cout << "currentAngleRobotRelative back = " << currentAngleRobotRelative << endl;
         cout << "desiredAngleRobotRelative back = " << desiredAngleRobotRelative << endl;
+        */
 
+        //make sure wheels won't have to turn over 180 degrees
         if (desiredAngleRobotRelative >= (currentAngleRobotRelative + 180) % 360 && desiredAngleRobotRelative <= currentAngleRobotRelative)
         {
         	rotateWheelSpeed2 *= -1;
-        } //the if statement means the wheels won't have to turn over 180 degrees
+        }
 
         int targetPosition = desiredAngleRobotRelative / 360.0 * rotateEncoderLines;
 
+        /*
         cout << "currentPosition back = " << currentPosition << endl;
         cout << "targetPosition back = " << targetPosition << endl;
+        */
 
+       	//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
         if (abs(currentPosition - targetPosition) > ENCODER_ERROR_AMOUNT)
-        	//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
+        {
+        	/*
+        	cout << "currentPosition = " << currentPosition << endl;
+        	cout << "targetPosition = " << targetPosition << endl;
+        	cout << "so rotate back wheels " << rotateWheelSpeed2 << endl;
+        	*/
         	rotateTalon2->Set(rotateWheelSpeed2);
+        }
         else
         	rotateTalon2->Set(0);
 }

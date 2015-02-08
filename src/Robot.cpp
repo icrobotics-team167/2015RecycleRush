@@ -88,13 +88,15 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
-
+	swerveWheels->ResetGyro();
+	swerveWheels->ZeroRotateEncoders();
+	swerveWheels->ZeroDriveEncoders();
 }
 
 void Robot::TeleopPeriodic()
 {
         JoystickOne();
-        JoystickTwo();
+        //JoystickTwo();
 }
 
 void Robot::JoystickOne() {
@@ -123,7 +125,7 @@ void Robot::JoystickOne() {
          * we then add 1.0 and divide by 2 to get final voltage percentages from 0.0 (off) at minus position
          * to 1.0 (full throttle) at the plus position
          */
-        double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
+        double throttle_mag = (this->RealJoy1->GetThrottle() * -1.0 + 1.0) / 2.0;
 
 
         double speed = throttle_mag;
@@ -147,11 +149,12 @@ void Robot::JoystickOne() {
         if (turbo)
                 speed *= 1.5;
 
-        cout << "speed = " << speed << endl;
+        //cout << "speed = " << speed << endl;
 
         if (speed > 1.0)
                 speed = 1.0;
 
+        //cout << "z = " << z << endl;
         swerveWheels->Drive(z, speed);
 }
 
