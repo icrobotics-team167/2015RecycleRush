@@ -79,7 +79,7 @@ void Robot::JoystickOne() {
 	* we then add 1.0 and divide by 2 to get final voltage percentages from 0.0 (off) at minus position
 	* to 1.0 (full throttle) at the plus position
 	*/
-	double throttle_mag = (this->RealJoy1->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
+	double throttle_mag = (this->RealJoy1->GetThrottle() * -1.0 + 1.0) / 2.0;
 	SmartDashboard::PutNumber("throttle", throttle_mag);
 	float abs_x = abs(x), abs_y = abs(y);
 	double voltagePercent = throttle_mag;
@@ -100,9 +100,8 @@ void Robot::JoystickOne() {
 	}
 	if (voltagePercent < 0.1)
 	voltagePercent = 0.1;
-	voltagePercent *= 2;
-	if (turbo)
-	voltagePercent *= 1.5;
+	if (!turbo)
+	voltagePercent *= 0.75;
 	if (voltagePercent > 1.0)
 	voltagePercent = 1.0;
 	mechanumWheels->SetVoltagePercent(voltagePercent);
