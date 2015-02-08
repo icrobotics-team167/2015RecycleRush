@@ -1,4 +1,7 @@
 #include "Robot.h"
+#include <iostream>
+using std::cout;
+using std::endl;
 
 Robot::Robot()
 {
@@ -8,10 +11,10 @@ Robot::Robot()
         Joystick2 = new SimpleJoystick(RealJoy2);
 
         // current parameters are just placeholders for actual values
-        elevatorArms = new ElevatorArms(3, 1, 4, 1);
+        elevatorArms = new ElevatorArms(3, 1, 4, 4);
 
-        // current parameters are just placeholders for actual values
-        mechanumWheels = new MechanumDrive(3, 1, 4, 1, 1.0);
+        // current parameters are actual values for the mechanum robot
+        mechanumWheels = new MechanumDrive(7, 1, 9, 2, 1.0);
 
         autoState = PICK_UP_TOTE;
 }
@@ -84,7 +87,10 @@ void Robot::JoystickOne() {
 	{
 	// if we are not turning get the larger of the x and y values of the joystick posistion,
 	// and multiply that by the throttle to get final voltage
-	voltagePercent *= max(abs_x, abs_y);
+	if (abs_x > abs_y)
+		voltagePercent *= throttle_mag * abs_x;
+	else
+		voltagePercent *= throttle_mag * abs_y;
 	}
 	else
 	{
@@ -94,11 +100,14 @@ void Robot::JoystickOne() {
 	}
 	if (voltagePercent < 0.1)
 	voltagePercent = 0.1;
+	voltagePercent *= 2;
 	if (turbo)
 	voltagePercent *= 1.5;
 	if (voltagePercent > 1.0)
 	voltagePercent = 1.0;
 	mechanumWheels->SetVoltagePercent(voltagePercent);
+	cout << "volt" << voltagePercent << endl;
+	cout << "throttle" << throttle_mag << endl;
 	if (Joystick1->Pressed(BUTTON_6))
 	{
 	// rotate right

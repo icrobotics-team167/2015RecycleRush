@@ -12,7 +12,7 @@ MechanumDrive::MechanumDrive(
 		int victor2number,
 		int victor3number,
 		int victor4number,
-		float voltagePercent = 0.0)
+		float voltagePercent)
 {
 Wheels[0] = new Victor(victor1number); //front_left
 Wheels[1] = new Victor(victor2number); //front_right;
@@ -45,45 +45,49 @@ return;
 }
 void MechanumDrive::Forward()
 {
-for (int i = 0; i < 4; i++)
-Wheels[i]->Set(voltage_percent);
+Wheels[0]->Set(voltage_percent);
+Wheels[1]->Set(-voltage_percent);
+Wheels[2]->Set(voltage_percent);
+Wheels[3]->Set(-voltage_percent);
 return;
 }
 void MechanumDrive::Reverse()
 {
-for (int i = 0; i < 4; i++)
-Wheels[i]->Set(-voltage_percent);
+Wheels[0]->Set(-voltage_percent);
+Wheels[1]->Set(voltage_percent);
+Wheels[2]->Set(-voltage_percent);
+Wheels[3]->Set(voltage_percent);
 return;
 }
 void MechanumDrive::Left()
 {
 Wheels[0]->Set(voltage_percent);
 Wheels[2]->Set(-voltage_percent);
-Wheels[1]->Set(-voltage_percent);
-Wheels[3]->Set(voltage_percent);
+Wheels[1]->Set(voltage_percent);
+Wheels[3]->Set(-voltage_percent);
 return;
 }
 void MechanumDrive::Right()
 {
 Wheels[0]->Set(-voltage_percent);
 Wheels[2]->Set(voltage_percent);
-Wheels[1]->Set(voltage_percent);
-Wheels[3]->Set(-voltage_percent);
+Wheels[1]->Set(-voltage_percent);
+Wheels[3]->Set(voltage_percent);
 return;
 }
 void MechanumDrive::RotateLeft()
 {
 Wheels[0]->Set(voltage_percent);
+Wheels[1]->Set(voltage_percent);
 Wheels[2]->Set(voltage_percent);
-Wheels[1]->Set(-voltage_percent);
-Wheels[3]->Set(-voltage_percent);
+Wheels[3]->Set(voltage_percent);
 }
 void MechanumDrive::RotateRight()
 {
 Wheels[0]->Set(-voltage_percent);
+Wheels[1]->Set(-voltage_percent);
 Wheels[2]->Set(-voltage_percent);
-Wheels[1]->Set(voltage_percent);
-Wheels[3]->Set(voltage_percent);
+Wheels[3]->Set(-voltage_percent);
 }
 void MechanumDrive::ForwardLeft()
 {
