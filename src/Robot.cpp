@@ -1,4 +1,8 @@
 #include "Robot.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 Robot::Robot()
 {
@@ -11,7 +15,7 @@ Robot::Robot()
         elevatorArms = new ElevatorArms(3, 1, 4, 1);
 
         // current parameters are just placeholders for actual values
-        swerveWheels = new SwerveDrive(2000, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
+        swerveWheels = new SwerveDrive(1988, 250, 0.00420921055, 4, 1, 0, 5, 6, 2, 3);
 
         autoState = PICK_UP_TOTE;
 }
@@ -142,6 +146,8 @@ void Robot::JoystickOne() {
 
         if (turbo)
                 speed *= 1.5;
+
+        cout << "speed = " << speed << endl;
 
         if (speed > 1.0)
                 speed = 1.0;

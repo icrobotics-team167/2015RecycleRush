@@ -42,12 +42,14 @@ public:
 
 	void Drive(int angle, double speed);
 	void Stop();
-	SwerveState TurnRobotFront(int angle, double speed);
-	SwerveState TurnRobotBack(int angle, double speed);
+	void RotateRobotFront(int angle);
+	void RotateRobotBack(int angle);
 	bool DriveACertainDistance(double feet, double speed);
 	void RotateRobot(bool clockwise, double speed);
-	int GetFrontWheelAngle();
-	int GetBackWheelAngle();
+	int GetFrontWheelAngleRobotRelative();
+	int GetBackWheelAngleRobotRelative();
+	int GetFrontWheelAngleFieldRelative();
+	int GetBackWheelAngleFieldRelative();
 	int GetGyroAngle();
 	int ConvertFrontEncoderValue();
 	int ConvertBackEncoderValue();
