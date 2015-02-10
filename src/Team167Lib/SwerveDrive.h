@@ -13,7 +13,7 @@
 class SwerveDrive
 {
 private:
-	static const int ENCODER_ERROR_AMOUNT = 200;
+	static const int ENCODER_ERROR_AMOUNT = 150;
 	enum SwerveState { DRIVE_NOT, DRIVE_FORWARDS, DRIVE_BACKWARDS };
 	int rotateEncoderLines;
 	int driveEncoderLines;
@@ -42,12 +42,17 @@ public:
 
 	void Drive(int angle, double speed);
 	void Stop();
-	SwerveState TurnRobot(int angle);
+	void RotateRobotFront(int angle);
+	void RotateRobotBack(int angle);
 	bool DriveACertainDistance(double feet, double speed);
 	void RotateRobot(bool clockwise, double speed);
-	int GetWheelAngle();
+	int GetFrontWheelAngleRobotRelative();
+	int GetBackWheelAngleRobotRelative();
+	int GetFrontWheelAngleFieldRelative();
+	int GetBackWheelAngleFieldRelative();
 	int GetGyroAngle();
-	int ConvertEncoderValue();
+	int ConvertFrontEncoderValue();
+	int ConvertBackEncoderValue();
 	void ZeroRotateEncoders();
 	void ZeroDriveEncoders();
 	void ResetGyro();
