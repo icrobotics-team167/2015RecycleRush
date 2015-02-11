@@ -28,6 +28,13 @@ SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
         rotateTalon1 = new CANTalon(rotateTalon1Number);
         rotateTalon2 = new CANTalon(rotateTalon2Number);
 
+        rotateTalon1->SetControlMode(CANSpeedController::kPosition);
+        rotateTalon2->SetControlMode(CANSpeedController::kPosition);
+        rotateTalon1->SetFeedbackDevice(CANTalon::QuadEncoder);
+        rotateTalon2->SetFeedbackDevice(CANTalon::QuadEncoder);
+        rotateTalon1->SetPID(1.0, 0.0, 0.0);
+        rotateTalon2->SetPID(1.0, 0.0, 0.0);
+
         talon1 = new CANTalon(talon1Number);
         talon2 = new CANTalon(talon2Number);
         talon3 = new CANTalon(talon3Number);
@@ -131,35 +138,13 @@ void SwerveDrive::RotateRobotFront(int angle)
         else
                 desiredAngleRobotRelative = 360 - abs(angle - GetGyroAngle());
 
-        /*
-        cout << "currentAngleRobotRelative front = " << currentAngleRobotRelative << endl;
-        cout << "desiredAngleRobotRelative front = " << desiredAngleRobotRelative << endl;
-        */
 
-        int targetPosition = desiredAngleRobotRelative / 360.0 * rotateEncoderLines;
+        desiredAngleRobotRelative = (int) ((double) desiredAngleRobotRelative * rotateEncoderLines / 360.0);
 
-        //make sure wheels won't have to turn over 180 degrees
-        int currentPositionRotated180 = (currentPosition + rotateEncoderLines / 2) % rotateEncoderLines;
-        if (targetPosition <= currentPosition && targetPosition >= currentPositionRotated180)
-        	rotateWheelSpeed1 *= -1;
+        rotateTalon1->Set(desiredAngleRobotRelative);
 
-        /*
-        cout << "rotateWheelSpeed1 = " <<  rotateWheelSpeed1 << endl;
-        cout << "currentPosition front = " << currentPosition << endl;
-        cout << "targetPosition front = " << targetPosition << endl;
-        */
 
-       	//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
-        int difference = abs(currentPosition - targetPosition);
-        if (difference > ENCODER_ERROR_AMOUNT && rotateEncoderLines - difference > ENCODER_ERROR_AMOUNT)
-        {
-        	cout << "currentPosition = " << currentPosition << endl;
-        	cout << "targetPosition = " << targetPosition << endl;
-        	cout << "so rotate front wheels " << rotateWheelSpeed1 << endl;
-        	rotateTalon1->Set(rotateWheelSpeed1);
-        }
-        else
-        	rotateTalon1->Set(0);
+
 }
 
 void SwerveDrive::RotateRobotBack(int angle)
@@ -199,37 +184,9 @@ void SwerveDrive::RotateRobotBack(int angle)
         else
         	desiredAngleRobotRelative = 360 - abs(angle - GetGyroAngle());
 
-        /*
-        cout << "rotateWheelSpeed2 = " <<  rotateWheelSpeed2 << endl;
-        cout << "currentAngleRobotRelative back = " << currentAngleRobotRelative << endl;
-        cout << "desiredAngleRobotRelative back = " << desiredAngleRobotRelative << endl;
-        */
+        desiredAngleRobotRelative = (int) ((double) desiredAngleRobotRelative * rotateEncoderLines / 360.0);
 
-        //make sure wheels won't have to turn over 180 degrees
-        if (desiredAngleRobotRelative >= (currentAngleRobotRelative + 180) % 360 && desiredAngleRobotRelative <= currentAngleRobotRelative)
-        {
-        	rotateWheelSpeed2 *= -1;
-        }
-
-        int targetPosition = desiredAngleRobotRelative / 360.0 * rotateEncoderLines;
-
-        /*
-        cout << "currentPosition back = " << currentPosition << endl;
-        cout << "targetPosition back = " << targetPosition << endl;
-        */
-
-       	//the if statement doesn't use == because that level of precision is practically unattainable for the 'bot
-        if (abs(currentPosition - targetPosition) > ENCODER_ERROR_AMOUNT)
-        {
-        	/*
-        	cout << "currentPosition = " << currentPosition << endl;
-        	cout << "targetPosition = " << targetPosition << endl;
-        	cout << "so rotate back wheels " << rotateWheelSpeed2 << endl;
-        	*/
-        	rotateTalon2->Set(rotateWheelSpeed2);
-        }
-        else
-        	rotateTalon2->Set(0);
+        rotateTalon2->Set(desiredAngleRobotRelative);
 }
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)
