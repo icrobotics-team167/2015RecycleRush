@@ -126,6 +126,9 @@ void SwerveDrive::RotateRobotFront(int angle)
         int rotations = rotateTalon1->GetEncPosition() / rotateEncoderLines;
         desiredPosition += (rotations * rotateEncoderLines);
 
+        cout << "ROTATETALON1 SPEED: " << rotateTalon1->GetSpeed() << endl;
+        SmartDashboard::PutNumber("RotateTalon1 Speed", rotateTalon1->GetSpeed());
+
         rotateTalon1->Set(desiredPosition);
 
 }
