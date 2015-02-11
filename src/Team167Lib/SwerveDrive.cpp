@@ -79,8 +79,8 @@ void SwerveDrive::Drive(int angle, double speed)
                 talon2->Set(0);
                 talon3->Set(0);
                 talon4->Set(0);
-                rotateTalon1->Set(0);
-                rotateTalon2->Set(0);
+                rotateTalon1->StopMotor();
+                rotateTalon2->StopMotor();
                 return;
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
