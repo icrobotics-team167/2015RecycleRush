@@ -32,8 +32,13 @@ SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
         rotateTalon2->SetControlMode(CANSpeedController::kPosition);
         rotateTalon1->SetFeedbackDevice(CANTalon::QuadEncoder);
         rotateTalon2->SetFeedbackDevice(CANTalon::QuadEncoder);
-        rotateTalon1->SetPID(1.0, 0.0, 0.0);
-        rotateTalon2->SetPID(0.100, 0.0, 0.0);
+        rotateTalon1->SetPID(1.0, 0.001, 0.1);
+        rotateTalon2->SetPID(1.0, 0.001, 0.1);
+        rotateTalon1->EnableControl();
+        rotateTalon2->EnableControl();
+        rotateTalon1->SetSensorDirection(true);
+        rotateTalon2->SetSensorDirection(true);
+
 
         talon1 = new CANTalon(talon1Number);
         talon2 = new CANTalon(talon2Number);
@@ -84,23 +89,9 @@ void SwerveDrive::Drive(int angle, double speed)
                 return;
         } // If they joystick is in neutral position or the speed is zero, do nothing.
 
-        /*
-        SwerveState swerveState1 = TurnRobotFront(angle, speed);
-        SwerveState swerveState2 = TurnRobotBack(angle, speed);
-        if (swerveState1 != DRIVE_NOT && swerveState2 != DRIVE_NOT)
-        {
-                rotateTalon1->Set(0);
-                rotateTalon2->Set(0);
-                talon1->Set(speed);
-                talon2->Set(speed);
-                talon3->Set(speed);
-                talon4->Set(speed);
-        }	//stops the motors when the wheels are pointing the right way
-                //and tells the drive motors to spin
+        EnableTurnMotors();
 
-                 */
-
-        //RotateRobotFront(angle);
+        RotateRobotFront(angle);
         RotateRobotBack(angle);
         talon1->Set(speed);
         talon2->Set(speed);
@@ -126,10 +117,14 @@ void SwerveDrive::RotateRobotFront(int angle)
         int rotations = rotateTalon1->GetEncPosition() / rotateEncoderLines;
         desiredPosition += (rotations * rotateEncoderLines);
 
+        rotateTalon1->Set(-desiredPosition);
+
         cout << "ROTATETALON1 SPEED: " << rotateTalon1->GetSpeed() << endl;
         SmartDashboard::PutNumber("RotateTalon1 Speed", rotateTalon1->GetSpeed());
+        SmartDashboard::PutNumber("RotateTalon1 Enc", rotateTalon1->GetEncPosition());
+        SmartDashboard::PutNumber("target1", rotateTalon1->GetSetpoint());
 
-        rotateTalon1->Set(desiredPosition);
+
 
 }
 
@@ -146,10 +141,15 @@ void SwerveDrive::RotateRobotBack(int angle)
         int rotations = rotateTalon1->GetEncPosition() / rotateEncoderLines;
         desiredPosition += (rotations * rotateEncoderLines);
 
+        rotateTalon2->Set(-desiredPosition);
+
         cout << "ROTATETALON2 SPEED: " << rotateTalon2->GetSpeed() << endl;
         SmartDashboard::PutNumber("RotateTalon2 Speed", rotateTalon2->GetSpeed());
+        SmartDashboard::PutNumber("RotateTalon2 Enc", rotateTalon2->GetEncPosition());
+        SmartDashboard::PutNumber("target2", rotateTalon2->GetSetpoint());
+        SmartDashboard::PutNumber("desired", desiredPosition);
 
-        rotateTalon2->Set(desiredPosition);
+
 }
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)
@@ -261,4 +261,10 @@ void SwerveDrive::ZeroDriveEncoders()
 void SwerveDrive::ResetGyro()
 {
 	gyro->InitGyro();
+}
+
+void SwerveDrive::EnableTurnMotors()
+{
+    rotateTalon1->EnableControl();
+    rotateTalon2->EnableControl();
 }

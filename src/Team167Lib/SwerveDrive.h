@@ -56,5 +56,6 @@ public:
 	void ZeroRotateEncoders();
 	void ZeroDriveEncoders();
 	void ResetGyro();
+	void EnableTurnMotors();
 };
 #endif /* SRC_TEAM167LIB_SWERVEDRIVE_H_ */

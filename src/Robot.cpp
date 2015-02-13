@@ -57,6 +57,7 @@ void Robot::TeleopInit()
 	swerveWheels->ResetGyro();
 	swerveWheels->ZeroRotateEncoders();
 	swerveWheels->ZeroDriveEncoders();
+	swerveWheels->EnableTurnMotors();
 }
 
 void Robot::TeleopPeriodic()
