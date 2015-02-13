@@ -33,7 +33,7 @@ SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
         rotateTalon1->SetFeedbackDevice(CANTalon::QuadEncoder);
         rotateTalon2->SetFeedbackDevice(CANTalon::QuadEncoder);
         rotateTalon1->SetPID(1.0, 0.0, 0.0);
-        rotateTalon2->SetPID(1.0, 0.0, 0.0);
+        rotateTalon2->SetPID(0.100, 0.0, 0.0);
 
         talon1 = new CANTalon(talon1Number);
         talon2 = new CANTalon(talon2Number);
@@ -100,8 +100,8 @@ void SwerveDrive::Drive(int angle, double speed)
 
                  */
 
-        RotateRobotFront(angle);
-        //RotateRobotBack(angle);
+        //RotateRobotFront(angle);
+        RotateRobotBack(angle);
         talon1->Set(speed);
         talon2->Set(speed);
         talon3->Set(speed);
@@ -142,6 +142,12 @@ void SwerveDrive::RotateRobotBack(int angle)
         	desiredAngleRobotRelative = 360 - abs(angle - GetGyroAngle());
 
         int desiredPosition = (int) ((double) desiredAngleRobotRelative * rotateEncoderLines / 360.0);
+
+        int rotations = rotateTalon1->GetEncPosition() / rotateEncoderLines;
+        desiredPosition += (rotations * rotateEncoderLines);
+
+        cout << "ROTATETALON2 SPEED: " << rotateTalon2->GetSpeed() << endl;
+        SmartDashboard::PutNumber("RotateTalon2 Speed", rotateTalon2->GetSpeed());
 
         rotateTalon2->Set(desiredPosition);
 }
