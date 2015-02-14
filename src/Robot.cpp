@@ -113,6 +113,8 @@ void Robot::AutonomousPeriodic()
 			elevatorArms->StopElevator();
 			elevatorArms->Stop();
 			mechanumWheels->Stop();
+
+			break;
 		}
 
 		default:
@@ -124,6 +126,8 @@ void Robot::AutonomousPeriodic()
 			elevatorArms->StopElevator();
 			elevatorArms->Stop();
 			mechanumWheels->Stop();
+
+			break;
 		}
 	}
 }
