@@ -41,6 +41,9 @@ public:
 	void TeleopPeriodic();
 	void JoystickOne();
 	void JoystickTwo();
+
+	// Autonomous routings
+	void PickUpToteAndDrive();
 };
 
 
