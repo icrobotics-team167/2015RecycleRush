@@ -15,6 +15,8 @@ Robot::Robot()
 
 	// current parameters are actual values for the mechanum robot
 	mechanumWheels = new MechanumDrive(7, 1, 9, 2, 1.0);
+
+	autoStage = START;
 }
 
 Robot::~Robot()
@@ -34,12 +36,85 @@ void Robot::RobotInit()
 
 void Robot::AutonomousInit()
 {
-	autoPilot = new AutoPilot(this);
+	autoStage = START;
+	AutoRaiseArmsTimer.Stop();
+	AutoRaiseArmsTimer.Reset();
+	AutoDriveTimer.Stop();
+	AutoDriveTimer.Reset();
 }
 
 void Robot::AutonomousPeriodic()
 {
-	autoPilot.Drive();
+	switch (autoStage)
+	{
+		case START:
+		{
+			mechanumWheels->SetVoltagePercent(0.7);
+			autoStage = GRAB_STUFF;
+			break;
+		}
+
+		case GRAB_STUFF:
+		{
+			elevatorArms->Close();
+			autoStage = RAISE_STUFF;
+			break;
+		}
+
+		case RAISE_STUFF:
+		{
+			if (AutoRaiseArmsTimer.Get() < 2)
+			{
+				if (AutoRaiseArmsTimer.Get() == 0)
+					AutoRaiseArmsTimer.Start();
+
+				elevatorArms->Raise(1.0);
+			}
+			else
+			{
+				elevatorArms->StopElevator();
+				elevatorArms->Stop();
+				AutoRaiseArmsTimer.Stop();
+				AutoRaiseArmsTimer.Reset();
+
+				autoStage = MOVE_STUFF_RIGHT;
+			}
+
+			break;
+		}
+
+		case MOVE_STUFF_RIGHT:
+		{
+			if (AutoDriveTimer.Get() < 3)
+			{
+				if (AutoDriveTimer.Get() == 0)
+					AutoDriveTimer.Start();
+
+				mechanumWheels->Right();
+			}
+			else
+			{
+				mechanumWheels->Stop();
+				AutoDriveTimer.Stop();
+				AutoDriveTimer.Reset();
+
+				autoStage = MOVE_STUFF_RIGHT;
+			}
+
+			break;
+		}
+
+		default:
+		{
+			AutoRaiseArmsTimer.Stop();
+			AutoRaiseArmsTimer.Reset();
+			AutoDriveTimer.Stop();
+			AutoDriveTimer.Reset();
+			elevatorArms->StopElevator();
+			elevatorArms->Stop();
+			mechanumWheels->Stop();
+		}
+	}
 }
 
 void Robot::TeleopInit()

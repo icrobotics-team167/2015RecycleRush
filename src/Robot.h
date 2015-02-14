@@ -8,13 +8,15 @@
 #ifndef SRC_ROBOT_H_
 #define SRC_ROBOT_H_
 
-
+#include <Timer.h>
 #include "Team167Lib/Team167Lib.h"
 #include "ElevatorArms.h"
 
 class Robot: public IterativeRobot
 {
 private:
+	enum DrivingStage {START, GRAB_STUFF, RAISE_STUFF, MOVE_STUFF_RIGHT};
+
 	Joystick *RealJoy1;
 	Joystick *RealJoy2;
 	SimpleJoystick *Joystick1;
@@ -22,7 +24,11 @@ private:
 
 	MechanumDrive *mechanumWheels;
 	ElevatorArms *elevatorArms;
-	AutoPilot autoPilot;
+
+	DrivingStage autoStage;
+
+	Timer AutoRaiseArmsTimer;
+	Timer AutoDriveTimer;
 
 public:
 	Robot();
