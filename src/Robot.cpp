@@ -5,13 +5,13 @@ using std::endl;
 
 Robot::Robot()
 {
-	RealJoy1 = new Joystick(1);
-	RealJoy2 = new Joystick(2);
+	RealJoy1 = new Joystick(0);
+	RealJoy2 = new Joystick(1);
 	Joystick1 = new SimpleJoystick(RealJoy1);
 	Joystick2 = new SimpleJoystick(RealJoy2);
 
 	// current parameters are just placeholders for actual values
-	elevatorArms = new ElevatorArms(3, 1, 4, 4);
+	elevatorArms = new ElevatorArms(3, 1, 0, 4);
 
 	// current parameters are actual values for the mechanum robot
 	mechanumWheels = new MechanumDrive(7, 1, 9, 2, 1.0);
@@ -164,10 +164,14 @@ void Robot::JoystickOne() {
 void Robot::JoystickTwo() {
 	// Joy2 Control Code
 
+	this->Joystick2->Update();
+
 	float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
-	double throttle_mag2 = (this->RealJoy2->GetRawAxis(4) * -1.0 + 1.0) / 2.0;
-	float abs_y2 = abs(y2);
-	float armSpeed = throttle_mag2 * abs_y2;
+	double throttle_mag2 = (this->RealJoy2->GetThrottle() * -1.0 + 1.0) / 2.0;
+	float armSpeed = throttle_mag2 * y2;
+
+	SmartDashboard::PutNumber("y2", y2);
+	SmartDashboard::PutNumber("armspeed", armSpeed);
 
 	if (armSpeed < 0)
         elevatorArms->Raise(armSpeed);
@@ -186,15 +190,25 @@ void Robot::JoystickTwo() {
 	if ((!open && !close) || (open && close))
         elevatorArms->Stop();*/
 
+	/*
 	if (Joystick2->Toggled(BUTTON_1))                                        // Trigger - Open all
         elevatorArms->Close();
 	else
 	{
+		elevatorArms->Open();
         if (Joystick2->Toggled(BUTTON_8))
 			elevatorArms->Close();                                                // Button 7/8 - Open/close piston 1
         else if (Joystick2->Toggled(BUTTON_7))
 			elevatorArms->Open();
 	}
+	*/
+
+	if (Joystick2->Pressed(BUTTON_8))
+		elevatorArms->Open();
+	else if (Joystick2->Pressed(BUTTON_7))
+		elevatorArms->Close();
+	else
+		elevatorArms->Stop();
 }
 
 START_ROBOT_CLASS(Robot);

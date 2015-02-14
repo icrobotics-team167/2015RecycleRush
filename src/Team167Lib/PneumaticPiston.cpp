@@ -26,8 +26,8 @@ PneumaticPiston::~PneumaticPiston()
  */
 void PneumaticPiston::Extend()
 {
-        sol->Set(DoubleSolenoid::kForward);
-        comp->Start();
+        sol->Set(DoubleSolenoid::kReverse);
+        //comp->Start();
 }
 
 /*
@@ -35,8 +35,8 @@ void PneumaticPiston::Extend()
  */
 void PneumaticPiston::Retract()
 {
-        sol->Set(DoubleSolenoid::kReverse);
-        comp->Start();
+        sol->Set(DoubleSolenoid::kForward);
+        //comp->Start();
 }
 
 /*
@@ -45,5 +45,5 @@ void PneumaticPiston::Retract()
 void PneumaticPiston::ForceStop()
 {
         sol->Set(DoubleSolenoid::kOff);
-        comp->Stop();
+        //comp->Stop();
 }
