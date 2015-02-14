@@ -15,6 +15,7 @@ Robot::Robot()
 
 	// current parameters are actual values for the mechanum robot
 	mechanumWheels = new MechanumDrive(7, 1, 9, 2, 1.0);
+	//prevJoyState = false;
 }
 
 Robot::~Robot()
@@ -203,9 +204,25 @@ void Robot::JoystickTwo() {
 	}
 	*/
 
-	if (Joystick2->Pressed(BUTTON_8))
+	/*
+	if (Joystick2->Toggled(BUTTON_1) != prevJoyState)
+	{
+		if (Joystick2->Toggled(BUTTON_1)) {
+			if (elevatorArms->ArmsClosed())
+				elevatorArms->Open();
+			else
+				elevatorArms->Close();
+		}
+
+		prevJoyState = Joystick2->Toggled(BUTTON_1);
+	}
+	else
+		elevatorArms->Stop();
+	*/
+
+	if (Joystick2->Released(BUTTON_1) && elevatorArms->ArmsClosed())
 		elevatorArms->Open();
-	else if (Joystick2->Pressed(BUTTON_7))
+	else if (Joystick2->Released(BUTTON_1) && !elevatorArms->ArmsClosed())
 		elevatorArms->Close();
 	else
 		elevatorArms->Stop();

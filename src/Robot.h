@@ -22,6 +22,7 @@ private:
 
 	MechanumDrive *mechanumWheels;
 	ElevatorArms *elevatorArms;
+	//bool prevJoyState;
 
 public:
 	Robot();

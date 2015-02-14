@@ -15,6 +15,7 @@ ElevatorArms::ElevatorArms(int compressorIndex,
 	piston1 = new PneumaticPiston(compressorIndex, solenoidIndex1_1, solenoidIndex1_2);
 	talon = new Talon(talonPWMchannel);
 
+	armsClosed = false;
 }
 
 ElevatorArms::~ElevatorArms()
@@ -41,11 +42,13 @@ void ElevatorArms::StopElevator()
 void ElevatorArms::Open()
 {
 	piston1->Extend();
+	armsClosed = false;
 }
 
 void ElevatorArms::Close()
 {
 	piston1->Retract();
+	armsClosed = true;
 }
 
 void ElevatorArms::Stop()
