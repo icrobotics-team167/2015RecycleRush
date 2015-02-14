@@ -15,6 +15,7 @@ class ElevatorArms
 private:
 	PneumaticPiston *piston1;
 	Talon *talon;
+	bool armsClosed;
 
 public:
 	ElevatorArms(int compressorIndex,
@@ -27,7 +28,8 @@ public:
 	void StopElevator();
 	void Open();
 	void Close();
-	void Stop();;
+	void Stop();
+	bool ArmsClosed() { return armsClosed; };
 };
 
 

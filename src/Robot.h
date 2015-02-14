@@ -24,6 +24,7 @@ private:
 
 	MechanumDrive *mechanumWheels;
 	ElevatorArms *elevatorArms;
+	//bool prevJoyState;
 
 	DrivingStage autoStage;
 
