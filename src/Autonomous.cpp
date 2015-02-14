@@ -9,26 +9,18 @@
 
 bool Robot::PickUpTote()
 {
-        elevatorArms->Close();
-        elevatorArms->Raise(1.0)
-        mechanumWheels->Right();
-        if (done)
-                elevatorArms->Open();
-        return done;
+	elevatorArms->Close();
+	elevatorArms->Raise(1.0);
+	mechanumWheels->Right();
 }
 
 void Robot::Stop()
 {
-        swerveWheels->Stop();
-        elevatorArms->Stop();
+	mechanumWheels->Stop();
+	elevatorArms->Stop();
 }
 
-bool Robot::DriveForward(double distance)
-{
-        return swerveWheels->DriveACertainDistance(distance, 1.0); //drive 8.92 feet and at speed 1.0 (full speed)
-}
-
-void Robot::StackBin ()
+void Robot::StackBin()
 {
 	elevatorArms->Raise(1.0);
 	elevatorArms->Open();
@@ -36,14 +28,7 @@ void Robot::StackBin ()
 	elevatorArms->Stop();
 }
 
-bool Robot::Turn(int angle)
+void Robot::RotateLeft()
 {
-	return swerveWheels->TurnRobot(angle);
-}
-
-bool Robot::Rotate(int gyroAngle, bool clockwise)
-{
-	swerveWheels->RotateRobot(clockwise, 1.0);
-	return swerveWheels->GetGyroAngle();
 
 }

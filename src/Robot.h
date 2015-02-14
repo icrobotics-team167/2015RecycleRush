@@ -36,10 +36,10 @@ public:
 	void TeleopPeriodic();
 	void JoystickOne();
 	void JoystickTwo();
-	void PickUpTote();
+	bool PickUpTote();
 	void Stop();
-	void DriveForward();
 	void StackBin();
+	void RotateLeft();
 };
 
 
