@@ -15,7 +15,6 @@
 class Robot: public IterativeRobot
 {
 private:
-	enum AutonomousState { PICK_UP_TOTE, STOP, DRIVE_FORWARD };
 	Joystick *RealJoy1;
 	Joystick *RealJoy2;
 	SimpleJoystick *Joystick1;
@@ -23,7 +22,6 @@ private:
 
 	MechanumDrive *mechanumWheels;
 	ElevatorArms *elevatorArms;
-	AutonomousState autoState;
 
 public:
 	Robot();
@@ -36,10 +34,6 @@ public:
 	void TeleopPeriodic();
 	void JoystickOne();
 	void JoystickTwo();
-	void PickUpTote();
-	void Stop();
-	void DriveForward();
-	void StackBin();
 };
 
 
