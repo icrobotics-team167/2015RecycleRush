@@ -13,8 +13,23 @@ void Robot::PickUpToteAndDrive()
 
 		case GRAB_STUFF:
 		{
-			elevatorArms->Close();
-			autoStage = RAISE_STUFF;
+			if (AutonomousTimer.Get() < 0.5)
+			{
+				if (AutonomousTimer.Get() == 0)
+					AutonomousTimer.Start();
+
+				elevatorArms->Close();
+			}
+			else
+			{
+				elevatorArms->StopElevator();
+				elevatorArms->Stop();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
+
+				autoStage = RAISE_STUFF;
+			}
+
 			break;
 		}
 
@@ -42,12 +57,12 @@ void Robot::PickUpToteAndDrive()
 
 		case MOVE_STUFF_RIGHT:
 		{
-			if (AutonomousTimer.Get() < 3)
+			if (AutonomousTimer.Get() < 4)
 			{
 				if (AutonomousTimer.Get() == 0)
 					AutonomousTimer.Start();
 
-				mechanumWheels->Right();
+				mechanumWheels->Left();
 			}
 			else
 			{

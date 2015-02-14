@@ -26,12 +26,12 @@ ElevatorArms::~ElevatorArms()
 
 void ElevatorArms::Raise(float speed)
 {
-	talon->Set(abs(speed));
+	talon->Set(-abs(speed));
 }
 
 void ElevatorArms::Lower(float speed)
 {
-	talon->Set(-(abs(speed)));
+	talon->Set((abs(speed)));
 }
 
 void ElevatorArms::StopElevator()

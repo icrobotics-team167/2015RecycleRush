@@ -97,9 +97,9 @@ void Robot::JoystickOne() {
 	// if we are not turning get the larger of the x and y values of the joystick posistion,
 	// and multiply that by the throttle to get final voltage
 		if (abs_x > abs_y)
-			voltagePercent *= throttle_mag * abs_x;
+			voltagePercent *= abs_x;
 		else
-			voltagePercent *= throttle_mag * abs_y;
+			voltagePercent *= abs_y;
 	}
 	else
 	{
@@ -179,9 +179,9 @@ void Robot::JoystickTwo() {
 	SmartDashboard::PutNumber("armspeed", armSpeed);
 
 	if (armSpeed < 0)
-        elevatorArms->Raise(armSpeed);
-	else
         elevatorArms->Lower(armSpeed);
+	else
+        elevatorArms->Raise(armSpeed);
 
 	// Deprecated code
 	/*bool open = Joystick2->Toggled(BUTTON_3);
