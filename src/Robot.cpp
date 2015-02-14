@@ -98,10 +98,21 @@ void Robot::AutonomousPeriodic()
 				AutoDriveTimer.Stop();
 				AutoDriveTimer.Reset();
 
-				autoStage = MOVE_STUFF_RIGHT;
+				autoStage = END;
 			}
 
 			break;
+		}
+
+		case END:
+		{
+			AutoRaiseArmsTimer.Stop();
+			AutoRaiseArmsTimer.Reset();
+			AutoDriveTimer.Stop();
+			AutoDriveTimer.Reset();
+			elevatorArms->StopElevator();
+			elevatorArms->Stop();
+			mechanumWheels->Stop();
 		}
 
 		default:

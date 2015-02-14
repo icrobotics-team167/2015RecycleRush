@@ -15,7 +15,7 @@
 class Robot: public IterativeRobot
 {
 private:
-	enum DrivingStage {START, GRAB_STUFF, RAISE_STUFF, MOVE_STUFF_RIGHT};
+	enum DrivingStage {START, GRAB_STUFF, RAISE_STUFF, MOVE_STUFF_RIGHT, END};
 
 	Joystick *RealJoy1;
 	Joystick *RealJoy2;
