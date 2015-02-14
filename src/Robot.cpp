@@ -15,8 +15,6 @@ Robot::Robot()
 
 	// current parameters are actual values for the mechanum robot
 	mechanumWheels = new MechanumDrive(7, 1, 9, 2, 1.0);
-
-	autoState = PICK_UP_TOTE;
 }
 
 Robot::~Robot()
@@ -36,12 +34,12 @@ void Robot::RobotInit()
 
 void Robot::AutonomousInit()
 {
-
+	autoPilot = new AutoPilot(this);
 }
 
 void Robot::AutonomousPeriodic()
 {
-
+	autoPilot.Drive();
 }
 
 void Robot::TeleopInit()
