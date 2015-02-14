@@ -37,10 +37,8 @@ void Robot::RobotInit()
 void Robot::AutonomousInit()
 {
 	autoStage = START;
-	AutoRaiseArmsTimer.Stop();
-	AutoRaiseArmsTimer.Reset();
-	AutoDriveTimer.Stop();
-	AutoDriveTimer.Reset();
+	AutonomousTimer.Stop();
+	AutonomousTimer.Reset();
 }
 
 void Robot::AutonomousPeriodic()

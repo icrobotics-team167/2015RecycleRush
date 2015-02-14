@@ -15,7 +15,7 @@
 class Robot: public IterativeRobot
 {
 private:
-	enum DrivingStage {START, GRAB_STUFF, RAISE_STUFF, MOVE_STUFF_RIGHT, END};
+	enum DrivingStage {START, GRAB_STUFF, RAISE_STUFF, MOVE_FORWARDS, HOOK_STUFF, MOVE_STUFF_LEFT, MOVE_STUFF_RIGHT, END};
 
 	Joystick *RealJoy1;
 	Joystick *RealJoy2;
@@ -27,8 +27,7 @@ private:
 
 	DrivingStage autoStage;
 
-	Timer AutoRaiseArmsTimer;
-	Timer AutoDriveTimer;
+	Timer AutonomousTimer;
 
 public:
 	Robot();
@@ -42,8 +41,10 @@ public:
 	void JoystickOne();
 	void JoystickTwo();
 
-	// Autonomous routings
+	// Autonomous routines
 	void PickUpToteAndDrive();
+	void PickUpTrashAndTote();
+	void DriveIntoZone();
 };
 
 

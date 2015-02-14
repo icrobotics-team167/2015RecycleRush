@@ -20,10 +20,10 @@ void Robot::PickUpToteAndDrive()
 
 		case RAISE_STUFF:
 		{
-			if (AutoRaiseArmsTimer.Get() < 2)
+			if (AutonomousTimer.Get() < 2)
 			{
-				if (AutoRaiseArmsTimer.Get() == 0)
-					AutoRaiseArmsTimer.Start();
+				if (AutonomousTimer.Get() == 0)
+					AutonomousTimer.Start();
 
 				elevatorArms->Raise(1.0);
 			}
@@ -31,8 +31,8 @@ void Robot::PickUpToteAndDrive()
 			{
 				elevatorArms->StopElevator();
 				elevatorArms->Stop();
-				AutoRaiseArmsTimer.Stop();
-				AutoRaiseArmsTimer.Reset();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
 
 				autoStage = MOVE_STUFF_RIGHT;
 			}
@@ -42,18 +42,18 @@ void Robot::PickUpToteAndDrive()
 
 		case MOVE_STUFF_RIGHT:
 		{
-			if (AutoDriveTimer.Get() < 3)
+			if (AutonomousTimer.Get() < 3)
 			{
-				if (AutoDriveTimer.Get() == 0)
-					AutoDriveTimer.Start();
+				if (AutonomousTimer.Get() == 0)
+					AutonomousTimer.Start();
 
 				mechanumWheels->Right();
 			}
 			else
 			{
 				mechanumWheels->Stop();
-				AutoDriveTimer.Stop();
-				AutoDriveTimer.Reset();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
 
 				autoStage = END;
 			}
@@ -63,10 +63,8 @@ void Robot::PickUpToteAndDrive()
 
 		case END:
 		{
-			AutoRaiseArmsTimer.Stop();
-			AutoRaiseArmsTimer.Reset();
-			AutoDriveTimer.Stop();
-			AutoDriveTimer.Reset();
+			AutonomousTimer.Stop();
+			AutonomousTimer.Reset();
 			elevatorArms->StopElevator();
 			elevatorArms->Stop();
 			mechanumWheels->Stop();
@@ -76,15 +74,153 @@ void Robot::PickUpToteAndDrive()
 
 		default:
 		{
-			AutoRaiseArmsTimer.Stop();
-			AutoRaiseArmsTimer.Reset();
-			AutoDriveTimer.Stop();
-			AutoDriveTimer.Reset();
+			AutonomousTimer.Stop();
+			AutonomousTimer.Reset();
 			elevatorArms->StopElevator();
 			elevatorArms->Stop();
 			mechanumWheels->Stop();
 
 			break;
 		}
+	}
+}
+
+void Robot::PickUpTrashAndTote()
+{
+	switch (autoStage)
+	{
+		case START:
+		{
+			mechanumWheels->SetVoltagePercent(0.7);
+			autoStage = GRAB_STUFF;
+			break;
+		}
+
+		case GRAB_STUFF:
+		{
+			elevatorArms->Close();
+			autoStage = RAISE_STUFF;
+			break;
+		}
+
+		case RAISE_STUFF:
+		{
+			if (AutonomousTimer.Get() < 2)
+			{
+				if (AutonomousTimer.Get() == 0)
+					AutonomousTimer.Start();
+
+				elevatorArms->Raise(1.0);
+			}
+			else
+			{
+				elevatorArms->StopElevator();
+				elevatorArms->Stop();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
+
+				autoStage = MOVE_FORWARDS;
+			}
+
+			break;
+		}
+
+		case MOVE_FORWARDS:
+		{
+			if (AutonomousTimer.Get() < 1) {
+				if (AutonomousTimer.Get() == 0) {
+					AutonomousTimer.Start();
+
+					mechanumWheels->Forward();
+				}
+			}
+			else {
+				mechanumWheels->Stop();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
+
+				autoStage = HOOK_STUFF;
+			}
+
+			break;
+		}
+
+		case HOOK_STUFF:
+		{
+			if (AutonomousTimer.Get() < 1) {
+				if (AutonomousTimer.Get() == 0) {
+					AutonomousTimer.Start();
+
+					elevatorArms->Raise(0.7);
+				}
+			}
+			else {
+				elevatorArms->StopElevator();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
+
+				autoStage = MOVE_STUFF_LEFT;
+			}
+
+			break;
+		}
+
+		case MOVE_STUFF_LEFT:
+		{
+			if (AutonomousTimer.Get() < 3)
+			{
+				if (AutonomousTimer.Get() == 0)
+					AutonomousTimer.Start();
+
+				mechanumWheels->Left();
+			}
+			else
+			{
+				mechanumWheels->Stop();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
+
+				autoStage = END;
+			}
+
+			break;
+		}
+
+		case END:
+		{
+			AutonomousTimer.Stop();
+			AutonomousTimer.Reset();
+			elevatorArms->StopElevator();
+			elevatorArms->Stop();
+			mechanumWheels->Stop();
+
+			break;
+		}
+
+		default:
+		{
+			AutonomousTimer.Stop();
+			AutonomousTimer.Reset();
+			elevatorArms->StopElevator();
+			elevatorArms->Stop();
+			mechanumWheels->Stop();
+
+			break;
+		}
+	}
+}
+
+void Robot::DriveIntoZone() {
+	if (AutonomousTimer.Get() < 3) {
+		if (AutonomousTimer.Get() == 0) {
+			AutonomousTimer.Start();
+		}
+
+		mechanumWheels->Right();
+	}
+	else {
+		mechanumWheels->Stop();
+		AutonomousTimer.Stop();
+		AutonomousTimer.Reset();
 	}
 }
