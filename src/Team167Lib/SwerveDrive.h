@@ -17,7 +17,7 @@ private:
 	enum SwerveState { DRIVE_NOT, DRIVE_FORWARDS, DRIVE_BACKWARDS };
 	int rotateEncoderLines;
 	int driveEncoderLines;
-	int feetToEncoderLinesRatio;
+	double feetToEncoderLinesRatio;
 	int driveDistance;
 	bool finished;
 	CANTalon *rotateTalon1;

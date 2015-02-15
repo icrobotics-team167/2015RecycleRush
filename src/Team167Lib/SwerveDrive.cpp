@@ -12,7 +12,7 @@ using std::cout;
 using std::endl;
 
 SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
-                        int feetToEncLinesR,
+                        double feetToEncLinesR,
                         short rotateTalon1Number,
                         short rotateTalon2Number,
                         short gyroChannel,
