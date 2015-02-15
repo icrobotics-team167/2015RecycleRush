@@ -32,8 +32,10 @@ SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
         rotateTalon2->SetControlMode(CANSpeedController::kPosition);
         rotateTalon1->SetFeedbackDevice(CANTalon::QuadEncoder);
         rotateTalon2->SetFeedbackDevice(CANTalon::QuadEncoder);
-        rotateTalon1->SetPID(1.0, 0.001, 0.1);
-        rotateTalon2->SetPID(1.0, 0.001, 0.1);
+        //rotateTalon1->SetPID(1.0, 0.001, 0.1);
+        //rotateTalon2->SetPID(1.0, 0.001, 0.1);
+        rotateTalon1->SetPID(0.6, 1, 0.09);
+        rotateTalon2->SetPID(0.6, 1, 0.09);
         rotateTalon1->EnableControl();
         rotateTalon2->EnableControl();
         rotateTalon1->SetSensorDirection(true);
