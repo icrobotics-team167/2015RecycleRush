@@ -45,11 +45,15 @@ void Robot::DisabledPeriodic()
 
 void Robot::AutonomousInit()
 {
-
+	swerveWheels->ResetGyro();
+	swerveWheels->ZeroRotateEncoders();
+	swerveWheels->ZeroDriveEncoders();
+	swerveWheels->EnableTurnMotors();
 }
 
 void Robot::AutonomousPeriodic()
 {
+	swerveWheels->DriveACertainDistance(5, 1.0);
 }
 
 void Robot::TeleopInit()

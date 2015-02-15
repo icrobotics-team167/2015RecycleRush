@@ -191,7 +191,7 @@ bool SwerveDrive::DriveACertainDistance(double feet, double speed)
         drivePID3->Set(driveDistance);
         drivePID4->Set(driveDistance);
 
-        if(drivePID1->GetSpeed < 0.1)
+        if(drivePID1->GetSpeed() < 0.1)
         	finished = true;
 
         return finished;
