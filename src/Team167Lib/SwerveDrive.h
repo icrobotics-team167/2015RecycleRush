@@ -26,6 +26,11 @@ private:
 	CANTalon *talon2;
 	CANTalon *talon3;
 	CANTalon *talon4;
+	CANTalon *drivePID1;
+	CANTalon *drivePID2;
+	CANTalon *drivePID3;
+	CANTalon *drivePID4;
+
 	Gyro *gyro;
 
 public:

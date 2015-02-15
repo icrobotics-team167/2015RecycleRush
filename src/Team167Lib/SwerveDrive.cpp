@@ -45,6 +45,27 @@ SwerveDrive::SwerveDrive(int rotateEncLines, int driveEncLines,
         talon3 = new CANTalon(talon3Number);
         talon4 = new CANTalon(talon4Number);
 
+        drivePID1 = new CANTalon(talon1Number);
+        drivePID2 = new CANTalon(talon1Number);
+        drivePID3 = new CANTalon(talon1Number);
+        drivePID4 = new CANTalon(talon1Number);
+        drivePID1->SetControlMode(CANSpeedController::kPosition);
+        drivePID2->SetControlMode(CANSpeedController::kPosition);
+        drivePID3->SetControlMode(CANSpeedController::kPosition);
+        drivePID4->SetControlMode(CANSpeedController::kPosition);
+        drivePID1->SetFeedbackDevice(CANTalon::QuadEncoder);
+        drivePID2->SetFeedbackDevice(CANTalon::QuadEncoder);
+        drivePID3->SetFeedbackDevice(CANTalon::QuadEncoder);
+        drivePID4->SetFeedbackDevice(CANTalon::QuadEncoder);
+        drivePID1->SetPID(1.0, 0.001, 0.1);
+        drivePID2->SetPID(1.0, 0.001, 0.1);
+        drivePID3->SetPID(1.0, 0.001, 0.1);
+        drivePID4->SetPID(1.0, 0.001, 0.1);
+        drivePID1->EnableControl();
+        drivePID2->EnableControl();
+        drivePID3->EnableControl();
+        drivePID4->EnableControl();
+
         gyro = new Gyro(gyroChannel);
         ResetGyro();
 
@@ -154,26 +175,24 @@ void SwerveDrive::RotateRobotBack(int angle)
 
 bool SwerveDrive::DriveACertainDistance(double feet, double speed)
 {
-        if (driveDistance == 0 && finished)
-                        driveDistance = feet / feetToEncoderLinesRatio;
+        if (finished)
+        {
+        	driveDistance = feet / feetToEncoderLinesRatio + talon1->GetEncPosition();
+            drivePID1->EnableControl();
+            drivePID2->EnableControl();
+            drivePID3->EnableControl();
+            drivePID4->EnableControl();
+        }
 
         finished = false;
 
-        int startPosition = talon1->GetEncPosition();
+        drivePID1->Set(driveDistance);
+        drivePID2->Set(driveDistance);
+        drivePID3->Set(driveDistance);
+        drivePID4->Set(driveDistance);
 
-        talon1->Set(speed);
-        talon2->Set(speed);
-        talon3->Set(speed);
-        talon4->Set(speed);
-
-        int endPosition = talon1->GetEncPosition();
-
-        driveDistance = driveDistance - abs(endPosition - startPosition);
-        if (driveDistance <= 0)
-        {
-                finished = true;
-                driveDistance = 0;
-        }
+        if(drivePID1->GetSpeed < 0.1)
+        	finished = true;
 
         return finished;
 }
