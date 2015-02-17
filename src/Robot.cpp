@@ -11,7 +11,7 @@ Robot::Robot()
 	Joystick2 = new SimpleJoystick(RealJoy2);
 
 	// current parameters are just placeholders for actual values
-	elevatorArms = new ElevatorArms(3, 1, 0, 4);
+	elevatorArms = new ElevatorArms(1, 0, 4);
 
 	// current parameters are actual values for the mechanum robot
 	mechanumWheels = new MechanumDrive(7, 1, 9, 2, 1.0);
@@ -174,8 +174,6 @@ void Robot::JoystickTwo() {
 	float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
 	double throttle_mag2 = (this->RealJoy2->GetThrottle() * -1.0 + 1.0) / 2.0;
 	float armSpeed = throttle_mag2 * y2;
-	if (armSpeed < 0)
-		armSpeed *= -1.0f;
 
 	SmartDashboard::PutNumber("y2", y2);
 	SmartDashboard::PutNumber("armspeed", armSpeed);

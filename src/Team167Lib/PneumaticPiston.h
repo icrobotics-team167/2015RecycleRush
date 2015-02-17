@@ -13,11 +13,10 @@
 class PneumaticPiston
 {
 private:
-	Compressor *comp;
 	DoubleSolenoid *sol;
 
 public:
-	PneumaticPiston(int compressorIndex, int solenoidIndex1, int solenoidIndex2);
+	PneumaticPiston(int solenoidIndex1, int solenoidIndex2);
 	~PneumaticPiston();
 
 	void Extend();

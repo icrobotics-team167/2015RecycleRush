@@ -21,8 +21,7 @@ private:
 	bool armsClosed;
 
 public:
-	ElevatorArms(int compressorIndex,
-					int solenoidIndex1_1, int solenoidIndex1_2,
+	ElevatorArms(int solenoidIndex1_1, int solenoidIndex1_2,
 					int talonPWMChannel);
 	~ElevatorArms();
 

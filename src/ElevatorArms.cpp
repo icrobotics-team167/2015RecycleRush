@@ -7,14 +7,13 @@
 
 #include "ElevatorArms.h"
 
-ElevatorArms::ElevatorArms(int compressorIndex,
-							int solenoidIndex1_1, int solenoidIndex1_2,
+ElevatorArms::ElevatorArms(int solenoidIndex1_1, int solenoidIndex1_2,
 							int talonPWMchannel) :
 	ArmsDownSwitch(0),
 	ArmsUpSwitch(1)
 
 {
-	piston1 = new PneumaticPiston(compressorIndex, solenoidIndex1_1, solenoidIndex1_2);
+	piston1 = new PneumaticPiston(solenoidIndex1_1, solenoidIndex1_2);
 	talon = new Talon(talonPWMchannel);
 
 	armsClosed = false;
@@ -22,20 +21,20 @@ ElevatorArms::ElevatorArms(int compressorIndex,
 
 ElevatorArms::~ElevatorArms()
 {
-	delete piston1;;
+	delete piston1;
 	delete talon;
 }
 
 void ElevatorArms::Raise(float speed)
 {
 	if (!ArmsUpSwitch.Get())
-		talon->Set(-speed);
+		talon->Set(-fabs(speed));
 }
 
 void ElevatorArms::Lower(float speed)
 {
 	if (!ArmsDownSwitch.Get())
-		talon->Set(speed);
+		talon->Set(fabs(speed));
 }
 
 void ElevatorArms::StopElevator()

@@ -7,8 +7,7 @@
 
 #include "PneumaticPiston.h"
 
-PneumaticPiston::PneumaticPiston(int compressorIndex, int solenoidIndex1, int solenoidIndex2) {
-        comp = new Compressor(compressorIndex);
+PneumaticPiston::PneumaticPiston(int solenoidIndex1, int solenoidIndex2) {
         sol = new DoubleSolenoid(solenoidIndex1, solenoidIndex2);
 }
 
@@ -17,7 +16,6 @@ PneumaticPiston::PneumaticPiston(int compressorIndex, int solenoidIndex1, int so
  */
 PneumaticPiston::~PneumaticPiston()
 {
-        delete comp;
         delete sol;
 }
 
@@ -27,7 +25,6 @@ PneumaticPiston::~PneumaticPiston()
 void PneumaticPiston::Extend()
 {
         sol->Set(DoubleSolenoid::kReverse);
-        //comp->Start();
 }
 
 /*
@@ -36,7 +33,6 @@ void PneumaticPiston::Extend()
 void PneumaticPiston::Retract()
 {
         sol->Set(DoubleSolenoid::kForward);
-        //comp->Start();
 }
 
 /*
@@ -45,5 +41,4 @@ void PneumaticPiston::Retract()
 void PneumaticPiston::ForceStop()
 {
         sol->Set(DoubleSolenoid::kOff);
-        //comp->Stop();
 }
