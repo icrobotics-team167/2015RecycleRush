@@ -35,7 +35,7 @@ void ElevatorArms::Raise(float speed)
 void ElevatorArms::Lower(float speed)
 {
 	if (!ArmsDownSwitch.Get())
-		talon->Set(-speed);
+		talon->Set(speed);
 }
 
 void ElevatorArms::StopElevator()

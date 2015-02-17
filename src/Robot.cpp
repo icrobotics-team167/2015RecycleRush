@@ -174,6 +174,8 @@ void Robot::JoystickTwo() {
 	float y2 = -this->RealJoy2->GetAxis(Joystick::kYAxis);
 	double throttle_mag2 = (this->RealJoy2->GetThrottle() * -1.0 + 1.0) / 2.0;
 	float armSpeed = throttle_mag2 * y2;
+	if (armSpeed < 0)
+		armSpeed *= -1.0f;
 
 	SmartDashboard::PutNumber("y2", y2);
 	SmartDashboard::PutNumber("armspeed", armSpeed);
