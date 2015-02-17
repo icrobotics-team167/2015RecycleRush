@@ -15,6 +15,9 @@ class ElevatorArms
 private:
 	PneumaticPiston *piston1;
 	Talon *talon;
+
+	DigitalInput ArmsDownSwitch;
+	DigitalInput ArmsUpSwitch;
 	bool armsClosed;
 
 public:
