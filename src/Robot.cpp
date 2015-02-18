@@ -20,7 +20,9 @@ Robot::Robot()
 	autoStage = START;
 	//prevJoyState = false;
 
-	prevZ = 0;
+	for (int i = 0; i < prevZsSize; ++i)
+		prevZs[i] = 0;
+	prevZsIndex = 0;
 }
 
 Robot::~Robot()
@@ -140,8 +142,15 @@ void Robot::JoystickOne() {
 	SmartDashboard::PutNumber("z", z);
 
 	// if we suddenly go from driving forward to driving backward, delay the switch so the robot doesn't tip over
-	if (prevZ >= 45 && prevZ < 135 && z >= 225 && z < 315)
-		Wait(1);
+	bool prevForward = false;
+	for (int i = 0; i < prevZsSize; ++i)
+	{
+		if (prevZs[i] >= 45 && prevZs[i] < 135)
+			prevForward = true;
+	}
+
+	if (prevForward && z >= 225 && z < 315)
+		Wait(0.5);
 
 	/*
 	cout << "volt" << voltagePercent << endl;
@@ -191,7 +200,8 @@ void Robot::JoystickOne() {
 		mechanumWheels->Stop();
 	}
 
-	prevZ = z;
+	prevZs[prevZsIndex] = z;
+	prevZsIndex = (prevZsIndex + 1) % prevZsSize;
 }
 
 void Robot::JoystickTwo() {

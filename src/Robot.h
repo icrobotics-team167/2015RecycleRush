@@ -30,7 +30,10 @@ private:
 
 	Timer AutonomousTimer;
 
-	float prevZ;
+	static const int prevZsSize = 3;
+	float prevZs[prevZsSize];
+	int prevZsIndex;
+
 
 public:
 	Robot();
