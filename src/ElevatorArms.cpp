@@ -9,8 +9,9 @@
 
 ElevatorArms::ElevatorArms(int solenoidIndex1_1, int solenoidIndex1_2,
 							int talonPWMchannel) :
-	//ArmsDownSwitch(0),
-	ArmsUpSwitch(1)
+	ArmsUpSwitch(1),
+	ArmsDownSwitch(2)
+
 
 {
 	piston1 = new PneumaticPiston(solenoidIndex1_1, solenoidIndex1_2);
@@ -35,10 +36,10 @@ void ElevatorArms::Raise(float speed)
 
 void ElevatorArms::Lower(float speed)
 {
-	//if (!ArmsDownSwitch.Get())
+	if (ArmsDownSwitch.Get())
 		talon->Set(fabs(speed));
-	//else
-		//talon->Set(0);
+	else
+		talon->Set(0);
 }
 
 void ElevatorArms::StopElevator()

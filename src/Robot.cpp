@@ -183,46 +183,6 @@ void Robot::JoystickTwo() {
 	else
         elevatorArms->Raise(armSpeed);
 
-	// Deprecated code
-	/*bool open = Joystick2->Toggled(BUTTON_3);
-	bool close = Joystick2->Toggled(BUTTON_1);
-
-	if (open)
-        elevatorArms->Open();
-	if (close)
-        elevatorArms->Close();
-
-	if ((!open && !close) || (open && close))
-        elevatorArms->Stop();*/
-
-	/*
-	if (Joystick2->Toggled(BUTTON_1))                                        // Trigger - Open all
-        elevatorArms->Close();
-	else
-	{
-		elevatorArms->Open();
-        if (Joystick2->Toggled(BUTTON_8))
-			elevatorArms->Close();                                                // Button 7/8 - Open/close piston 1
-        else if (Joystick2->Toggled(BUTTON_7))
-			elevatorArms->Open();
-	}
-	*/
-
-	/*
-	if (Joystick2->Toggled(BUTTON_1) != prevJoyState)
-	{
-		if (Joystick2->Toggled(BUTTON_1)) {
-			if (elevatorArms->ArmsClosed())
-				elevatorArms->Open();
-			else
-				elevatorArms->Close();
-		}
-
-		prevJoyState = Joystick2->Toggled(BUTTON_1);
-	}
-	else
-		elevatorArms->Stop();
-	*/
 
 	if (Joystick2->Released(BUTTON_1) && elevatorArms->ArmsClosed())
 		elevatorArms->Open();
