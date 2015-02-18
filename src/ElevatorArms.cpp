@@ -9,7 +9,7 @@
 
 ElevatorArms::ElevatorArms(int solenoidIndex1_1, int solenoidIndex1_2,
 							int talonPWMchannel) :
-	ArmsDownSwitch(0),
+	//ArmsDownSwitch(0),
 	ArmsUpSwitch(1)
 
 {
@@ -27,14 +27,18 @@ ElevatorArms::~ElevatorArms()
 
 void ElevatorArms::Raise(float speed)
 {
-	if (!ArmsUpSwitch.Get())
+	if (ArmsUpSwitch.Get())
 		talon->Set(-fabs(speed));
+	else
+		talon->Set(0);
 }
 
 void ElevatorArms::Lower(float speed)
 {
-	if (!ArmsDownSwitch.Get())
+	//if (!ArmsDownSwitch.Get())
 		talon->Set(fabs(speed));
+	//else
+		//talon->Set(0);
 }
 
 void ElevatorArms::StopElevator()
