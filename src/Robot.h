@@ -30,6 +30,8 @@ private:
 
 	Timer AutonomousTimer;
 
+	float prevZ;
+
 public:
 	Robot();
 	~Robot();
