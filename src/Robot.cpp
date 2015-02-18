@@ -1,5 +1,6 @@
 #include "Robot.h"
 #include <iostream>
+
 using std::cout;
 using std::endl;
 
@@ -31,6 +32,16 @@ Robot::~Robot()
 }
 
 void Robot::RobotInit()
+{
+
+}
+
+void Robot::DisabledInit()
+{
+
+}
+
+void Robot::DisabledPeriodic()
 {
 
 }
@@ -101,6 +112,7 @@ void Robot::JoystickOne() {
 		else
 			voltagePercent *= abs_y;
 	}
+
 	else
 	{
 		// if we are turning, the rate of turning depends only on the throttle setting,

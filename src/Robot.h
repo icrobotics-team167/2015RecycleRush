@@ -35,6 +35,8 @@ public:
 	~Robot();
 
 	void RobotInit();
+	void DisabledInit();
+	void DisabledPeriodic();
 	void AutonomousInit();
 	void AutonomousPeriodic();
 	void TeleopInit();
