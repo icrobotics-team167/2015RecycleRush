@@ -61,18 +61,18 @@ void MechanumDrive::Reverse()
 }
 void MechanumDrive::Left()
 {
-	Wheels[0]->Set(0.75);
-	Wheels[2]->Set(-0.75);
-	Wheels[1]->Set(0.75);
-	Wheels[3]->Set(-0.75);
+	Wheels[0]->Set(voltage_percent);
+	Wheels[2]->Set(-voltage_percent);
+	Wheels[1]->Set(voltage_percent);
+	Wheels[3]->Set(-voltage_percent);
 	return;
 }
 void MechanumDrive::Right()
 {
-	Wheels[0]->Set(-0.75);
-	Wheels[2]->Set(0.75);
-	Wheels[1]->Set(-0.75);
-	Wheels[3]->Set(0.75);
+	Wheels[0]->Set(-voltage_percent);
+	Wheels[2]->Set(voltage_percent);
+	Wheels[1]->Set(-voltage_percent);
+	Wheels[3]->Set(voltage_percent);
 	return;
 }
 void MechanumDrive::RotateLeft()

@@ -99,7 +99,7 @@ void Robot::JoystickOne() {
 	double throttle_mag = (this->RealJoy1->GetThrottle() * -1.0 + 1.0) / 2.0;
 	SmartDashboard::PutNumber("throttle", throttle_mag);
 
-	float abs_x = abs(x), abs_y = abs(y);
+	float abs_x = fabs(x), abs_y = fabs(y);
 
 	double voltagePercent = throttle_mag;
 
@@ -112,7 +112,6 @@ void Robot::JoystickOne() {
 		else
 			voltagePercent *= abs_y;
 	}
-
 	else
 	{
 		// if we are turning, the rate of turning depends only on the throttle setting,
@@ -130,6 +129,13 @@ void Robot::JoystickOne() {
 		voltagePercent = 1.0;
 
 	mechanumWheels->SetVoltagePercent(voltagePercent);
+
+	double strafeVoltagePercent = 0.75;
+
+	SmartDashboard::PutNumber("abs_x", abs_x);
+	SmartDashboard::PutNumber("abs_y", abs_y);
+	SmartDashboard::PutNumber("voltagePercent", voltagePercent);
+	SmartDashboard::PutNumber("z", z);
 
 	/*
 	cout << "volt" << voltagePercent << endl;
@@ -159,6 +165,7 @@ void Robot::JoystickOne() {
 	else if ((z >= 315 && z <= 360) || (z >= 0 && z < 45))
 	{
 		// right
+		mechanumWheels->SetVoltagePercent(strafeVoltagePercent);
 		mechanumWheels->Left();
 	}
 	else if(z >= 45 && z < 135)
@@ -169,6 +176,7 @@ void Robot::JoystickOne() {
 	else if (z >= 135 && z < 225)
 	{
 		// left
+		mechanumWheels->SetVoltagePercent(strafeVoltagePercent);
 		mechanumWheels->Right();
 	}
 	else

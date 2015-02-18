@@ -138,10 +138,8 @@ float Vector3::GetRotation(float X, float Y)
 	
 	ret *= 180/PI_2;
 
-	/*
 	while(ret < 0)
 		ret += 360.0f;
-	*/
 	
 	return ret;
 }

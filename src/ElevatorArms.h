@@ -16,8 +16,8 @@ private:
 	PneumaticPiston *piston1;
 	Talon *talon;
 
-	DigitalInput ArmsDownSwitch;
 	DigitalInput ArmsUpSwitch;
+	DigitalInput ArmsDownSwitch;
 	bool armsClosed;
 
 public:
