@@ -35,7 +35,7 @@ void Robot::PickUpToteAndDrive()
 
 		case RAISE_STUFF:
 		{
-			if (AutonomousTimer.Get() < 2)
+			if (AutonomousTimer.Get() < 1)
 			{
 				if (AutonomousTimer.Get() == 0)
 					AutonomousTimer.Start();
@@ -49,20 +49,45 @@ void Robot::PickUpToteAndDrive()
 				AutonomousTimer.Stop();
 				AutonomousTimer.Reset();
 
-				autoStage = MOVE_STUFF_RIGHT;
+				autoStage = ROTATE_RIGHT;
 			}
 
 			break;
 		}
 
-		case MOVE_STUFF_RIGHT:
+		case ROTATE_RIGHT:
 		{
-			if (AutonomousTimer.Get() < 4)
+			if (AutonomousTimer.Get() < 1)
+			{
+				if (AutonomousTimer.Get() == 0)
+				{
+					mechanumWheels->SetVoltagePercent(0.5);
+					AutonomousTimer.Start();
+				}
+
+				mechanumWheels->RotateLeft();
+			}
+			else
+			{
+				mechanumWheels->Stop();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
+				mechanumWheels->SetVoltagePercent(0.7);
+
+				autoStage = MOVE_FORWARDS;
+			}
+
+			break;
+		}
+
+		case MOVE_FORWARDS:
+		{
+			if (AutonomousTimer.Get() < 1.2)
 			{
 				if (AutonomousTimer.Get() == 0)
 					AutonomousTimer.Start();
 
-				mechanumWheels->Left();
+				mechanumWheels->Forward();
 			}
 			else
 			{
@@ -70,11 +95,36 @@ void Robot::PickUpToteAndDrive()
 				AutonomousTimer.Stop();
 				AutonomousTimer.Reset();
 
-				autoStage = END;
+				autoStage = ROTATE_LEFT;
 			}
 
 			break;
 		}
+
+		case ROTATE_LEFT:
+				{
+					if (AutonomousTimer.Get() < 1)
+					{
+						if (AutonomousTimer.Get() == 0)
+						{
+							mechanumWheels->SetVoltagePercent(0.5);
+							AutonomousTimer.Start();
+						}
+
+						mechanumWheels->RotateRight();
+					}
+					else
+					{
+						mechanumWheels->Stop();
+						AutonomousTimer.Stop();
+						AutonomousTimer.Reset();
+						mechanumWheels->SetVoltagePercent(0.7);
+
+						autoStage = END;
+					}
+
+					break;
+				}
 
 		case END:
 		{
@@ -231,7 +281,7 @@ void Robot::DriveIntoZone() {
 			AutonomousTimer.Start();
 		}
 
-		mechanumWheels->Right();
+		mechanumWheels->Reverse();
 	}
 	else {
 		mechanumWheels->Stop();

@@ -12,7 +12,7 @@ Robot::Robot()
 	Joystick2 = new SimpleJoystick(RealJoy2);
 
 	// current parameters are just placeholders for actual values
-	elevatorArms = new ElevatorArms(1, 0, 4);
+	elevatorArms = new ElevatorArms(1, 0, 4, 0, 3);
 
 	// current parameters are actual values for the mechanum robot
 	mechanumWheels = new MechanumDrive(7, 1, 9, 2, 1.0);
@@ -90,7 +90,7 @@ void Robot::JoystickOne() {
 	//float twist = this->RealJoy1->GetRawAxis(3);
 
 	// Set the throttle
-	bool turbo = Joystick1->Toggled(BUTTON_8);
+	bool turbo = Joystick1->Toggled(BUTTON_12);
 
 	/*
 	* raw axis 4 is the throttle axis on the Logitech Extreme 3D Pro joystick
@@ -120,14 +120,14 @@ void Robot::JoystickOne() {
 	{
 		// if we are turning, the rate of turning depends only on the throttle setting,
 		// and the rate of turning is limited to 80% voltage maximum
-		voltagePercent *= 0.8;
+		voltagePercent *= 0.6;
 	}
 
 	if (voltagePercent < 0.1)
 		voltagePercent = 0.1;
 
 	if (!turbo)
-		voltagePercent *= 0.75;
+		voltagePercent *= 0.7;
 
 	if (voltagePercent > 1.0)
 		voltagePercent = 1.0;
@@ -228,6 +228,13 @@ void Robot::JoystickTwo() {
 		elevatorArms->Close();
 	else
 		elevatorArms->Stop();
+
+	if (Joystick2->Pressed(BUTTON_2))
+		elevatorArms->RollersIn();
+	else if (Joystick2->Pressed(BUTTON_12 ))
+		elevatorArms->RollersOut();
+	else
+		elevatorArms->StopRollers();
 }
 
 START_ROBOT_CLASS(Robot);

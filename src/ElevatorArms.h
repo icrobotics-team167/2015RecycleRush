@@ -15,6 +15,8 @@ class ElevatorArms
 private:
 	PneumaticPiston *piston1;
 	Talon *talon;
+	Talon *roller1;
+	Talon *roller2;
 
 	DigitalInput ArmsUpSwitch;
 	DigitalInput ArmsDownSwitch;
@@ -22,7 +24,7 @@ private:
 
 public:
 	ElevatorArms(int solenoidIndex1_1, int solenoidIndex1_2,
-					int talonPWMChannel);
+					int talonPWMChannel, int roller1PWMChannel, int roller2PWMChannel);
 	~ElevatorArms();
 
 	void Raise(float speed);
@@ -32,6 +34,9 @@ public:
 	void Close();
 	void Stop();
 	bool ArmsClosed() { return armsClosed; };
+	void RollersIn();
+	void RollersOut();
+	void StopRollers();
 };
 
 
