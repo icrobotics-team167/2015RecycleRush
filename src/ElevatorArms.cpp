@@ -29,20 +29,32 @@ ElevatorArms::~ElevatorArms()
 	delete talon;
 }
 
-void ElevatorArms::Raise(float speed)
+bool ElevatorArms::Raise(float speed)
 {
 	if (!ArmsUpSwitch.Get())
+	{
 		talon->Set(-fabs(speed));
+		return false;
+	}
 	else
+	{
 		talon->Set(0);
+		return true;
+	}
 }
 
-void ElevatorArms::Lower(float speed)
+bool ElevatorArms::Lower(float speed)
 {
 	if (ArmsDownSwitch.Get())
+	{
 		talon->Set(fabs(speed));
+		return false;
+	}
 	else
+	{
 		talon->Set(0);
+		return true;
+	}
 }
 
 void ElevatorArms::StopElevator()
@@ -62,7 +74,7 @@ void ElevatorArms::Close()
 	armsClosed = true;
 }
 
-void ElevatorArms::Stop()
+void ElevatorArms::StopPiston()
 {
 	piston1->ForceStop();
 }
@@ -83,4 +95,11 @@ void ElevatorArms::StopRollers()
 {
 	roller1->Set(0);
 	roller2->Set(0);
+}
+
+void ElevatorArms::StopAll()
+{
+	StopElevator();
+	StopPiston();
+	StopRollers();
 }

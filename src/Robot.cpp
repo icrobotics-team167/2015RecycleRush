@@ -23,6 +23,8 @@ Robot::Robot()
 	for (int i = 0; i < prevZsSize; ++i)
 		prevZs[i] = 0;
 	prevZsIndex = 0;
+
+	pickUpToteDone = false;
 }
 
 Robot::~Robot()
@@ -37,12 +39,14 @@ Robot::~Robot()
 
 void Robot::RobotInit()
 {
-
+	Joystick1->DisableToggleAll();
+	Joystick2->DisableToggleAll();
 }
 
 void Robot::DisabledInit()
 {
-
+	Joystick1->DisableToggleAll();
+	Joystick2->DisableToggleAll();
 }
 
 void Robot::DisabledPeriodic()
@@ -64,7 +68,8 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
-
+	Joystick1->DisableToggleAll();
+	Joystick2->DisableToggleAll();
 }
 
 void Robot::TeleopPeriodic()
@@ -227,7 +232,7 @@ void Robot::JoystickTwo() {
 	else if (Joystick2->Released(BUTTON_1) && !elevatorArms->ArmsClosed())
 		elevatorArms->Close();
 	else
-		elevatorArms->Stop();
+		elevatorArms->StopPiston();
 
 	if (Joystick2->Pressed(BUTTON_2))
 		elevatorArms->RollersIn();
@@ -235,6 +240,16 @@ void Robot::JoystickTwo() {
 		elevatorArms->RollersOut();
 	else
 		elevatorArms->StopRollers();
+
+	if (Joystick2->Toggled(BUTTON_11) && !pickUpToteDone)
+		PickUpTote();
+	else
+	{
+		toteStage = TOTE_END;
+		PickUpTote();
+		Joystick2->DisableToggle(BUTTON_11);
+		pickUpToteDone = false;
+	}
 }
 
 START_ROBOT_CLASS(Robot);

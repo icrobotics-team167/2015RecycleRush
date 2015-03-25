@@ -16,6 +16,7 @@ class Robot: public IterativeRobot
 {
 private:
 	enum DrivingStage {START, GRAB_STUFF, RAISE_STUFF, MOVE_FORWARDS, HOOK_STUFF, MOVE_STUFF_LEFT, MOVE_STUFF_RIGHT, ROTATE_RIGHT, ROTATE_LEFT, END};
+	enum PickUpToteStage {TOTE_START, OPEN, LOWER, CLOSE, RAISE, TOTE_END};
 
 	Joystick *RealJoy1;
 	Joystick *RealJoy2;
@@ -27,12 +28,14 @@ private:
 	//bool prevJoyState;
 
 	DrivingStage autoStage;
+	PickUpToteStage toteStage;
 
 	Timer AutonomousTimer;
 
 	static const int prevZsSize = 3;
 	float prevZs[prevZsSize];
 	int prevZsIndex;
+	bool pickUpToteDone;
 
 
 public:
@@ -53,6 +56,7 @@ public:
 	void PickUpToteAndDrive();
 	void PickUpTrashAndTote();
 	void DriveIntoZone();
+	void PickUpTote();
 };
 
 

@@ -22,8 +22,7 @@ void Robot::PickUpToteAndDrive()
 			}
 			else
 			{
-				elevatorArms->StopElevator();
-				elevatorArms->Stop();
+				elevatorArms->StopAll();
 				AutonomousTimer.Stop();
 				AutonomousTimer.Reset();
 
@@ -44,8 +43,7 @@ void Robot::PickUpToteAndDrive()
 			}
 			else
 			{
-				elevatorArms->StopElevator();
-				elevatorArms->Stop();
+				elevatorArms->StopAll();
 				AutonomousTimer.Stop();
 				AutonomousTimer.Reset();
 
@@ -130,8 +128,7 @@ void Robot::PickUpToteAndDrive()
 		{
 			AutonomousTimer.Stop();
 			AutonomousTimer.Reset();
-			elevatorArms->StopElevator();
-			elevatorArms->Stop();
+			elevatorArms->StopAll();
 			mechanumWheels->Stop();
 
 			break;
@@ -141,8 +138,7 @@ void Robot::PickUpToteAndDrive()
 		{
 			AutonomousTimer.Stop();
 			AutonomousTimer.Reset();
-			elevatorArms->StopElevator();
-			elevatorArms->Stop();
+			elevatorArms->StopAll();
 			mechanumWheels->Stop();
 
 			break;
@@ -179,8 +175,7 @@ void Robot::PickUpTrashAndTote()
 			}
 			else
 			{
-				elevatorArms->StopElevator();
-				elevatorArms->Stop();
+				elevatorArms->StopAll();
 				AutonomousTimer.Stop();
 				AutonomousTimer.Reset();
 
@@ -255,8 +250,7 @@ void Robot::PickUpTrashAndTote()
 		{
 			AutonomousTimer.Stop();
 			AutonomousTimer.Reset();
-			elevatorArms->StopElevator();
-			elevatorArms->Stop();
+			elevatorArms->StopAll();
 			mechanumWheels->Stop();
 
 			break;
@@ -266,8 +260,7 @@ void Robot::PickUpTrashAndTote()
 		{
 			AutonomousTimer.Stop();
 			AutonomousTimer.Reset();
-			elevatorArms->StopElevator();
-			elevatorArms->Stop();
+			elevatorArms->StopAll();
 			mechanumWheels->Stop();
 
 			break;
@@ -287,5 +280,78 @@ void Robot::DriveIntoZone() {
 		mechanumWheels->Stop();
 		AutonomousTimer.Stop();
 		AutonomousTimer.Reset();
+	}
+}
+
+// returns true when done, false otherwise;
+void Robot::PickUpTote()
+{
+	switch (toteStage)
+	{
+		case TOTE_START:
+		{
+			pickUpToteDone = false;
+			elevatorArms->StopAll();
+			toteStage = OPEN;
+			break;
+		}
+		case OPEN:
+		{
+			elevatorArms->Open();
+			toteStage = LOWER;
+			break;
+		}
+		case LOWER:
+		{
+			if (elevatorArms->Lower(1.0))
+			{
+				elevatorArms->StopElevator();
+				toteStage = CLOSE;
+			}
+			break;
+		}
+		case CLOSE:
+		{
+			elevatorArms->Close();
+			toteStage = RAISE;
+			break;
+		}
+		case RAISE:
+		{
+			if (AutonomousTimer.Get() < 1.5)
+			{
+				if (AutonomousTimer.Get() == 0)
+					AutonomousTimer.Start();
+
+				elevatorArms->Raise(0.5);
+			}
+			else
+			{
+				elevatorArms->StopElevator();
+				AutonomousTimer.Stop();
+				AutonomousTimer.Reset();
+
+				toteStage = TOTE_END;
+			}
+			break;
+		}
+		case TOTE_END:
+		{
+			AutonomousTimer.Stop();
+			AutonomousTimer.Reset();
+			elevatorArms->StopAll();
+			pickUpToteDone = true;
+
+			break;
+		}
+
+		default:
+		{
+			AutonomousTimer.Stop();
+			AutonomousTimer.Reset();
+			elevatorArms->StopAll();
+
+			break;
+		}
 	}
 }

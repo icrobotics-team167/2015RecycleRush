@@ -27,16 +27,20 @@ public:
 					int talonPWMChannel, int roller1PWMChannel, int roller2PWMChannel);
 	~ElevatorArms();
 
-	void Raise(float speed);
-	void Lower(float speed);
+	// returns true if arms are fully raised, false otherwise
+	bool Raise(float speed);
+	// returns true if arms are fully lowered, false otherwise;
+	bool Lower(float speed);
 	void StopElevator();
 	void Open();
 	void Close();
-	void Stop();
+	void StopPiston();
 	bool ArmsClosed() { return armsClosed; };
 	void RollersIn();
 	void RollersOut();
 	void StopRollers();
+	void StopAll();
+	void PickUpTote();
 };
 
 
