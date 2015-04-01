@@ -70,6 +70,7 @@ void Robot::TeleopInit()
 {
 	Joystick1->DisableToggleAll();
 	Joystick2->DisableToggleAll();
+	Joystick1->EnableToggle(BUTTON_2);
 }
 
 void Robot::TeleopPeriodic()
@@ -81,6 +82,8 @@ void Robot::TeleopPeriodic()
 void Robot::JoystickOne() {
 
 	this->Joystick1->Update();
+
+	bool superSlow = Joystick1->Toggled(BUTTON_2);
 
 	//-------------------------
 	// drive logic (input side)
@@ -137,7 +140,7 @@ void Robot::JoystickOne() {
 	if (voltagePercent > 1.0)
 		voltagePercent = 1.0;
 
-	mechanumWheels->SetVoltagePercent(voltagePercent);
+	mechanumWheels->SetVoltagePercent(superSlow ? SLOW_MODE_VOLTAGE_PERCENT : voltagePercent);
 
 	double strafeVoltagePercent = 0.75;
 
@@ -182,7 +185,7 @@ void Robot::JoystickOne() {
 		// forward
 		mechanumWheels->Reverse();
 	}
-	else if ((z >= 315 && z <= 360) || (z >= 0 && z < 45))
+	else if (((z >= 315 && z <= 360) || (z >= 0 && z < 45)) && !superSlow)
 	{
 		// right
 		mechanumWheels->SetVoltagePercent(strafeVoltagePercent);
@@ -193,7 +196,7 @@ void Robot::JoystickOne() {
 		// backwards
 		mechanumWheels->Forward();
 	}
-	else if (z >= 135 && z < 225)
+	else if (z >= 135 && z < 225 && !superSlow)
 	{
 		// left
 		mechanumWheels->SetVoltagePercent(strafeVoltagePercent);

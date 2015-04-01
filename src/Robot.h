@@ -36,6 +36,7 @@ private:
 	float prevZs[prevZsSize];
 	int prevZsIndex;
 	bool pickUpToteDone;
+	static const int SLOW_MODE_VOLTAGE_PERCENT = 0.1;
 
 
 public:
