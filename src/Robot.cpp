@@ -70,7 +70,7 @@ void Robot::TeleopInit()
 {
 	Joystick1->DisableToggleAll();
 	Joystick2->DisableToggleAll();
-	Joystick1->EnableToggle(BUTTON_2);
+	Joystick1->EnableToggle(BUTTON_1);
 }
 
 void Robot::TeleopPeriodic()
@@ -83,7 +83,7 @@ void Robot::JoystickOne() {
 
 	this->Joystick1->Update();
 
-	bool superSlow = Joystick1->Toggled(BUTTON_2);
+	bool superSlow = Joystick1->Toggled(BUTTON_1);
 
 	//-------------------------
 	// drive logic (input side)
